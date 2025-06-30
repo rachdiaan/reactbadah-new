@@ -12,17 +12,17 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate, showBa
   const getTitle = () => {
     switch (currentPage) {
       case 'home':
-        return 'Selamat Datang';
+        return ' ';
       case 'dzikir-pagi':
-        return 'Selamat Datang';
+        return ' ';
       case 'dzikir-petang':
-        return 'Selamat Datang';
+        return ' ';
       case 'about':
         return 'Tentang Aplikasi';
       case 'documentation':
         return 'Dokumentasi';
       default:
-        return 'Selamat Datang';
+        return ' ';
     }
   };
 
