@@ -1,0 +1,210 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --dark-blue: #16325B;
+  --medium-blue: #227B94;
+  --light-blue: #78B7D0;
+  --highlight-yellow: #FFDC7F;
+  --font-light: #FFFFFF;
+  --font-dark: #000000;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--dark-blue);
+  color: var(--font-light);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.arabic-text {
+  font-family: 'Amiri', serif;
+  font-size: 1.85rem;
+  line-height: 3rem;
+  direction: rtl;
+  text-align: right;
+  color: var(--font-light);
+}
+
+@media (max-width: 768px) {
+  .arabic-text {
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .arabic-text {
+    font-size: 1.3rem;
+    line-height: 2.2rem;
+  }
+}
+
+.liquid-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(60deg, #16325B, #1a4a6e, #227B94, #16325B);
+  background-size: 400% 400%;
+  animation: gradient-animation 25s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 220, 127, 0.3);
+}
+
+.prayer-card {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  border: 1px solid transparent;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 0.75rem;
+}
+
+.next-prayer-highlight {
+  transform: scale(1.06);
+  border-color: var(--highlight-yellow);
+  box-shadow: 0 0 25px rgba(255, 220, 127, 0.4);
+  background: rgba(255, 220, 127, 0.1);
+  animation: pulse-highlight 2.5s infinite;
+}
+
+@keyframes pulse-highlight {
+  0% { box-shadow: 0 0 25px rgba(255, 220, 127, 0.3); }
+  50% { box-shadow: 0 0 35px rgba(255, 220, 127, 0.5); }
+  100% { box-shadow: 0 0 25px rgba(255, 220, 127, 0.3); }
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  border-bottom-color: var(--highlight-yellow);
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.completed {
+  background: rgba(120, 183, 208, 0.2) !important;
+  border-color: rgba(120, 183, 208, 0.5) !important;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .glass-card {
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+  
+  .prayer-card {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .glass-card {
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+  }
+  
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Smooth transitions for all interactive elements */
+button, .glass-card, .prayer-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus states for accessibility */
+button:focus-visible,
+.glass-card:focus-visible {
+  outline: 2px solid var(--highlight-yellow);
+  outline-offset: 2px;
+}
+
+/* Loading animation improvements */
+.loader {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
+}
+
+@media (max-width: 480px) {
+  .loader {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
+  }
+}
