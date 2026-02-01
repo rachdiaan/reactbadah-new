@@ -38,7 +38,7 @@ const DzikirPage: React.FC<DzikirPageProps> = ({ dzikirData, type }) => {
         onClose={() => setIsModalOpen(false)}
         title={modalTitle}
       >
-        <div className="text-lg leading-relaxed">
+        <div className="text-lg leading-relaxed text-gray-600 dark:text-gray-300">
           {modalContent.split('\n').map((line, index) => (
             <p key={index} className="mb-2">{line}</p>
           ))}

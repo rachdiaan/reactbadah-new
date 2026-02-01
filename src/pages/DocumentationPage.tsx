@@ -350,11 +350,11 @@ const DocumentationPage: React.FC = () => {
               initial={{ x: -300, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
-              className="fixed lg:sticky top-0 left-0 h-screen w-80 glass-card p-6 z-40 overflow-y-auto lg:block border-r border-white/30"
+              className="fixed lg:sticky top-0 left-0 h-screen w-80 glass-card p-6 z-40 overflow-y-auto lg:block border-r border-white/30 dark:border-white/5"
             >
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-primary mb-2">📚 Navigasi</h3>
-                <div className="text-sm text-gray-500 bg-white/50 p-2 rounded-lg border border-white/60">
+                <div className="text-sm text-gray-500 bg-white/50 dark:bg-slate-800/50 p-2 rounded-lg border border-white/60 dark:border-white/10">
                   <strong>Versi:</strong> 3.1.5<br />
                   <strong>Update:</strong> 30 Juni 2025
                 </div>
@@ -365,7 +365,7 @@ const DocumentationPage: React.FC = () => {
                   <button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:text-primary hover:bg-primary/5 transition-colors font-medium"
+                    className="w-full text-left px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5 dark:hover:bg-white/5 transition-colors font-medium"
                   >
                     {item.title}
                   </button>
@@ -383,7 +383,7 @@ const DocumentationPage: React.FC = () => {
             className="text-center mb-8 pt-8 lg:pt-0"
           >
             <h1 className="text-3xl font-bold text-primary mb-2">Dokumentasi</h1>
-            <p className="text-gray-500">Panduan lengkap pengembangan dan penggunaan aplikasi</p>
+            <p className="text-gray-500 dark:text-gray-400">Panduan lengkap pengembangan dan penggunaan aplikasi</p>
           </motion.div>
 
           <div className="space-y-8">
@@ -394,16 +394,16 @@ const DocumentationPage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="glass-card p-6 border border-white/40 shadow-sm"
+                className="glass-card p-6 border border-white/40 dark:border-white/5 shadow-sm"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="text-primary bg-primary/10 p-2 rounded-lg">
                     {section.icon}
                   </div>
-                  <h2 className="text-xl font-bold text-gray-800">{section.title}</h2>
+                  <h2 className="text-xl font-bold text-gray-800 dark:text-white">{section.title}</h2>
                 </div>
 
-                <div className="text-gray-600">
+                <div className="text-gray-600 dark:text-gray-300">
                   {section.content}
                 </div>
               </motion.div>
@@ -414,7 +414,7 @@ const DocumentationPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="glass-card p-6 text-center mt-8 border border-white/40 shadow-sm"
+            className="glass-card p-6 text-center mt-8 border border-white/40 dark:border-white/5 shadow-sm"
           >
             <h3 className="text-2xl font-bold text-primary mb-4">🌟 Sumber Data & Referensi</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -422,33 +422,33 @@ const DocumentationPage: React.FC = () => {
                 href="https://quran.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/50 border border-white/60 p-4 rounded-xl hover:bg-white/80 transition-colors group"
+                className="bg-white/50 dark:bg-slate-800/50 border border-white/60 dark:border-white/10 p-4 rounded-xl hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group"
               >
                 <Globe className="w-6 h-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
                 <div className="text-primary font-semibold">quran.com</div>
-                <div className="text-xs text-gray-500">Al-Qur'an Digital</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Al-Qur'an Digital</div>
               </a>
 
               <a
                 href="https://almatsurat.net"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/50 border border-white/60 p-4 rounded-xl hover:bg-white/80 transition-colors group"
+                className="bg-white/50 dark:bg-slate-800/50 border border-white/60 dark:border-white/10 p-4 rounded-xl hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group"
               >
                 <Book className="w-6 h-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
                 <div className="text-primary font-semibold">almatsurat.net</div>
-                <div className="text-xs text-gray-500">Referensi Dzikir</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Referensi Dzikir</div>
               </a>
 
               <a
                 href="https://radioadzanfmbandung.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/50 border border-white/60 p-4 rounded-xl hover:bg-white/80 transition-colors group"
+                className="bg-white/50 dark:bg-slate-800/50 border border-white/60 dark:border-white/10 p-4 rounded-xl hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group"
               >
                 <Clock className="w-6 h-6 text-orange-500 mx-auto mb-2 group-hover:scale-110 transition-transform" />
                 <div className="text-orange-600 font-semibold">Radio Adzan FM</div>
-                <div className="text-xs text-gray-500">Jadwal Shalat Bandung</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Jadwal Shalat Bandung</div>
               </a>
             </div>
           </motion.div>

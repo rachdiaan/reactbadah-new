@@ -61,11 +61,11 @@ const BoycottPage: React.FC = () => {
             >
                 {/* Header */}
                 <div className="text-center space-y-2">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-100 text-red-600 mb-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 mb-4">
                         <AlertTriangle className="w-8 h-8" />
                     </div>
-                    <h1 className="text-3xl font-bold text-gray-800">Cek Produk Boikot</h1>
-                    <p className="text-gray-600 max-w-lg mx-auto">
+                    <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Cek Produk Boikot</h1>
+                    <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
                         Cari tahu apakah sebuah brand atau produk terafiliasi dengan gerakan yang perlu dihindari.
                     </p>
                 </div>
@@ -77,7 +77,7 @@ const BoycottPage: React.FC = () => {
                         placeholder="Cari nama brand atau produk (contoh: Starbucks)"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full px-6 py-4 pl-14 rounded-2xl bg-white shadow-lg border-2 border-transparent focus:border-red-400 focus:outline-none text-gray-800 placeholder-gray-400 transition-all text-lg"
+                        className="w-full px-6 py-4 pl-14 rounded-2xl bg-white dark:bg-slate-800 shadow-lg border-2 border-transparent focus:border-red-400 focus:outline-none text-gray-800 dark:text-white placeholder-gray-400 transition-all text-lg"
                     />
                     <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
                     <button
@@ -98,23 +98,23 @@ const BoycottPage: React.FC = () => {
                             animate={{ opacity: 1 }}
                             className="space-y-4"
                         >
-                            <h3 className="text-lg font-bold text-gray-800 px-2">Hasil Pencarian</h3>
+                            <h3 className="text-lg font-bold text-gray-800 dark:text-white px-2">Hasil Pencarian</h3>
                             <div className="grid gap-4 md:grid-cols-2">
                                 {searchResults.map((item, index) => (
-                                    <div key={index} className="bg-white p-5 rounded-xl shadow-sm border border-red-100 flex items-start gap-4">
-                                        <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center shrink-0">
+                                    <div key={index} className="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-red-100 dark:border-red-900/20 flex items-start gap-4">
+                                        <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/10 flex items-center justify-center shrink-0">
                                             <ShoppingBag className="w-6 h-6 text-red-500" />
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-gray-800 text-lg">{item.name}</h4>
+                                            <h4 className="font-bold text-gray-800 dark:text-gray-100 text-lg">{item.name}</h4>
                                             <div className="flex items-center gap-2 mt-1">
-                                                <span className="px-2 py-0.5 rounded textxs font-bold bg-red-100 text-red-600 text-xs uppercase tracking-wide">
+                                                <span className="px-2 py-0.5 rounded textxs font-bold bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-300 text-xs uppercase tracking-wide">
                                                     Terboikot
                                                 </span>
                                             </div>
                                             {/* Assuming API returns some description or reason */}
                                             {item.description && (
-                                                <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">
                                                     {item.description}
                                                 </p>
                                             )}
@@ -127,19 +127,19 @@ const BoycottPage: React.FC = () => {
 
                     {/* No Results State */}
                     {activeTab === 'search' && !isLoading && searchQuery && searchResults.length === 0 && (
-                        <div className="text-center py-12 bg-white/50 rounded-2xl border border-dashed border-gray-300">
-                            <Info className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                            <p className="text-gray-500 font-medium">Tidak ditemukan data untuk "{searchQuery}"</p>
-                            <p className="text-xs text-gray-400">Pastikan ejaan benar atau coba kata kunci lain.</p>
+                        <div className="text-center py-12 bg-white/50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-gray-300 dark:border-gray-700">
+                            <Info className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+                            <p className="text-gray-500 dark:text-gray-400 font-medium">Tidak ditemukan data untuk "{searchQuery}"</p>
+                            <p className="text-xs text-gray-400 dark:text-gray-500">Pastikan ejaan benar atau coba kata kunci lain.</p>
                         </div>
                     )}
 
                     {/* Categories List (Default View) */}
                     {searchResults.length === 0 && !searchQuery && (
                         <div className="space-y-4">
-                            <h3 className="text-lg font-bold text-gray-800 px-2 flex items-center gap-2">
+                            <h3 className="text-lg font-bold text-gray-800 dark:text-white px-2 flex items-center gap-2">
                                 Kategori Produk
-                                <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                                <span className="text-xs font-normal text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
                                     {categories.length}
                                 </span>
                             </h3>
@@ -147,7 +147,7 @@ const BoycottPage: React.FC = () => {
                                 {categories.map((cat, index) => (
                                     <div
                                         key={index}
-                                        className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:border-primary/30 hover:shadow-md transition cursor-pointer group"
+                                        className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-white/5 hover:border-primary/30 dark:hover:border-primary/30 hover:shadow-md transition cursor-pointer group"
                                         onClick={() => {
                                             setSearchQuery(cat.name);
                                             // Optional: Auto trigger search
@@ -157,9 +157,9 @@ const BoycottPage: React.FC = () => {
                                             <span className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
                                                 <ShoppingBag className="w-4 h-4" />
                                             </span>
-                                            <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors" />
+                                            <ChevronRight className="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-primary transition-colors" />
                                         </div>
-                                        <h4 className="font-medium text-gray-700 group-hover:text-primary transition-colors truncate">
+                                        <h4 className="font-medium text-gray-700 dark:text-gray-200 group-hover:text-primary transition-colors truncate">
                                             {cat.name}
                                         </h4>
                                     </div>
@@ -169,7 +169,7 @@ const BoycottPage: React.FC = () => {
                     )}
                 </div>
 
-                <div className="text-center text-xs text-gray-400 mt-8">
+                <div className="text-center text-xs text-gray-400 dark:text-gray-500 mt-8">
                     Data disediakan oleh Islamic Network SDK
                 </div>
             </motion.div>

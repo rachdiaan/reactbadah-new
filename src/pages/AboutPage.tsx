@@ -17,15 +17,15 @@ const AboutPage: React.FC = () => {
         className="glass-card p-6"
       >
         <div className="flex items-center gap-3 mb-4">
-          <Code className="w-6 h-6 text-yellow-300" />
-          <h3 className="text-xl font-bold text-yellow-300">Progressive Web App</h3>
+          <Code className="w-6 h-6 text-primary" />
+          <h3 className="text-xl font-bold text-gray-800 dark:text-white">Progressive Web App</h3>
         </div>
-        <p className="text-slate-300 leading-relaxed">
-          Sebagai sebuah karya digital yang inovatif dari <strong>Rachdian Habi Yahya</strong>, 
-          aplikasi ini hadir dalam bentuk <strong>Progressive Web App (PWA)</strong> canggih yang 
-          dirancang untuk memperkaya pengalaman spiritual harian Anda. Aplikasi ini secara dinamis 
-          mengintegrasikan amalan dzikir Al-Ma'tsurat Sugro dengan informasi jadwal shalat yang 
-          akurat untuk wilayah Bandung, disajikan melalui antarmuka <em>liquid glass</em> yang 
+        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+          Sebagai sebuah karya digital yang inovatif dari <strong>Rachdian Habi Yahya</strong>,
+          aplikasi ini hadir dalam bentuk <strong>Progressive Web App (PWA)</strong> canggih yang
+          dirancang untuk memperkaya pengalaman spiritual harian Anda. Aplikasi ini secara dinamis
+          mengintegrasikan amalan dzikir Al-Ma'tsurat Sugro dengan informasi jadwal shalat yang
+          akurat untuk wilayah Bandung, disajikan melalui antarmuka <em>liquid glass</em> yang
           modern dan sangat responsif.
         </p>
       </motion.div>
@@ -37,18 +37,18 @@ const AboutPage: React.FC = () => {
         className="glass-card p-6"
       >
         <div className="flex items-center gap-3 mb-4">
-          <Heart className="w-6 h-6 text-yellow-300" />
-          <h3 className="text-xl font-bold text-yellow-300">Open Source & Kontribusi</h3>
+          <Heart className="w-6 h-6 text-primary" />
+          <h3 className="text-xl font-bold text-gray-800 dark:text-white">Open Source & Kontribusi</h3>
         </div>
-        <p className="text-slate-300 leading-relaxed">
-          Terinspirasi dari aliiflam.com, website ini dirancang open source, silahkan berkontribusi 
+        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+          Terinspirasi dari aliiflam.com, website ini dirancang open source, silahkan berkontribusi
           aktif, bila ada kesalahan dalam website terutama ayat dan doa mohon untuk melaporkan ke{' '}
-          <a 
-            href="mailto:rachdiaaan@gmail.com" 
-            className="text-blue-300 hover:text-blue-200 underline transition-colors"
+          <a
+            href="mailto:rachdiaaan@gmail.com"
+            className="text-primary hover:text-primary-dark underline transition-colors font-medium"
           >
             rachdiaaan@gmail.com
-          </a>. Jika setelah ada balasan email konfirmasi perbaikan namun belum terlihat perubahan, 
+          </a>. Jika setelah ada balasan email konfirmasi perbaikan namun belum terlihat perubahan,
           silahkan hapus cache/hard reload website ini, terima kasih.
         </p>
       </motion.div>
@@ -60,8 +60,8 @@ const AboutPage: React.FC = () => {
         className="glass-card p-6"
       >
         <div className="flex items-center gap-3 mb-4">
-          <Book className="w-6 h-6 text-yellow-300" />
-          <h3 className="text-xl font-bold text-yellow-300">Sumber Data</h3>
+          <Book className="w-6 h-6 text-primary" />
+          <h3 className="text-xl font-bold text-gray-800 dark:text-white">Sumber Data</h3>
         </div>
         <ul className="space-y-3">
           {sources.map((source, index) => (
@@ -75,7 +75,7 @@ const AboutPage: React.FC = () => {
                 href={source.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-blue-300 hover:text-blue-200 transition-colors group"
+                className="flex items-center gap-2 text-primary hover:text-primary-dark transition-colors group font-medium"
               >
                 <ExternalLink className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 {source.name}
@@ -91,8 +91,8 @@ const AboutPage: React.FC = () => {
         transition={{ delay: 0.4 }}
         className="glass-card p-6"
       >
-        <h3 className="text-xl font-bold text-yellow-300 mb-4">Fitur Utama</h3>
-        <ul className="space-y-2 text-slate-300">
+        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Fitur Utama</h3>
+        <ul className="space-y-2 text-gray-600 dark:text-gray-300">
           <li>• Widget jadwal shalat real-time untuk wilayah Bandung</li>
           <li>• Dzikir Al-Ma'tsurat pagi dan petang dengan penghitung tap</li>
           <li>• Refleksi (Tadabbur) bertenaga AI untuk setiap dzikir</li>

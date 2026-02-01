@@ -25,22 +25,21 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="glass-card w-full max-w-md max-h-[80vh] overflow-y-auto"
           >
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-2xl font-bold text-white">{title}</h3>
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{title}</h3>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={onClose}
-                  className="p-1 rounded-full hover:bg-white/10 transition-colors"
+                  className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
                 >
-                  <X className="w-6 h-6 text-white" />
+                  <X className="w-6 h-6 text-gray-500 dark:text-gray-400" />
                 </motion.button>
               </div>
-              
-              <div className="text-slate-200">
+
+              <div className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
                 {children}
               </div>
             </div>
