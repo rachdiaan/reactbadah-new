@@ -85,7 +85,7 @@ const QiblaPage: React.FC = () => {
             {/* Header Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                    <div className="bg-emerald-500 rounded-full p-2 text-white">
+                    <div className="bg-primary/10 rounded-full p-2 text-primary">
                         <Compass className="w-6 h-6" />
                     </div>
                     <div>
@@ -124,7 +124,7 @@ const QiblaPage: React.FC = () => {
 
                         {/* The Rotating Dial */}
                         <motion.div
-                            className="w-full h-full rounded-full border-4 border-emerald-500/10 bg-white shadow-2xl relative"
+                            className="w-full h-full rounded-full border-4 border-primary/10 bg-white shadow-2xl relative"
                             animate={{ rotate: -heading }}
                             transition={{ type: "spring", stiffness: 40, damping: 10 }}
                         >
@@ -176,14 +176,14 @@ const QiblaPage: React.FC = () => {
                             </div>
 
                             {/* Center Dot */}
-                            <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-emerald-500 rounded-full -translate-x-1/2 -translate-y-1/2 z-20 shadow-lg border-2 border-white"></div>
+                            <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2 z-20 shadow-lg border-2 border-white"></div>
 
                             {/* Qibla Indicator (Kaaba) relative to North (0) on the dial */}
                             {qiblaDirection && (
                                 <>
                                     {/* Line to Qibla */}
                                     <div
-                                        className="absolute top-1/2 left-1/2 w-0.5 h-[42%] bg-emerald-500/50 -translate-x-1/2 origin-top z-10"
+                                        className="absolute top-1/2 left-1/2 w-0.5 h-[42%] bg-primary/50 -translate-x-1/2 origin-top z-10"
                                         style={{ transform: `rotate(${qiblaDirection + 180}deg)` }} // +180 because it originates from center downwards? No, verify rotation origin.
                                     // Standard CSS rotation 0 is UP (North).
                                     // But origin-top means it hangs down.
@@ -196,7 +196,7 @@ const QiblaPage: React.FC = () => {
                                         style={{ transform: `rotate(${qiblaDirection}deg)` }}
                                     >
                                         <div className="absolute top-[15%] left-1/2 -translate-x-1/2 flex flex-col items-center">
-                                            <div className="bg-emerald-600 rounded-lg p-1.5 shadow-lg transform -rotate-45 border-2 border-white">
+                                            <div className="bg-primary rounded-lg p-1.5 shadow-lg transform -rotate-45 border-2 border-white">
                                                 {/* Simple Cube Representation of Kaaba */}
                                                 <div className="w-4 h-4 bg-black rounded-[1px] relative">
                                                     <div className="absolute top-[3px] w-full h-[1px] bg-yellow-400"></div>
@@ -213,7 +213,7 @@ const QiblaPage: React.FC = () => {
                             The 'Triangle' usually points UP (Phone Top). If heading is 0, N is at top.
                         */}
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 z-30">
-                            <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[12px] border-b-emerald-500/80"></div>
+                            <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[12px] border-b-primary/80"></div>
                         </div>
 
                         {/* Degrees Text Center Bottom */}
@@ -228,32 +228,32 @@ const QiblaPage: React.FC = () => {
             {location && qiblaDirection && distance && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Direction Card */}
-                    <div className="bg-emerald-50 rounded-2xl p-6 flex flex-col items-center justify-center text-center space-y-2 relative overflow-hidden group">
-                        <div className="absolute top-2 right-2 text-emerald-200">
+                    <div className="bg-primary/5 rounded-2xl p-6 flex flex-col items-center justify-center text-center space-y-2 relative overflow-hidden group">
+                        <div className="absolute top-2 right-2 text-primary/10">
                             <Navigation className="w-12 h-12 opacity-20" />
                         </div>
-                        <Navigation className="w-8 h-8 text-emerald-500 mb-2 transform -rotate-45" />
-                        <h3 className="text-3xl font-bold text-emerald-600 font-mono tracking-tight">
+                        <Navigation className="w-8 h-8 text-primary mb-2 transform -rotate-45" />
+                        <h3 className="text-3xl font-bold text-gray-800 font-mono tracking-tight">
                             {qiblaDirection.toFixed(0)}°
                         </h3>
-                        <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest">
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                             {getCardinalDirection(qiblaDirection).toUpperCase()} DARI UTARA
                         </p>
                     </div>
 
                     {/* Distance Card */}
-                    <div className="bg-blue-50 rounded-2xl p-6 flex flex-col items-center justify-center text-center space-y-2 relative overflow-hidden">
-                        <div className="absolute top-2 right-2 text-blue-200">
+                    <div className="bg-secondary/10 rounded-2xl p-6 flex flex-col items-center justify-center text-center space-y-2 relative overflow-hidden">
+                        <div className="absolute top-2 right-2 text-primary/10">
                             <MapPin className="w-12 h-12 opacity-20" />
                         </div>
                         {/* Kaaba Icon (Simple) */}
                         <div className="w-8 h-8 bg-black rounded-md relative mb-2 flex items-center justify-center">
                             <div className="w-full h-[1px] bg-yellow-400 absolute top-2"></div>
                         </div>
-                        <h3 className="text-3xl font-bold text-blue-600 font-mono tracking-tight">
+                        <h3 className="text-3xl font-bold text-gray-800 font-mono tracking-tight">
                             {distance.toLocaleString(undefined, { maximumFractionDigits: 0 })} km
                         </h3>
-                        <p className="text-xs font-bold text-blue-500 uppercase tracking-widest">
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                             JARAK KE KA'BAH
                         </p>
                     </div>
