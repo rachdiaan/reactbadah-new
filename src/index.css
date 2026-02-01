@@ -5,12 +5,13 @@
 @tailwind utilities;
 
 :root {
-  --primary: #2F5233;
-  --secondary: #1A3C2B;
-  --accent: #D4AF37;
-  --background: #F7F7F2;
+  /* Soft Pastel Blue Theme */
+  --primary: #5B8FB9;
+  --secondary: #B6E1F2;
+  --accent: #F2D57E;
+  --background: #F4F9FD;
   --surface: #FFFFFF;
-  --text-main: #1F2937;
+  --text-main: #203A4E;
   --text-light: #F9FAFB;
 }
 
@@ -46,7 +47,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background: linear-gradient(135deg, #F7F7F2 0%, #E8E8E0 100%);
+  background: linear-gradient(135deg, #F4F9FD 0%, #E0F2FA 100%);
   background-size: 400% 400%;
 }
 
@@ -64,7 +65,8 @@ body {
 .glass-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
-  border-color: rgba(212, 175, 55, 0.3); /* Accent color border on hover */
+  border-color: rgba(212, 175, 55, 0.3);
+  /* Accent color border on hover */
 }
 
 /* Hero Card - Deep Green */
@@ -72,7 +74,7 @@ body {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
   border-radius: 1.5rem;
-  box-shadow: 0 10px 25px -5px rgba(47, 82, 51, 0.4);
+  box-shadow: 0 10px 25px -5px rgba(91, 143, 185, 0.4);
 }
 
 .next-prayer-highlight {
@@ -94,9 +96,19 @@ body {
 }
 
 @keyframes pulse-ring {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  50% { opacity: 0.3; }
-  100% { transform: scale(1.05); opacity: 0; }
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
 }
 
 @layer utilities {
@@ -108,10 +120,12 @@ body {
 /* Navigation Item Active State */
 .nav-item-active {
   color: var(--primary);
-  background: rgba(47, 82, 51, 0.1);
+  background: rgba(91, 143, 185, 0.1);
 }
 
 /* Smooth transitions */
-button, .glass-card, .prayer-card {
+button,
+.glass-card,
+.prayer-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

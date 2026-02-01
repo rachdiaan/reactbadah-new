@@ -4,13 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#2F5233', // Deep Islamic Green
-        secondary: '#1A3C2B', // Darker Green
-        accent: '#D4AF37', // Muted Gold
+        primary: '#5B8FB9', // Soft Calm Blue
+        secondary: '#B6E1F2', // Pastel Light Blue
+        accent: '#F2D57E', // Pastel Gold
         surface: '#FFFFFF',
-        background: '#F7F7F2', // Soft Sand/Off-White
+        background: '#F4F9FD', // Very Pale Blue White
         text: {
-          DEFAULT: '#1F2937', // Charcoal
+          DEFAULT: '#203A4E', // Dark Blue-Grey
           muted: '#6B7280',
           light: '#F9FAFB'
         }
