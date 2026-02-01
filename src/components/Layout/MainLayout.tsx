@@ -1,5 +1,5 @@
-import React from 'react';
-import { Home, Sun, Moon, Info, FileText, Settings, BookOpen, Compass, Ban } from 'lucide-react';
+import React, { useState } from 'react';
+import { Home, Sun, Moon, Info, FileText, Settings, BookOpen, Compass, Ban, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -14,6 +14,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     onNavigate,
     onToggleSettings
 }) => {
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const navItems = [
         { id: 'home', label: 'Home', icon: Home },
@@ -34,28 +35,53 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             {/* Background is handled globally by body/liquid-bg, but we add a subtle overlay pattern if desired */}
 
             {/* Desktop Sidebar (Visible on lg screens) */}
-            <aside className="hidden lg:flex flex-col w-64 h-screen fixed left-0 top-0 glass-card m-4 my-4 rounded-3xl z-40 border-opacity-40 bg-white/60">
-                <div className="p-8 flex items-center justify-center border-b border-gray-200/30">
-                    <h1 className="font-serif text-2xl font-bold text-primary">Al-Matsurat</h1>
+            <aside
+                className={`hidden lg:flex flex-col h-screen fixed left-0 top-0 glass-card m-4 my-4 rounded-3xl z-40 border-opacity-40 bg-white/60 transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'
+                    }`}
+            >
+                {/* Header with Toggle */}
+                <div className={`p-6 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} border-b border-gray-200/30`}>
+                    {!isCollapsed && (
+                        <h1 className="font-serif text-2xl font-bold text-primary truncate">Al-Matsurat</h1>
+                    )}
+                    <button
+                        onClick={() => setIsCollapsed(!isCollapsed)}
+                        className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-primary transition-colors"
+                        title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                    >
+                        {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+                    </button>
                 </div>
 
-                <nav className="flex-1 flex flex-col gap-2 p-4">
-                    <div className="text-xs font-bold text-gray-400 uppercase tracking-widest px-4 mb-2">Menu</div>
+                {/* Scrollable Nav Area */}
+                <nav className="flex-1 flex flex-col gap-2 p-3 overflow-y-auto no-scrollbar">
+                    {/* Main Menu */}
+                    <div className={`text-xs font-bold text-gray-400 uppercase tracking-widest px-4 mb-2 mt-2 ${isCollapsed ? 'text-center' : ''}`}>
+                        {isCollapsed ? '...' : 'Menu'}
+                    </div>
+
                     {navItems.map((item) => (
                         <button
                             key={item.id}
                             onClick={() => onNavigate(item.id as any)}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${currentPage === item.id
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${currentPage === item.id
                                 ? 'bg-primary text-white shadow-lg shadow-primary/30'
                                 : 'hover:bg-primary/10 text-gray-600 hover:text-primary'
-                                }`}
+                                } ${isCollapsed ? 'justify-center px-2' : ''}`}
+                            title={isCollapsed ? item.label : ''}
                         >
-                            <item.icon className="w-5 h-5" />
-                            <span className="font-medium">{item.label}</span>
+                            <item.icon className={`w-5 h-5 ${isCollapsed ? 'w-6 h-6' : ''}`} />
+                            {!isCollapsed && <span className="font-medium">{item.label}</span>}
                         </button>
                     ))}
 
-                    <div className="mt-8 text-xs font-bold text-gray-400 uppercase tracking-widest px-4 mb-2">Info</div>
+                    <div className="my-2 border-t border-gray-200/30"></div>
+
+                    {/* Secondary Menu */}
+                    <div className={`text-xs font-bold text-gray-400 uppercase tracking-widest px-4 mb-2 mt-2 ${isCollapsed ? 'text-center' : ''}`}>
+                        {isCollapsed ? '...' : 'Info'}
+                    </div>
+
                     {secondaryNavItems.map((item) => (
                         <button
                             key={item.id}
@@ -63,27 +89,18 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${currentPage === item.id
                                 ? 'bg-primary text-white shadow-lg shadow-primary/30'
                                 : 'hover:bg-primary/10 text-gray-600 hover:text-primary'
-                                }`}
+                                } ${isCollapsed ? 'justify-center px-2' : ''}`}
+                            title={isCollapsed ? item.label : ''}
                         >
                             <item.icon className="w-5 h-5" />
-                            <span className="font-medium">{item.label}</span>
+                            {!isCollapsed && <span className="font-medium">{item.label}</span>}
                         </button>
                     ))}
                 </nav>
-
-                <div className="p-4 border-t border-gray-200/30">
-                    <button
-                        onClick={onToggleSettings}
-                        className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-100 transition-all w-full text-gray-600"
-                    >
-                        <Settings className="w-5 h-5" />
-                        <span className="font-medium">Settings</span>
-                    </button>
-                </div>
             </aside>
 
             {/* Main Content Area */}
-            <main className="flex-1 lg:ml-72 p-4 pb-24 md:pb-8 lg:p-8 max-w-5xl mx-auto w-full">
+            <main className={`flex-1 p-4 pb-24 md:pb-8 lg:p-8 max-w-5xl mx-auto w-full transition-all duration-300 ${isCollapsed ? 'lg:ml-24' : 'lg:ml-72'}`}>
                 {children}
             </main>
 
