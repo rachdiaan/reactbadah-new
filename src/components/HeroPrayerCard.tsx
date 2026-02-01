@@ -37,9 +37,9 @@ const HeroPrayerCard: React.FC = () => {
                         <p className="text-sm font-medium tracking-wide uppercase">{locationName || "Menunggu Lokasi..."}</p>
                     </div>
 
-                    <h1 className="text-6xl md:text-7xl font-bold text-primary mb-2 tracking-tight font-sans">
+                    <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-primary mb-2 tracking-tight font-sans">
                         {format(currentTime, 'HH:mm', { locale: id })}
-                        <span className="text-2xl text-primary/60 ml-2 font-light">{format(currentTime, 'ss', { locale: id })}</span>
+                        <span className="text-xl sm:text-2xl text-primary/60 ml-2 font-light">{format(currentTime, 'ss', { locale: id })}</span>
                     </h1>
 
                     <p className="text-lg text-gray-500 font-medium">

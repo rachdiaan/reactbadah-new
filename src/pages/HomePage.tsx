@@ -16,7 +16,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 mt-8"
+        className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mt-6 md:mt-8"
       >
         <motion.div
           whileHover={{ scale: 1.02, y: -4 }}
