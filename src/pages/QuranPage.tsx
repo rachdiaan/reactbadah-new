@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Search } from 'lucide-react';
+import SurahDetail from '../components/SurahDetail';
 
 interface Surah {
     number: number;
@@ -13,6 +14,7 @@ interface Surah {
 
 const QuranPage: React.FC = () => {
     const [surahs, setSurahs] = useState<Surah[]>([]);
+    const [selectedSurah, setSelectedSurah] = useState<{ number: number; name: string } | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
@@ -41,6 +43,16 @@ const QuranPage: React.FC = () => {
         surah.englishNameTranslation.toLowerCase().includes(searchTerm.toLowerCase()) ||
         surah.number.toString().includes(searchTerm)
     );
+
+    if (selectedSurah) {
+        return (
+            <SurahDetail
+                surahNumber={selectedSurah.number}
+                surahName={selectedSurah.name}
+                onBack={() => setSelectedSurah(null)}
+            />
+        );
+    }
 
     return (
         <div className="space-y-6">
@@ -77,6 +89,7 @@ const QuranPage: React.FC = () => {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             whileHover={{ y: -4, scale: 1.02 }}
+                            onClick={() => setSelectedSurah({ number: surah.number, name: surah.englishName })}
                             className="glass-card p-4 relative overflow-hidden group hover:border-primary/30 cursor-pointer"
                         >
                             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
