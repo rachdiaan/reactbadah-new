@@ -49,12 +49,9 @@ const Logo: React.FC<LogoProps> = ({ className = "w-10 h-10", variant = 'full' }
             {/* Text Lockup (Only show if full variant) */}
             {variant === 'full' && (
                 <div className="flex flex-col">
-                    <h1 className="font-display text-xl font-bold text-gray-800 dark:text-white leading-none tracking-tight">
-                        Al-Matsurat
+                    <h1 className="font-sans text-xl font-bold text-gray-800 dark:text-white leading-none tracking-tight">
+                        Ibadah Checkpoint
                     </h1>
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-primary font-bold opacity-80 mt-1">
-                        Daily Dzikir
-                    </span>
                 </div>
             )}
         </div>
