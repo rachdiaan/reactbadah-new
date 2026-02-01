@@ -135,7 +135,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                       ))}
                     </select>
                     {locationName && (
-                      <div className="text-[10px] text-gray-400 mt-2 flex items-center gap-1 justify-center">
+                      <div className="text-[10px] text-gray-500 mt-2 flex items-center gap-1 justify-center">
                         📍 {locationName}
                       </div>
                     )}
@@ -171,7 +171,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                       {showTranslation ? <Eye className="w-4 h-4 text-primary" /> : <EyeOff className="w-4 h-4 text-gray-400" />}
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-gray-700">Terjemahan</span>
-                        <span className="text-[10px] text-gray-400">Tampilkan arti ayat</span>
+                        <span className="text-[10px] text-gray-500">Tampilkan arti ayat</span>
                       </div>
                     </div>
                     <button
@@ -187,7 +187,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                       <Play className="w-4 h-4 text-primary" />
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-gray-700">Tombol Aksi</span>
-                        <span className="text-[10px] text-gray-400">Play, Bookmark, dll</span>
+                        <span className="text-[10px] text-gray-500">Play, Bookmark, dll</span>
                       </div>
                     </div>
                     <button

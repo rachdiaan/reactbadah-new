@@ -42,7 +42,7 @@ const HeroPrayerCard: React.FC = () => {
                         <span className="text-xl sm:text-2xl text-primary/60 ml-2 font-light">{format(currentTime, 'ss', { locale: id })}</span>
                     </h1>
 
-                    <p className="text-lg text-gray-500 font-medium">
+                    <p className="text-lg text-gray-600 font-medium">
                         {format(currentTime, 'EEEE, d MMMM yyyy', { locale: id })}
                     </p>
                 </div>

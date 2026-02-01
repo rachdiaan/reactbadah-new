@@ -62,7 +62,7 @@ const QuranPage: React.FC = () => {
                         <BookOpen className="w-8 h-8" />
                         Al-Qur'an
                     </h1>
-                    <p className="text-gray-500 mt-1">Daftar Surat dan Terjemahan</p>
+                    <p className="text-gray-600 mt-1">Daftar Surat dan Terjemahan</p>
                 </div>
 
                 <div className="relative w-full md:w-64">

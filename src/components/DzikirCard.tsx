@@ -54,7 +54,7 @@ const DzikirCard: React.FC<DzikirCardProps> = ({ dzikir, onTadabbur }) => {
         <p className="arabic-text mb-4 text-right leading-loose text-gray-800" style={{ fontFamily: '"Amiri", serif', fontSize: `${arabicFontSize}px` }}>{item.arabic}</p>
         <p className="text-sm italic mb-2 text-primary/80 font-medium">{item.latin}</p>
         {showTranslation && (
-          <p className="text-sm text-gray-500 leading-relaxed">{item.translation_id}</p>
+          <p className="text-sm text-gray-600 leading-relaxed">{item.translation_id}</p>
         )}
       </div>
     ));

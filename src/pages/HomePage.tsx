@@ -28,7 +28,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <Sunrise className="w-12 h-12 text-yellow-600" />
           </div>
           <h3 className="text-2xl font-bold text-primary mb-2">Dzikir Pagi</h3>
-          <p className="text-gray-500 text-sm">Mulai harimu dengan mengingat Allah</p>
+          <p className="text-gray-600 text-sm">Mulai harimu dengan mengingat Allah</p>
         </motion.div>
 
         <motion.div
@@ -41,7 +41,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <Sunset className="w-12 h-12 text-orange-600" />
           </div>
           <h3 className="text-2xl font-bold text-primary mb-2">Dzikir Petang</h3>
-          <p className="text-gray-500 text-sm">Akhiri harimu dengan ketenangan</p>
+          <p className="text-gray-600 text-sm">Akhiri harimu dengan ketenangan</p>
         </motion.div>
       </motion.div>
     </div>

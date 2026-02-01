@@ -90,7 +90,7 @@ const QiblaPage: React.FC = () => {
                     </div>
                     <div>
                         <h1 className="text-lg font-bold text-gray-800">Arah Kiblat</h1>
-                        <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">PENUNJUK KA'BAH</p>
+                        <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">PENUNJUK KA'BAH</p>
                     </div>
                 </div>
                 <button className="text-gray-400 hover:text-gray-600">
@@ -142,7 +142,7 @@ const QiblaPage: React.FC = () => {
                                 >
                                     {/* Degree Numbers for majors */}
                                     {deg % 30 === 0 && (
-                                        <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-medium text-gray-400 transform -rotate-[${deg}deg]">
+                                        <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-medium text-gray-500 transform -rotate-[${deg}deg]">
                                             {deg}°
                                         </span>
                                     )}
@@ -236,7 +236,7 @@ const QiblaPage: React.FC = () => {
                         <h3 className="text-3xl font-bold text-emerald-600 font-mono tracking-tight">
                             {qiblaDirection.toFixed(0)}°
                         </h3>
-                        <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest">
+                        <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest">
                             {getCardinalDirection(qiblaDirection).toUpperCase()} DARI UTARA
                         </p>
                     </div>
@@ -253,7 +253,7 @@ const QiblaPage: React.FC = () => {
                         <h3 className="text-3xl font-bold text-blue-600 font-mono tracking-tight">
                             {distance.toLocaleString(undefined, { maximumFractionDigits: 0 })} km
                         </h3>
-                        <p className="text-xs font-bold text-blue-400 uppercase tracking-widest">
+                        <p className="text-xs font-bold text-blue-500 uppercase tracking-widest">
                             JARAK KE KA'BAH
                         </p>
                     </div>
