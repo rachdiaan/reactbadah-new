@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { DzikirItem } from '../types';
 import { useGeminiAI } from '../hooks/useGeminiAI';
+import { useSettings } from '../contexts/SettingsContext';
 
 interface DzikirCardProps {
   dzikir: DzikirItem;
@@ -13,6 +14,7 @@ const DzikirCard: React.FC<DzikirCardProps> = ({ dzikir, onTadabbur }) => {
   const [currentTaps, setCurrentTaps] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const { getTadabbur, isLoading } = useGeminiAI();
+  const { arabicFontSize, showTranslation } = useSettings();
 
   const handleCardClick = () => {
     if (currentTaps < dzikir.total_taps && !isCompleted) {
@@ -49,9 +51,11 @@ const DzikirCard: React.FC<DzikirCardProps> = ({ dzikir, onTadabbur }) => {
             <span className="text-xs text-gray-400 uppercase tracking-widest">{(item as any).title_extra || ''}</span>
           </div>
         )}
-        <p className="arabic-text mb-4 text-right text-3xl leading-loose text-gray-800" style={{ fontFamily: '"Amiri", serif' }}>{item.arabic}</p>
+        <p className="arabic-text mb-4 text-right leading-loose text-gray-800" style={{ fontFamily: '"Amiri", serif', fontSize: `${arabicFontSize}px` }}>{item.arabic}</p>
         <p className="text-sm italic mb-2 text-primary/80 font-medium">{item.latin}</p>
-        <p className="text-sm text-gray-500 leading-relaxed">{item.translation_id}</p>
+        {showTranslation && (
+          <p className="text-sm text-gray-500 leading-relaxed">{item.translation_id}</p>
+        )}
       </div>
     ));
   };

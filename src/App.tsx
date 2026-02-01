@@ -6,12 +6,13 @@ import DzikirPage from './pages/DzikirPage';
 import AboutPage from './pages/AboutPage';
 import DocumentationPage from './pages/DocumentationPage';
 import QuranPage from './pages/QuranPage';
+import QiblaPage from './pages/QiblaPage';
 import PrayerAlert from './components/PrayerAlert';
 import ControlPanel from './components/ControlPanel';
 import { dzikirDataPagi, dzikirDataPetang } from './data/dzikirData';
 import { usePrayerTimes } from './hooks/usePrayerTimes';
 
-type Page = 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'about' | 'documentation';
+type Page = 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -48,6 +49,8 @@ function App() {
         return <DzikirPage dzikirData={dzikirDataPetang} type="petang" />;
       case 'quran':
         return <QuranPage />;
+      case 'qibla':
+        return <QiblaPage />;
       case 'about':
         return <AboutPage />;
       case 'documentation':

@@ -5,10 +5,14 @@ import './index.css';
 
 import ErrorBoundary from './components/ErrorBoundary';
 
+import { SettingsProvider } from './contexts/SettingsContext';
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
-      <App />
+      <SettingsProvider>
+        <App />
+      </SettingsProvider>
     </ErrorBoundary>
   </StrictMode>
 );

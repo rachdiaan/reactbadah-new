@@ -1,10 +1,10 @@
 import React from 'react';
-import { Home, Sun, Moon, Info, FileText, Settings, BookOpen } from 'lucide-react';
+import { Home, Sun, Moon, Info, FileText, Settings, BookOpen, Compass } from 'lucide-react';
 
 interface MainLayoutProps {
     children: React.ReactNode;
-    currentPage: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'about' | 'documentation';
-    onNavigate: (page: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'about' | 'documentation') => void;
+    currentPage: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation';
+    onNavigate: (page: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation') => void;
     onToggleSettings: () => void; // To open the Settings/ControlPanel
 }
 
@@ -18,6 +18,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     const navItems = [
         { id: 'home', label: 'Home', icon: Home },
         { id: 'quran', label: "Al-Qur'an", icon: BookOpen },
+        { id: 'qibla', label: 'Kiblat', icon: Compass },
         { id: 'dzikir-pagi', label: 'Pagi', icon: Sun },
         { id: 'dzikir-petang', label: 'Petang', icon: Moon },
     ];
