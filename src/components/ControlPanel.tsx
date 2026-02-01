@@ -43,9 +43,9 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
         title="Toggle Controls"
       >
         {isVisible ? (
-          <X className="w-6 h-6 text-white" />
+          <X className="w-6 h-6 text-primary" />
         ) : (
-          <Settings className="w-6 h-6 text-white" />
+          <Settings className="w-6 h-6 text-primary" />
         )}
       </motion.button>
 
