@@ -31,22 +31,22 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     ];
 
     return (
-        <div className="flex min-h-screen relative text-gray-800">
+        <div className="flex min-h-screen relative text-gray-800 dark:text-gray-100">
             {/* Background is handled globally by body/liquid-bg, but we add a subtle overlay pattern if desired */}
 
             {/* Desktop Sidebar (Visible on lg screens) */}
             <aside
-                className={`hidden lg:flex flex-col h-screen fixed left-0 top-0 glass-card m-4 my-4 rounded-3xl z-40 border-opacity-40 bg-white/60 transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'
+                className={`hidden lg:flex flex-col h-screen fixed left-0 top-0 glass-card m-4 my-4 rounded-3xl z-40 border-opacity-40 bg-white/60 dark:bg-slate-900/60 transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'
                     }`}
             >
                 {/* Header with Toggle */}
-                <div className={`p-6 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} border-b border-gray-200/30`}>
+                <div className={`p-6 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} border-b border-gray-200/30 dark:border-white/10`}>
                     {!isCollapsed && (
                         <h1 className="font-serif text-2xl font-bold text-primary truncate">Al-Matsurat</h1>
                     )}
                     <button
                         onClick={() => setIsCollapsed(!isCollapsed)}
-                        className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-primary transition-colors"
+                        className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400 hover:text-primary transition-colors"
                         title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
                     >
                         {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
@@ -56,7 +56,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 {/* Scrollable Nav Area */}
                 <nav className="flex-1 flex flex-col gap-2 p-3 overflow-y-auto no-scrollbar">
                     {/* Main Menu */}
-                    <div className={`text-xs font-bold text-gray-400 uppercase tracking-widest px-4 mb-2 mt-2 ${isCollapsed ? 'text-center' : ''}`}>
+                    <div className={`text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-4 mb-2 mt-2 ${isCollapsed ? 'text-center' : ''}`}>
                         {isCollapsed ? '...' : 'Menu'}
                     </div>
 
@@ -66,7 +66,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                             onClick={() => onNavigate(item.id as any)}
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${currentPage === item.id
                                 ? 'bg-primary text-white shadow-lg shadow-primary/30'
-                                : 'hover:bg-primary/10 text-gray-600 hover:text-primary'
+                                : 'hover:bg-primary/10 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary'
                                 } ${isCollapsed ? 'justify-center px-2' : ''}`}
                             title={isCollapsed ? item.label : ''}
                         >
@@ -75,10 +75,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                         </button>
                     ))}
 
-                    <div className="my-2 border-t border-gray-200/30"></div>
+                    <div className="my-2 border-t border-gray-200/30 dark:border-white/10"></div>
 
                     {/* Secondary Menu */}
-                    <div className={`text-xs font-bold text-gray-400 uppercase tracking-widest px-4 mb-2 mt-2 ${isCollapsed ? 'text-center' : ''}`}>
+                    <div className={`text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-4 mb-2 mt-2 ${isCollapsed ? 'text-center' : ''}`}>
                         {isCollapsed ? '...' : 'Info'}
                     </div>
 
@@ -88,7 +88,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                             onClick={() => onNavigate(item.id as any)}
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${currentPage === item.id
                                 ? 'bg-primary text-white shadow-lg shadow-primary/30'
-                                : 'hover:bg-primary/10 text-gray-600 hover:text-primary'
+                                : 'hover:bg-primary/10 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary'
                                 } ${isCollapsed ? 'justify-center px-2' : ''}`}
                             title={isCollapsed ? item.label : ''}
                         >
@@ -105,7 +105,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             </main>
 
             {/* Mobile Bottom Navigation */}
-            <div className="lg:hidden fixed bottom-0 left-0 w-full glass-card border-t border-gray-200/50 z-50 rounded-none rounded-t-2xl pb-safe">
+            <div className="lg:hidden fixed bottom-0 left-0 w-full glass-card border-t border-gray-200/50 dark:border-white/10 z-50 rounded-none rounded-t-2xl pb-safe">
                 <div className="flex justify-around items-center p-2">
                     {navItems.map((item) => (
                         <button
@@ -113,7 +113,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                             onClick={() => onNavigate(item.id as any)}
                             className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-300 ${currentPage === item.id
                                 ? 'text-primary'
-                                : 'text-gray-400 hover:text-gray-600'
+                                : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                                 }`}
                         >
                             <div className={`p-2 rounded-full ${currentPage === item.id ? 'bg-primary/10' : ''}`}>
@@ -125,7 +125,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
 
                     <button
                         onClick={onToggleSettings}
-                        className="flex flex-col items-center gap-1 p-2 rounded-xl text-gray-400 hover:text-gray-600"
+                        className="flex flex-col items-center gap-1 p-2 rounded-xl text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                     >
                         <div className="p-2">
                             <Settings className="w-6 h-6" />

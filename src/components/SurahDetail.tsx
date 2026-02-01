@@ -86,7 +86,7 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
             className="space-y-6"
         >
             {/* Header */}
-            <div className="flex items-center justify-between gap-4 bg-white/50 p-4 rounded-2xl backdrop-blur-sm border border-white/60 sticky top-0 z-20 shadow-sm">
+            <div className="flex items-center justify-between gap-4 bg-white/50 dark:bg-slate-900/50 p-4 rounded-2xl backdrop-blur-sm border border-white/60 dark:border-white/10 sticky top-0 z-20 shadow-sm">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={onBack}
@@ -95,8 +95,8 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                         <ArrowLeft className="w-6 h-6" />
                     </button>
                     <div>
-                        <h2 className="text-xl font-bold text-gray-800">{surahName}</h2>
-                        <p className="text-xs text-gray-500">Surat ke-{surahNumber}</p>
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">{surahName}</h2>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Surat ke-{surahNumber}</p>
                     </div>
                 </div>
 
@@ -120,7 +120,7 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
              */}
             {surahNumber !== 1 && surahNumber !== 9 && (
                 <div className="md:hidden text-center py-4">
-                    <p className="arabic-text text-2xl text-gray-800" style={{ fontFamily: '"Amiri", serif' }}>
+                    <p className="arabic-text text-2xl text-gray-800 dark:text-gray-200" style={{ fontFamily: '"Amiri", serif' }}>
                         بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
                     </p>
                 </div>
@@ -136,7 +136,7 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                     {ayahs.map((ayah, index) => (
                         <div
                             key={ayah.number}
-                            className={`p-4 md:p-6 rounded-2xl hover:bg-white/40 transition-colors border-b border-gray-100 last:border-0 ${index % 2 === 0 ? 'bg-white/20' : ''}`}
+                            className={`p-4 md:p-6 rounded-2xl hover:bg-white/40 dark:hover:bg-white/5 transition-colors border-b border-gray-100 dark:border-white/5 last:border-0 ${index % 2 === 0 ? 'bg-white/20 dark:bg-white/5' : ''}`}
                         >
                             {/* Top Bar: Number & Actions */}
                             <div className="flex justify-between items-start mb-4">
@@ -162,7 +162,7 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                             {/* Arabic Text */}
                             <div className="text-right mb-6 w-full">
                                 <p
-                                    className="leading-[2.5] text-gray-800"
+                                    className="leading-[2.5] text-gray-800 dark:text-gray-100"
                                     dir="rtl"
                                     style={{
                                         fontFamily: '"Amiri", serif',
@@ -176,7 +176,7 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                             {/* Translation */}
                             {showTranslation && (
                                 <div className="text-left">
-                                    <p className="text-gray-600 leading-relaxed text-sm md:text-base font-medium">
+                                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm md:text-base font-medium">
                                         {ayah.translation}
                                     </p>
                                 </div>

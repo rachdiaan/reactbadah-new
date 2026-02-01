@@ -55,12 +55,12 @@ const HeroPrayerCard: React.FC = () => {
             className="glass-card w-full p-8 mb-8 relative overflow-hidden group"
         >
             {/* Dynamic Background Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-50 z-0 transition-opacity duration-500 group-hover:opacity-70" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-50 z-0 transition-opacity duration-500 group-hover:opacity-70 dark:opacity-20" />
 
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
                 {/* Left Side: Time & Location */}
                 <div className="text-center md:text-left flex-1">
-                    <div className="flex items-center justify-center md:justify-start gap-2 mb-2 text-primary/80">
+                    <div className="flex items-center justify-center md:justify-start gap-2 mb-2 text-primary/80 dark:text-primary/70">
                         <MapPin className="w-4 h-4" />
                         <p className="text-sm font-medium tracking-wide uppercase">{locationName || "Lokasi Saat Ini"}</p>
                     </div>
@@ -70,7 +70,7 @@ const HeroPrayerCard: React.FC = () => {
                         <span className="text-xl sm:text-2xl text-primary/60 ml-2 font-light">{format(currentTime, 'ss', { locale: id })}</span>
                     </h1>
 
-                    <p className="text-lg text-gray-600 font-medium">
+                    <p className="text-lg text-gray-600 dark:text-gray-300 font-medium">
                         {format(currentTime, 'EEEE, d MMMM yyyy', { locale: id })}
                     </p>
                 </div>
@@ -78,7 +78,7 @@ const HeroPrayerCard: React.FC = () => {
                 {/* Right Side: Next Prayer Countdown */}
                 {nextPrayer && (
                     <div className="flex-1 w-full md:w-auto">
-                        <div className="prayer-card p-6 text-center transform hover:scale-105 transition-transform duration-300 relative overflow-hidden">
+                        <div className="prayer-card p-6 text-center transform hover:scale-105 transition-transform duration-300 relative overflow-hidden shadow-xl shadow-primary/20 dark:shadow-none">
                             <div className="absolute top-0 left-0 w-full h-1 bg-accent/50" />
 
                             <p className="text-sm font-bold text-white/80 uppercase tracking-widest mb-2">Menuju Waktu</p>
@@ -104,10 +104,10 @@ const HeroPrayerCard: React.FC = () => {
                             whileHover={{ y: -2 }}
                             className={`p-3 rounded-2xl text-center border transition-all duration-300 ${isNext
                                 ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20 scale-105'
-                                : 'bg-white/40 border-white/40 text-gray-600 hover:bg-white/60 hover:border-primary/30'
+                                : 'bg-white/40 dark:bg-slate-700/40 border-white/40 dark:border-white/5 text-gray-600 dark:text-gray-300 hover:bg-white/60 dark:hover:bg-slate-700/60 hover:border-primary/30'
                                 }`}
                         >
-                            <p className={`text-xs font-bold uppercase mb-1 ${isNext ? 'text-accent' : 'text-gray-400'}`}>
+                            <p className={`text-xs font-bold uppercase mb-1 ${isNext ? 'text-accent' : 'text-gray-400 dark:text-gray-500'}`}>
                                 {prayer.name}
                             </p>
                             <p className={`text-xl font-bold ${isNext ? 'text-white' : 'text-primary'}`}>
@@ -119,18 +119,18 @@ const HeroPrayerCard: React.FC = () => {
             </div>
 
             {/* Wisdom Section (Collapsible/Integrated) */}
-            <div className="mt-8 pt-6 border-t border-gray-200/20 relative z-10">
+            <div className="mt-8 pt-6 border-t border-gray-200/20 dark:border-white/10 relative z-10">
                 <div className="flex flex-col md:flex-row items-center gap-4">
                     <button
                         onClick={handleGetWisdom}
                         disabled={isWisdomLoading}
-                        className="flex items-center gap-2 bg-primary/5 hover:bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold transition-colors w-full md:w-auto justify-center"
+                        className="flex items-center gap-2 bg-primary/5 hover:bg-primary/10 dark:bg-white/5 dark:hover:bg-white/10 text-primary px-4 py-2 rounded-full text-sm font-semibold transition-colors w-full md:w-auto justify-center"
                     >
                         <Sparkles className="w-4 h-4" />
                         {isWisdomLoading ? 'Mencari Inspirasi...' : 'Mutiara Hikmah'}
                     </button>
 
-                    <div className="text-center md:text-left text-sm text-gray-600 italic flex-1">
+                    <div className="text-center md:text-left text-sm text-gray-600 dark:text-gray-400 italic flex-1">
                         "{wisdom}"
                     </div>
                 </div>

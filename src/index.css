@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  /* Soft Pastel Blue Theme */
+  /* Soft Pastel Blue Theme (Default/Light) */
   --primary: #5B8FB9;
   --secondary: #B6E1F2;
   --accent: #F2D57E;
@@ -14,6 +14,24 @@
   --text-main: #203A4E;
   --text-muted: #6B7280;
   --text-light: #F9FAFB;
+}
+
+.dark {
+  /* Dark Mode Theme */
+  --primary: #5B8FB9;
+  /* Keep brand color */
+  --secondary: #1e293b;
+  /* Slate 800 */
+  --accent: #F2D57E;
+  --background: #0f172a;
+  /* Slate 900 */
+  --surface: #1e293b;
+  /* Slate 800 */
+  --text-main: #f1f5f9;
+  /* Slate 100 */
+  --text-muted: #94a3b8;
+  /* Slate 400 */
+  --text-light: #e2e8f0;
 }
 
 * {
@@ -29,6 +47,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .arabic-text {
@@ -40,7 +59,7 @@ body {
   color: var(--text-main);
 }
 
-/* Liquid/Gradient Background - Subtle Green/Gold */
+/* Liquid/Gradient Background */
 .liquid-bg {
   position: fixed;
   top: 0;
@@ -50,9 +69,14 @@ body {
   z-index: -1;
   background: linear-gradient(135deg, #F4F9FD 0%, #E0F2FA 100%);
   background-size: 400% 400%;
+  transition: background 0.3s ease;
 }
 
-/* Premium Glass Card - Light & Airy */
+.dark .liquid-bg {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* Premium Glass Card */
 .glass-card {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px);
@@ -63,11 +87,22 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.dark .glass-card {
+  background: rgba(30, 41, 59, 0.7);
+  /* Slate 800 with opacity */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
 .glass-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
   border-color: rgba(212, 175, 55, 0.3);
-  /* Accent color border on hover */
+}
+
+.dark .glass-card:hover {
+  border-color: rgba(91, 143, 185, 0.3);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
 }
 
 /* Hero Card - Deep Green */
