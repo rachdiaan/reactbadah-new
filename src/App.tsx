@@ -12,7 +12,9 @@ import ControlPanel from './components/ControlPanel';
 import { dzikirDataPagi, dzikirDataPetang } from './data/dzikirData';
 import { usePrayerTimes } from './hooks/usePrayerTimes';
 
-type Page = 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation';
+import BoycottPage from './pages/BoycottPage'; // Import added
+
+type Page = 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -51,6 +53,8 @@ function App() {
         return <QuranPage />;
       case 'qibla':
         return <QiblaPage />;
+      case 'boycott':
+        return <BoycottPage />;
       case 'about':
         return <AboutPage />;
       case 'documentation':

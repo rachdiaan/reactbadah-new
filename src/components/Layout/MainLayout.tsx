@@ -1,11 +1,11 @@
 import React from 'react';
-import { Home, Sun, Moon, Info, FileText, Settings, BookOpen, Compass } from 'lucide-react';
+import { Home, Sun, Moon, Info, FileText, Settings, BookOpen, Compass, Ban } from 'lucide-react';
 
 interface MainLayoutProps {
     children: React.ReactNode;
-    currentPage: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation';
-    onNavigate: (page: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation') => void;
-    onToggleSettings: () => void; // To open the Settings/ControlPanel
+    currentPage: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott';
+    onNavigate: (page: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott') => void;
+    onToggleSettings: () => void;
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({
@@ -19,6 +19,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         { id: 'home', label: 'Home', icon: Home },
         { id: 'quran', label: "Al-Qur'an", icon: BookOpen },
         { id: 'qibla', label: 'Kiblat', icon: Compass },
+        { id: 'boycott', label: 'Cek Boikot', icon: Ban },
         { id: 'dzikir-pagi', label: 'Pagi', icon: Sun },
         { id: 'dzikir-petang', label: 'Petang', icon: Moon },
     ];
