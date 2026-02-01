@@ -19,6 +19,7 @@ export default {
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
         serif: ['"Amiri"', 'serif'],
+        display: ['"Playfair Display"', 'serif'],
       }
     },
   },

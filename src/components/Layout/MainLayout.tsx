@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Home, Sun, Moon, Info, FileText, Settings, BookOpen, Compass, Ban, ChevronLeft, ChevronRight } from 'lucide-react';
+import Logo from '../Logo';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -42,7 +43,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 {/* Header with Toggle */}
                 <div className={`p-6 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} border-b border-gray-200/30 dark:border-white/10`}>
                     {!isCollapsed && (
-                        <h1 className="font-serif text-2xl font-bold text-primary truncate">Al-Matsurat</h1>
+                        <Logo />
+                    )}
+                    {isCollapsed && (
+                        <div className="absolute top-20 opacity-0 group-hover:opacity-100 transition-opacity">
+                            {/* Optional: Show icon on hover or maybe just leave it clean */}
+                        </div>
                     )}
                     <button
                         onClick={() => setIsCollapsed(!isCollapsed)}
