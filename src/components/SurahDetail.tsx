@@ -86,23 +86,41 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
             className="space-y-6"
         >
             {/* Header */}
-            <div className="flex items-center gap-4 bg-white/50 p-4 rounded-2xl backdrop-blur-sm border border-white/60 sticky top-0 z-20 shadow-sm">
-                <button
-                    onClick={onBack}
-                    className="p-2 hover:bg-primary/10 rounded-full transition-colors text-primary"
-                >
-                    <ArrowLeft className="w-6 h-6" />
-                </button>
-                <div>
-                    <h2 className="text-xl font-bold text-gray-800">{surahName}</h2>
-                    <p className="text-xs text-gray-500">Surat ke-{surahNumber}</p>
+            <div className="flex items-center justify-between gap-4 bg-white/50 p-4 rounded-2xl backdrop-blur-sm border border-white/60 sticky top-0 z-20 shadow-sm">
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={onBack}
+                        className="p-2 hover:bg-primary/10 rounded-full transition-colors text-primary"
+                    >
+                        <ArrowLeft className="w-6 h-6" />
+                    </button>
+                    <div>
+                        <h2 className="text-xl font-bold text-gray-800">{surahName}</h2>
+                        <p className="text-xs text-gray-500">Surat ke-{surahNumber}</p>
+                    </div>
                 </div>
+
+                {/* Bismillah aligned in header (hidden on very small screens if needed, or responsive) */}
+                {surahNumber !== 1 && surahNumber !== 9 && (
+                    <div className="hidden md:block">
+                        <p className="arabic-text text-xl lg:text-2xl text-primary font-bold" style={{ fontFamily: '"Amiri", serif' }}>
+                            بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+                        </p>
+                    </div>
+                )}
             </div>
 
-            {/* Bismillah */}
+            {/* Bismillah (Mobile fallback or just remove if header is enough? 
+                User explicitly asked to align with name. 
+                I will keep a smaller version for mobile if header hides it, OR just rely on header.
+                Let's rely on header for desktop, and maybe keep a small one for mobile if needed.
+                But usually 'aligned with name' implies header placement.
+                I will add a mobile-only block if I hid the header one on mobile.
+                Above I used `hidden md:block`. So I need a `md:hidden` block here.
+             */}
             {surahNumber !== 1 && surahNumber !== 9 && (
-                <div className="text-center py-8">
-                    <p className="arabic-text text-3xl md:text-4xl text-gray-800" style={{ fontFamily: '"Amiri", serif' }}>
+                <div className="md:hidden text-center py-4">
+                    <p className="arabic-text text-2xl text-gray-800" style={{ fontFamily: '"Amiri", serif' }}>
                         بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
                     </p>
                 </div>
