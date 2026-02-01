@@ -113,7 +113,7 @@ const QuranPage: React.FC = () => {
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className="arabic-text text-2xl" style={{ lineHeight: 1 }}>{surah.name}</p>
+                                    <p className="arabic-text text-3xl text-gray-800 mt-1 mb-1 font-bold" style={{ lineHeight: 1.6 }}>{surah.name}</p>
                                 </div>
                             </div>
                         </motion.div>
