@@ -73,11 +73,11 @@ const DzikirCard: React.FC<DzikirCardProps> = ({ dzikir, onTadabbur }) => {
         <div className="flex-grow pr-4">
           <h2 className="text-xl font-bold text-primary mb-2 flex items-center gap-2">
             {dzikir.title}
-            {isCompleted && <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Selesai</span>}
+            {isCompleted && <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">Selesai</span>}
           </h2>
           {dzikir.subtitle_ar && (
             <div className="flex flex-col gap-2 mt-2 p-3 bg-gray-50 rounded-xl">
-              <p className="text-xl text-right font-serif text-gray-700" dir="rtl">{dzikir.subtitle_ar}</p>
+              <p className="text-right font-serif text-gray-700" dir="rtl" style={{ fontFamily: '"Amiri", serif', fontSize: `${arabicFontSize}px` }}>{dzikir.subtitle_ar}</p>
               <div className="h-px bg-gray-200 w-full my-1"></div>
               <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{dzikir.subtitle_en} • {dzikir.translation}</p>
             </div>
@@ -110,7 +110,7 @@ const DzikirCard: React.FC<DzikirCardProps> = ({ dzikir, onTadabbur }) => {
             initial={{ width: 0 }}
             animate={{ width: `${progressPercentage}%` }}
             transition={{ duration: 0.3 }}
-            className={`h-full rounded-full ${isCompleted ? 'bg-green-500' : 'bg-primary'}`}
+            className={`h-full rounded-full ${isCompleted ? 'bg-primary' : 'bg-primary/60'}`}
           />
         </div>
       </div>
