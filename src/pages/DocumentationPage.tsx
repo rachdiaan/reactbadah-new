@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Book, 
-  Code, 
-  Sparkles, 
-  Clock, 
-  Smartphone, 
-  Database, 
-  Zap, 
-  Shield, 
-  Globe, 
+import {
+  Book,
+  Code,
+  Sparkles,
+  Clock,
+  Smartphone,
+  Database,
+  Globe,
   Heart,
-  Settings,
-  Users,
   Target,
   Layers,
-  GitBranch,
   Server,
   Monitor,
   Wrench,
@@ -33,14 +28,14 @@ const DocumentationPage: React.FC = () => {
       icon: <Sparkles className="w-6 h-6" />,
       content: (
         <div className="space-y-4">
-          <p className="text-slate-300 leading-relaxed">
+          <p className="text-gray-600 leading-relaxed">
             <strong>Al-Ma'tsurat Sugro</strong> adalah aplikasi Progressive Web App (PWA) modern yang dirancang khusus untuk memperkaya pengalaman spiritual harian umat Muslim. Aplikasi ini mengintegrasikan amalan dzikir Al-Ma'tsurat dengan sistem jadwal shalat yang akurat, dilengkapi dengan teknologi AI untuk memberikan refleksi spiritual yang mendalam.
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-2">🎯 Keunggulan Utama</h4>
-              <ul className="text-sm text-slate-300 space-y-1">
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-2">🎯 Keunggulan Utama</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
                 <li>• Dzikir Lengkap Al-Ma'tsurat</li>
                 <li>• AI-Powered Tadabbur</li>
                 <li>• Real-time Prayer Times</li>
@@ -48,10 +43,10 @@ const DocumentationPage: React.FC = () => {
                 <li>• Progressive Web App</li>
               </ul>
             </div>
-            
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-blue-300 font-semibold mb-2">👥 Target Pengguna</h4>
-              <ul className="text-sm text-slate-300 space-y-1">
+
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-2">👥 Target Pengguna</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
                 <li>• Muslim Milenial & Gen Z</li>
                 <li>• Profesional Sibuk</li>
                 <li>• Pelajar & Mahasiswa</li>
@@ -69,46 +64,46 @@ const DocumentationPage: React.FC = () => {
       icon: <Layers className="w-6 h-6" />,
       content: (
         <div className="space-y-4">
-          <p className="text-slate-300 leading-relaxed">
+          <p className="text-gray-600 leading-relaxed">
             Aplikasi dibangun menggunakan teknologi modern yang terbukti reliable dan performant dengan arsitektur yang modular dan scalable.
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3 flex items-center gap-2">
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Code className="w-4 h-4" />
                 Frontend
               </h4>
               <div className="flex flex-wrap gap-1">
-                <span className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-xs">React 18</span>
-                <span className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-xs">TypeScript</span>
-                <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">Vite</span>
-                <span className="bg-cyan-500/20 text-cyan-300 px-2 py-1 rounded text-xs">Tailwind</span>
-                <span className="bg-purple-500/20 text-purple-300 px-2 py-1 rounded text-xs">Framer Motion</span>
+                <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">React 18</span>
+                <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">TypeScript</span>
+                <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Vite</span>
+                <span className="bg-cyan-100 text-cyan-700 px-2 py-1 rounded text-xs">Tailwind</span>
+                <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">Framer Motion</span>
               </div>
             </div>
-            
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3 flex items-center gap-2">
+
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 AI & APIs
               </h4>
               <div className="flex flex-wrap gap-1">
-                <span className="bg-orange-500/20 text-orange-300 px-2 py-1 rounded text-xs">Gemini AI</span>
-                <span className="bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded text-xs">Prayer API</span>
-                <span className="bg-gray-500/20 text-gray-300 px-2 py-1 rounded text-xs">Date-fns</span>
+                <span className="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs">Gemini AI</span>
+                <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-xs">Prayer API</span>
+                <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Date-fns</span>
               </div>
             </div>
-            
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3 flex items-center gap-2">
+
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Monitor className="w-4 h-4" />
                 Design
               </h4>
               <div className="flex flex-wrap gap-1">
-                <span className="bg-pink-500/20 text-pink-300 px-2 py-1 rounded text-xs">Liquid Glass</span>
-                <span className="bg-teal-500/20 text-teal-300 px-2 py-1 rounded text-xs">Responsive</span>
-                <span className="bg-violet-500/20 text-violet-300 px-2 py-1 rounded text-xs">Dark Theme</span>
+                <span className="bg-pink-100 text-pink-700 px-2 py-1 rounded text-xs">Liquid Glass</span>
+                <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded text-xs">Responsive</span>
+                <span className="bg-violet-100 text-violet-700 px-2 py-1 rounded text-xs">Soft Theme</span>
               </div>
             </div>
           </div>
@@ -122,12 +117,12 @@ const DocumentationPage: React.FC = () => {
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3 flex items-center gap-2">
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Clock className="w-4 h-4" />
                 Sistem Jadwal Shalat
               </h4>
-              <ul className="text-sm text-slate-300 space-y-1">
+              <ul className="text-sm text-gray-600 space-y-1">
                 <li>• Data lengkap 12 bulan untuk Bandung</li>
                 <li>• Real-time clock dengan countdown</li>
                 <li>• Visual highlighting waktu shalat</li>
@@ -135,13 +130,13 @@ const DocumentationPage: React.FC = () => {
                 <li>• Akurasi tinggi dari Radio Adzan FM</li>
               </ul>
             </div>
-            
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3 flex items-center gap-2">
+
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Book className="w-4 h-4" />
                 Dzikir Al-Ma'tsurat
               </h4>
-              <ul className="text-sm text-slate-300 space-y-1">
+              <ul className="text-sm text-gray-600 space-y-1">
                 <li>• Ta'awudz hingga Doa Rabithah</li>
                 <li>• Tap counter dengan progress bar</li>
                 <li>• Arabic typography yang indah</li>
@@ -149,13 +144,13 @@ const DocumentationPage: React.FC = () => {
                 <li>• Completion status indicator</li>
               </ul>
             </div>
-            
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3 flex items-center gap-2">
+
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 AI Tadabbur
               </h4>
-              <ul className="text-sm text-slate-300 space-y-1">
+              <ul className="text-sm text-gray-600 space-y-1">
                 <li>• Google Gemini 2.0 Flash</li>
                 <li>• Contextual analysis mendalam</li>
                 <li>• Berdasarkan Al-Qur'an & Hadist</li>
@@ -163,13 +158,13 @@ const DocumentationPage: React.FC = () => {
                 <li>• Bahasa Indonesia yang indah</li>
               </ul>
             </div>
-            
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3 flex items-center gap-2">
+
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Smartphone className="w-4 h-4" />
                 UI/UX Design
               </h4>
-              <ul className="text-sm text-slate-300 space-y-1">
+              <ul className="text-sm text-gray-600 space-y-1">
                 <li>• Liquid glass effect</li>
                 <li>• Gradient animation background</li>
                 <li>• Micro-interactions</li>
@@ -188,37 +183,20 @@ const DocumentationPage: React.FC = () => {
       content: (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3">🎣 Custom Hooks</h4>
-              <div className="bg-black/30 p-3 rounded-lg text-xs font-mono text-green-300">
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3">🎣 Custom Hooks</h4>
+              <div className="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs font-mono text-gray-700">
                 <div>usePrayerTimes() - Jadwal shalat</div>
                 <div>useGeminiAI() - Integrasi AI</div>
               </div>
             </div>
-            
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3">📊 State Management</h4>
-              <ul className="text-sm text-slate-300 space-y-1">
+
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3">📊 State Management</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
                 <li>• useState untuk local state</li>
                 <li>• useEffect untuk side effects</li>
                 <li>• Custom hooks untuk logic kompleks</li>
-              </ul>
-            </div>
-            
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3">🔗 API Integration</h4>
-              <div className="bg-black/30 p-3 rounded-lg text-xs font-mono text-blue-300">
-                <div>Gemini AI - Tadabbur & Hikmah</div>
-                <div>Prayer Data - Jadwal Shalat</div>
-              </div>
-            </div>
-            
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3">⚡ Performance</h4>
-              <ul className="text-sm text-slate-300 space-y-1">
-                <li>• Code splitting & lazy loading</li>
-                <li>• React.memo & useMemo</li>
-                <li>• Debouncing untuk API calls</li>
               </ul>
             </div>
           </div>
@@ -231,54 +209,32 @@ const DocumentationPage: React.FC = () => {
       icon: <Server className="w-6 h-6" />,
       content: (
         <div className="space-y-4">
-          <div className="bg-black/20 p-4 rounded-xl">
-            <h4 className="text-yellow-300 font-semibold mb-3">💻 System Requirements</h4>
+          <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <h4 className="text-primary font-bold mb-3">💻 System Requirements</h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-              <div className="text-slate-300">
-                <div className="font-semibold text-blue-300">Node.js</div>
+              <div className="text-gray-600">
+                <div className="font-semibold text-primary">Node.js</div>
                 <div>v18.0.0+</div>
               </div>
-              <div className="text-slate-300">
-                <div className="font-semibold text-green-300">npm</div>
+              <div className="text-gray-600">
+                <div className="font-semibold text-primary">npm</div>
                 <div>v8.0.0+</div>
               </div>
-              <div className="text-slate-300">
-                <div className="font-semibold text-orange-300">Browser</div>
+              <div className="text-gray-600">
+                <div className="font-semibold text-primary">Browser</div>
                 <div>Modern</div>
-              </div>
-              <div className="text-slate-300">
-                <div className="font-semibold text-purple-300">OS</div>
-                <div>Cross-platform</div>
               </div>
             </div>
           </div>
-          
-          <div className="bg-black/20 p-4 rounded-xl">
-            <h4 className="text-yellow-300 font-semibold mb-3">🛠️ Setup Development</h4>
-            <div className="bg-black/30 p-3 rounded-lg text-sm font-mono text-green-300 space-y-1">
+
+          <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <h4 className="text-primary font-bold mb-3">🛠️ Setup Development</h4>
+            <div className="bg-gray-50 border border-gray-100 p-3 rounded-lg text-sm font-mono text-gray-700 space-y-1">
               <div>git clone https://github.com/username/al-matsurat-app.git</div>
               <div>cd al-matsurat-app</div>
               <div>npm install</div>
               <div>cp .env.example .env</div>
               <div>npm run dev</div>
-            </div>
-          </div>
-          
-          <div className="bg-black/20 p-4 rounded-xl">
-            <h4 className="text-yellow-300 font-semibold mb-3">☁️ Deployment Options</h4>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              <div className="bg-black/30 p-3 rounded-lg text-center">
-                <div className="text-blue-300 font-semibold">Vercel</div>
-                <div className="text-xs text-slate-400">Auto deploy</div>
-              </div>
-              <div className="bg-black/30 p-3 rounded-lg text-center">
-                <div className="text-green-300 font-semibold">Netlify</div>
-                <div className="text-xs text-slate-400">Static hosting</div>
-              </div>
-              <div className="bg-black/30 p-3 rounded-lg text-center">
-                <div className="text-orange-300 font-semibold">Firebase</div>
-                <div className="text-xs text-slate-400">Google Cloud</div>
-              </div>
             </div>
           </div>
         </div>
@@ -290,35 +246,25 @@ const DocumentationPage: React.FC = () => {
       icon: <Database className="w-6 h-6" />,
       content: (
         <div className="space-y-4">
-          <div className="bg-black/20 p-4 rounded-xl">
-            <h4 className="text-yellow-300 font-semibold mb-3">🤖 Gemini AI API</h4>
-            <div className="bg-black/30 p-3 rounded-lg text-xs font-mono text-blue-300">
+          <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <h4 className="text-primary font-bold mb-3">🤖 Gemini AI API</h4>
+            <div className="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs font-mono text-gray-700">
               <div>Endpoint: generativelanguage.googleapis.com</div>
               <div>Model: gemini-2.0-flash</div>
               <div>Method: POST</div>
               <div>Content-Type: application/json</div>
             </div>
           </div>
-          
-          <div className="bg-black/20 p-4 rounded-xl">
-            <h4 className="text-yellow-300 font-semibold mb-3">🕌 Prayer Data Structure</h4>
-            <div className="bg-black/30 p-3 rounded-lg text-xs font-mono text-green-300">
+
+          <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <h4 className="text-primary font-bold mb-3">🕌 Prayer Data Structure</h4>
+            <div className="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs font-mono text-gray-700">
               <div>interface PrayerTime &#123;</div>
               <div>&nbsp;&nbsp;name: string;</div>
               <div>&nbsp;&nbsp;time: Date;</div>
               <div>&nbsp;&nbsp;key: string;</div>
               <div>&#125;</div>
             </div>
-          </div>
-          
-          <div className="bg-black/20 p-4 rounded-xl">
-            <h4 className="text-yellow-300 font-semibold mb-3">⚠️ Error Handling</h4>
-            <ul className="text-sm text-slate-300 space-y-1">
-              <li>• API Rate Limit - Retry mechanism</li>
-              <li>• Network Error - Fallback ke data lokal</li>
-              <li>• Invalid Response - User-friendly message</li>
-              <li>• Timeout - Loading state handling</li>
-            </ul>
           </div>
         </div>
       )
@@ -330,63 +276,32 @@ const DocumentationPage: React.FC = () => {
       content: (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3">🔍 Troubleshooting</h4>
-              <ul className="text-sm text-slate-300 space-y-1">
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3">🔍 Troubleshooting</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
                 <li>• API Key Error - Periksa validitas key</li>
                 <li>• Build Error - Clear node_modules</li>
                 <li>• Performance Issue - Check dev tools</li>
                 <li>• UI Bug - Clear browser cache</li>
               </ul>
             </div>
-            
-            <div className="bg-black/20 p-4 rounded-xl">
-              <h4 className="text-yellow-300 font-semibold mb-3">📅 Update Schedule</h4>
-              <ul className="text-sm text-slate-300 space-y-1">
-                <li>• Monthly - Dependencies update</li>
-                <li>• Quarterly - Feature updates</li>
-                <li>• Annually - Major version updates</li>
-                <li>• As needed - Security patches</li>
-              </ul>
+
+            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+              <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
+                <Heart className="w-4 h-4" />
+                Contributing Guidelines
+              </h4>
+              <p className="text-sm text-gray-600">Open source contributions are welcome.</p>
             </div>
           </div>
-          
-          <div className="bg-black/20 p-4 rounded-xl">
-            <h4 className="text-yellow-300 font-semibold mb-3 flex items-center gap-2">
-              <Heart className="w-4 h-4" />
-              Contributing Guidelines
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 text-sm">
-              <div className="bg-black/30 p-3 rounded-lg text-center">
-                <div className="text-blue-300 font-semibold">1. Fork</div>
-                <div className="text-xs text-slate-400">Repository</div>
-              </div>
-              <div className="bg-black/30 p-3 rounded-lg text-center">
-                <div className="text-green-300 font-semibold">2. Branch</div>
-                <div className="text-xs text-slate-400">Create new</div>
-              </div>
-              <div className="bg-black/30 p-3 rounded-lg text-center">
-                <div className="text-yellow-300 font-semibold">3. Code</div>
-                <div className="text-xs text-slate-400">Follow standards</div>
-              </div>
-              <div className="bg-black/30 p-3 rounded-lg text-center">
-                <div className="text-purple-300 font-semibold">4. Test</div>
-                <div className="text-xs text-slate-400">All passing</div>
-              </div>
-              <div className="bg-black/30 p-3 rounded-lg text-center">
-                <div className="text-pink-300 font-semibold">5. PR</div>
-                <div className="text-xs text-slate-400">Submit</div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-black/20 p-4 rounded-xl text-center">
-            <h4 className="text-yellow-300 font-semibold mb-2">📧 Contact & Support</h4>
-            <p className="text-slate-300">
+
+          <div className="bg-white/50 border border-white/60 p-4 rounded-xl text-center shadow-sm">
+            <h4 className="text-primary font-bold mb-2">📧 Contact & Support</h4>
+            <p className="text-gray-600">
               Untuk pertanyaan atau saran, hubungi{' '}
-              <a 
-                href="mailto:rachdiaaan@gmail.com" 
-                className="text-blue-300 hover:text-blue-200 underline transition-colors"
+              <a
+                href="mailto:rachdiaaan@gmail.com"
+                className="text-primary hover:text-primary-dark underline transition-colors"
               >
                 rachdiaaan@gmail.com
               </a>
@@ -422,9 +337,9 @@ const DocumentationPage: React.FC = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 glass-card p-3 hover:bg-white/20 transition"
+        className="lg:hidden fixed top-4 left-4 z-50 glass-card p-3 hover:bg-white/20 transition shadow-md"
       >
-        {sidebarOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
+        {sidebarOpen ? <X className="w-6 h-6 text-primary" /> : <Menu className="w-6 h-6 text-primary" />}
       </motion.button>
 
       <div className="flex">
@@ -435,22 +350,22 @@ const DocumentationPage: React.FC = () => {
               initial={{ x: -300, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
-              className="fixed lg:sticky top-0 left-0 h-screen w-80 glass-card p-6 z-40 overflow-y-auto lg:block"
+              className="fixed lg:sticky top-0 left-0 h-screen w-80 glass-card p-6 z-40 overflow-y-auto lg:block border-r border-white/30"
             >
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-white mb-2">📚 Navigasi</h3>
-                <div className="text-sm text-slate-400 bg-black/20 p-2 rounded-lg">
+                <h3 className="text-lg font-bold text-primary mb-2">📚 Navigasi</h3>
+                <div className="text-sm text-gray-500 bg-white/50 p-2 rounded-lg border border-white/60">
                   <strong>Versi:</strong> 3.1.5<br />
                   <strong>Update:</strong> 30 Juni 2025
                 </div>
               </div>
-              
+
               <nav className="space-y-2">
                 {navigationItems.map((item) => (
                   <button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className="w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
+                    className="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:text-primary hover:bg-primary/5 transition-colors font-medium"
                   >
                     {item.title}
                   </button>
@@ -461,12 +376,14 @@ const DocumentationPage: React.FC = () => {
         </AnimatePresence>
 
         {/* Main Content */}
-        <div className="flex-1 lg:ml-6">
+        <div className="flex-1 lg:ml-6 pb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-8"
+            className="text-center mb-8 pt-8 lg:pt-0"
           >
+            <h1 className="text-3xl font-bold text-primary mb-2">Dokumentasi</h1>
+            <p className="text-gray-500">Panduan lengkap pengembangan dan penggunaan aplikasi</p>
           </motion.div>
 
           <div className="space-y-8">
@@ -477,16 +394,16 @@ const DocumentationPage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="glass-card p-6"
+                className="glass-card p-6 border border-white/40 shadow-sm"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="text-yellow-300">
+                  <div className="text-primary bg-primary/10 p-2 rounded-lg">
                     {section.icon}
                   </div>
-                  <h2 className="text-xl font-bold text-white">{section.title}</h2>
+                  <h2 className="text-xl font-bold text-gray-800">{section.title}</h2>
                 </div>
-                
-                <div className="text-slate-300">
+
+                <div className="text-gray-600">
                   {section.content}
                 </div>
               </motion.div>
@@ -497,41 +414,41 @@ const DocumentationPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="glass-card p-6 text-center mt-8"
+            className="glass-card p-6 text-center mt-8 border border-white/40 shadow-sm"
           >
-            <h3 className="text-2xl font-bold text-yellow-300 mb-4">🌟 Sumber Data & Referensi</h3>
+            <h3 className="text-2xl font-bold text-primary mb-4">🌟 Sumber Data & Referensi</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <a 
-                href="https://quran.com" 
-                target="_blank" 
+              <a
+                href="https://quran.com"
+                target="_blank"
                 rel="noopener noreferrer"
-                className="bg-black/20 p-4 rounded-xl hover:bg-black/30 transition-colors group"
+                className="bg-white/50 border border-white/60 p-4 rounded-xl hover:bg-white/80 transition-colors group"
               >
-                <Globe className="w-6 h-6 text-blue-300 mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                <div className="text-blue-300 font-semibold">quran.com</div>
-                <div className="text-xs text-slate-400">Al-Qur'an Digital</div>
+                <Globe className="w-6 h-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <div className="text-primary font-semibold">quran.com</div>
+                <div className="text-xs text-gray-500">Al-Qur'an Digital</div>
               </a>
-              
-              <a 
-                href="https://almatsurat.net" 
-                target="_blank" 
+
+              <a
+                href="https://almatsurat.net"
+                target="_blank"
                 rel="noopener noreferrer"
-                className="bg-black/20 p-4 rounded-xl hover:bg-black/30 transition-colors group"
+                className="bg-white/50 border border-white/60 p-4 rounded-xl hover:bg-white/80 transition-colors group"
               >
-                <Book className="w-6 h-6 text-green-300 mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                <div className="text-green-300 font-semibold">almatsurat.net</div>
-                <div className="text-xs text-slate-400">Referensi Dzikir</div>
+                <Book className="w-6 h-6 text-emerald-500 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <div className="text-emerald-600 font-semibold">almatsurat.net</div>
+                <div className="text-xs text-gray-500">Referensi Dzikir</div>
               </a>
-              
-              <a 
-                href="https://radioadzanfmbandung.com" 
-                target="_blank" 
+
+              <a
+                href="https://radioadzanfmbandung.com"
+                target="_blank"
                 rel="noopener noreferrer"
-                className="bg-black/20 p-4 rounded-xl hover:bg-black/30 transition-colors group"
+                className="bg-white/50 border border-white/60 p-4 rounded-xl hover:bg-white/80 transition-colors group"
               >
-                <Clock className="w-6 h-6 text-orange-300 mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                <div className="text-orange-300 font-semibold">Radio Adzan FM</div>
-                <div className="text-xs text-slate-400">Jadwal Shalat Bandung</div>
+                <Clock className="w-6 h-6 text-orange-500 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <div className="text-orange-600 font-semibold">Radio Adzan FM</div>
+                <div className="text-xs text-gray-500">Jadwal Shalat Bandung</div>
               </a>
             </div>
           </motion.div>
@@ -546,7 +463,7 @@ const DocumentationPage: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden fixed inset-0 bg-black/50 z-30"
+            className="lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-30"
           />
         )}
       </AnimatePresence>
