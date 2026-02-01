@@ -77,7 +77,7 @@ const DocumentationPage: React.FC = () => {
               <div className="flex flex-wrap gap-1">
                 <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">React 18</span>
                 <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">TypeScript</span>
-                <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Vite</span>
+                <span className="bg-primary/10 text-primary px-2 py-1 rounded text-xs">Vite</span>
                 <span className="bg-cyan-100 text-cyan-700 px-2 py-1 rounded text-xs">Tailwind</span>
                 <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">Framer Motion</span>
               </div>
@@ -435,8 +435,8 @@ const DocumentationPage: React.FC = () => {
                 rel="noopener noreferrer"
                 className="bg-white/50 border border-white/60 p-4 rounded-xl hover:bg-white/80 transition-colors group"
               >
-                <Book className="w-6 h-6 text-emerald-500 mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                <div className="text-emerald-600 font-semibold">almatsurat.net</div>
+                <Book className="w-6 h-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <div className="text-primary font-semibold">almatsurat.net</div>
                 <div className="text-xs text-gray-500">Referensi Dzikir</div>
               </a>
 
