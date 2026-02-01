@@ -10,11 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "adhan": "^4.4.3",
+    "date-fns": "^2.30.0",
+    "framer-motion": "^10.16.16",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "framer-motion": "^10.16.16",
-    "date-fns": "^2.30.0",
     "react-router-dom": "^6.20.1"
   },
   "devDependencies": {

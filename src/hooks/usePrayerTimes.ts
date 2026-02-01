@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { PrayerTimes, PrayerTime, CountdownTime } from '../types';
-import { prayerData } from '../data/prayerData';
+import { calculatePrayerTimes, CALCULATION_METHODS } from '../utils/prayerCalculation';
+
+const DEFAULT_COORDINATES = {
+  lat: -6.2088, // Jakarta
+  lng: 106.8456
+};
 
 export const usePrayerTimes = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -11,71 +16,94 @@ export const usePrayerTimes = () => {
   const [alertPrayer, setAlertPrayer] = useState<PrayerTime | null>(null);
   const [lastAlertTime, setLastAlertTime] = useState<number | null>(null);
 
-  const getPrayerTimes = (date: Date): PrayerTimes | null => {
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const monthData = prayerData[String(month)];
-    
-    if (!monthData) return null;
-    
-    const todayData = monthData.find(d => parseInt(d.tanggal) === day);
-    if (!todayData) return null;
+  // Settings State
+  const [calculationMethod, setCalculationMethod] = useState(() => {
+    return localStorage.getItem('prayerCalculationMethod') || 'kemenag';
+  });
+  const [coordinates, setCoordinates] = useState(DEFAULT_COORDINATES);
+  const [locationName, setLocationName] = useState('Jakarta'); // Default
+
+  // Update method and persist
+  const changeMethod = (methodId: string) => {
+    setCalculationMethod(methodId);
+    localStorage.setItem('prayerCalculationMethod', methodId);
+  };
+
+  // Get Location
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCoordinates({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+          setLocationName('Current Location'); // or reverse geocode if needed
+        },
+        (error) => {
+          console.warn('Geolocation error:', error);
+          // Keep default (Jakarta)
+        }
+      );
+    }
+  }, []);
+
+  const getPrayerTimesForDate = (date: Date): PrayerTimes | null => {
+    const times = calculatePrayerTimes(date, coordinates.lat, coordinates.lng, calculationMethod);
+
+    if (!times) return null;
 
     const prayerNameMapping = {
       subuh: 'Subuh',
-      dzuhur: 'Dzuhur', 
+      dzuhur: 'Dzuhur',
       ashar: 'Ashar',
       maghrib: 'Maghrib',
       isya: 'Isya'
     };
 
-    const timings: PrayerTimes = {};
-    
-    Object.entries(prayerNameMapping).forEach(([key, name]) => {
-      const timeStr = todayData[key as keyof typeof todayData] as string;
-      const [hour, minute] = timeStr.split(':');
-      const prayerDate = new Date(date);
-      prayerDate.setHours(parseInt(hour), parseInt(minute), 0, 0);
-      
-      timings[key] = {
-        name,
-        time: prayerDate,
+    const result: PrayerTimes = {};
+
+    (Object.keys(prayerNameMapping) as Array<keyof typeof prayerNameMapping>).forEach((key) => {
+      result[key] = {
+        name: prayerNameMapping[key],
+        time: times[key],
         key
       };
     });
 
-    return timings;
+    return result;
   };
 
   const getNextPrayer = (): PrayerTime | null => {
     const now = new Date();
-    const todayTimings = getPrayerTimes(now);
-    
+    // Re-calculate for strict accuracy or use state if updated frequently
+    const todayTimings = getPrayerTimesForDate(now);
+
     if (!todayTimings) return null;
 
     const sortedTimings = Object.values(todayTimings)
       .sort((a, b) => a.time.getTime() - b.time.getTime());
 
-    let nextPrayer = sortedTimings.find(p => p.time > now);
+    let next = sortedTimings.find(p => p.time > now);
 
-    if (!nextPrayer) {
+    if (!next) {
       const tomorrow = new Date();
       tomorrow.setDate(now.getDate() + 1);
-      const tomorrowTimings = getPrayerTimes(tomorrow);
-      
+      const tomorrowTimings = getPrayerTimesForDate(tomorrow);
+
       if (tomorrowTimings) {
-        nextPrayer = Object.values(tomorrowTimings)
+        next = Object.values(tomorrowTimings)
           .sort((a, b) => a.time.getTime() - b.time.getTime())[0];
       }
     }
 
-    return nextPrayer;
+    return next || null;
   };
 
   const calculateCountdown = (targetTime: Date): CountdownTime => {
     const now = new Date();
     const diff = targetTime.getTime() - now.getTime();
-    
+
     if (diff <= 0) {
       return { hours: 0, minutes: 0, seconds: 0 };
     }
@@ -87,23 +115,17 @@ export const usePrayerTimes = () => {
     return { hours, minutes, seconds };
   };
 
-  const checkPrayerTime = () => {
+  const checkPrayerTime = (prayers: PrayerTimes) => {
     const now = new Date();
-    const prayers = getPrayerTimes(now);
-    
-    if (!prayers) return;
 
-    // Check if any prayer time has arrived (within 5 seconds)
     Object.values(prayers).forEach(prayer => {
       const timeDiff = now.getTime() - prayer.time.getTime();
-      
-      // If prayer time just arrived (within 5 seconds) and we haven't shown alert for this time
+      // Match original alert logic: within 5 seconds
       if (timeDiff >= 0 && timeDiff <= 5000 && lastAlertTime !== prayer.time.getTime()) {
         setAlertPrayer(prayer);
         setShowPrayerAlert(true);
         setLastAlertTime(prayer.time.getTime());
-        
-        // Auto hide after 5 seconds
+
         setTimeout(() => {
           setShowPrayerAlert(false);
           setAlertPrayer(null);
@@ -112,32 +134,31 @@ export const usePrayerTimes = () => {
     });
   };
 
+  // Main Loop
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
       setCurrentTime(now);
-      
-      const prayers = getPrayerTimes(now);
+
+      const prayers = getPrayerTimesForDate(now);
       if (prayers) {
         setTodayPrayers(prayers);
+        checkPrayerTime(prayers);
       }
 
       const next = getNextPrayer();
       setNextPrayer(next);
-      
+
       if (next) {
         setCountdown(calculateCountdown(next.time));
       }
-
-      // Check for prayer time alerts
-      checkPrayerTime();
     };
 
-    updateTime();
+    updateTime(); // Initial call
     const interval = setInterval(updateTime, 1000);
 
     return () => clearInterval(interval);
-  }, [lastAlertTime]);
+  }, [coordinates, calculationMethod, lastAlertTime]); // Re-create interval if settings change to ensure fresh calculation context
 
   return {
     currentTime,
@@ -149,6 +170,11 @@ export const usePrayerTimes = () => {
     dismissAlert: () => {
       setShowPrayerAlert(false);
       setAlertPrayer(null);
-    }
+    },
+    // New exports
+    calculationMethod,
+    changeMethod,
+    availableMethods: CALCULATION_METHODS,
+    locationName
   };
 };
