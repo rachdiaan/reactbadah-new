@@ -23,7 +23,6 @@ const METHOD_MAPPING: Record<string, number> = {
 const client = AlAdhanClient.create({
   baseUrl: "https://api.aladhan.com/v1",
   defaultHeaders: { "X-App": "al-matsurat-app" },
-  defaultQuery: { iso8601: true },
   timeoutMs: 10_000,
   userAgent: "al-matsurat-client",
   fetch: globalThis.fetch
