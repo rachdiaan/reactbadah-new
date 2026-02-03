@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Home, Sun, Moon, Info, FileText, Settings, BookOpen, Compass, Ban, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, Sun, Moon, Info, FileText, Settings, BookOpen, Compass, Ban, ChevronLeft, ChevronRight, Mic } from 'lucide-react';
 import Logo from '../Logo';
 
 interface MainLayoutProps {
     children: React.ReactNode;
-    currentPage: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott';
-    onNavigate: (page: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott') => void;
+    currentPage: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott' | 'khutbah';
+    onNavigate: (page: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott' | 'khutbah') => void;
     onToggleSettings: () => void;
 }
 
@@ -21,6 +21,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         { id: 'home', label: 'Home', icon: Home },
         { id: 'quran', label: "Al-Qur'an", icon: BookOpen },
         { id: 'qibla', label: 'Kiblat', icon: Compass },
+        { id: 'khutbah', label: 'Khutbah', icon: Mic },
         { id: 'boycott', label: 'Cek Boikot', icon: Ban },
         { id: 'dzikir-pagi', label: 'Pagi', icon: Sun },
         { id: 'dzikir-petang', label: 'Petang', icon: Moon },

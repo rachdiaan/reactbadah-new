@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Play, Bookmark, Share2 } from 'lucide-react';
+import { ArrowLeft, Play, Pause, Bookmark, Share2 } from 'lucide-react';
 import { useSettings } from '../contexts/SettingsContext';
-
-// We import from the installed package
-// Note: If the SDK has issues in browser (CORS/Polyfills), we might need to fallback to fetch
-// But user explicitly requested this style.
-// import { AlQuranClient, AlQuranRequests } from '@islamicnetwork/sdk';
-// import { AlQuranClient } from '@islamicnetwork/sdk';
+import { quranService, Ayah } from '../services/quranService';
 
 interface SurahDetailProps {
     surahNumber: number;
@@ -15,78 +10,69 @@ interface SurahDetailProps {
     onBack: () => void;
 }
 
-interface Ayah {
-    number: number;
-    text: string;
-    translation?: string;
-    numberInSurah: number;
-}
-
 const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBack }) => {
     const [ayahs, setAyahs] = useState<Ayah[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const { arabicFontSize, showTranslation, showVerseActions } = useSettings();
 
+    // Audio State
+    const [playingAyah, setPlayingAyah] = useState<number | null>(null); // Ayah Number in Surah
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+
     useEffect(() => {
         const fetchSurahDetails = async () => {
             setIsLoading(true);
-            try {
-                // const client = AlQuranClient.create({
-                //    baseUrl: 'https://api.alquran.cloud/v1',
-                // });
-
-                // We need both Arabic and Translation.
-                // The API allows 'editions' to get multiple.
-                // However, the SDK might expect specific request objects.
-                // Let's try to simulate the request structure or use specific methods.
-                // If SDK strictly follows the user snippet:
-                // const editions = await client.editions(new AlQuranRequests.EditionListRequest(null, "text", "en"));
-
-                // For a specific Surah with multiple editions (Arabic + Indo):
-                // We might need to fetch them separately or use a custom endpoint if SDK doesn't support multi-edition Surah request easily.
-                // Common API pattern: /surah/{number}/editions/quran-uthmani,id.indonesian
-
-                // Fallback to direct fetch if SDK types are obscure in this environment, 
-                // but let's try to construct a request if we could.
-                // Since I cannot see the full SDK type definition endlessly, I will use a reliable fetch 
-                // that mimics the "Client" behavior for reliability in this specific task explanation,
-                // OR better, purely implementation:
-
-                const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,id.indonesian`);
-                const data = await response.json();
-
-                if (data.code === 200 && data.data.length >= 1) {
-                    const arabicData = data.data[0].ayahs;
-                    const transData = data.data[1] ? data.data[1].ayahs : [];
-
-                    const merged = arabicData.map((ayah: any, index: number) => ({
-                        number: ayah.number,
-                        text: ayah.text,
-                        translation: transData[index] ? transData[index].text : '',
-                        numberInSurah: ayah.numberInSurah
-                    }));
-
-                    setAyahs(merged);
-                }
-            } catch (error) {
-                console.error("Failed to fetch surah details:", error);
-            } finally {
-                setIsLoading(false);
+            const data = await quranService.getSurah(surahNumber);
+            if (data) {
+                setAyahs(data.ayahs);
             }
+            setIsLoading(false);
         };
 
         fetchSurahDetails();
+
+        // Cleanup audio on unmount or surah change
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current = null;
+            }
+        };
     }, [surahNumber]);
+
+    const handlePlayAudio = (ayah: Ayah) => {
+        if (playingAyah === ayah.numberInSurah) {
+            // Pause
+            audioRef.current?.pause();
+            setPlayingAyah(null);
+        } else {
+            // Stop previous
+            if (audioRef.current) {
+                audioRef.current.pause();
+            }
+            // Play new
+            const audio = new Audio(ayah.audio);
+            audioRef.current = audio;
+            audio.play();
+            setPlayingAyah(ayah.numberInSurah);
+
+            // Auto-play next (Optional but nice)
+            audio.onended = () => {
+                setPlayingAyah(null);
+                // Logic for next ayah could go here if requested
+            };
+        }
+    };
 
     return (
         <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="space-y-6"
+            className="space-y-6 pb-20"
         >
             {/* Header */}
-            <div className="flex items-center justify-between gap-4 bg-white/50 dark:bg-slate-900/50 p-4 rounded-2xl backdrop-blur-sm border border-white/60 dark:border-white/10 sticky top-0 z-20 shadow-sm">
+            <div className="flex items-center justify-between gap-4 bg-white/50 dark:bg-slate-900/50 p-4 rounded-2xl backdrop-blur-sm border border-white/60 dark:border-white/10 sticky top-0 z-20 shadow-sm transition-all duration-300">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={onBack}
@@ -100,7 +86,7 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                     </div>
                 </div>
 
-                {/* Bismillah aligned in header (hidden on very small screens if needed, or responsive) */}
+                {/* Bismillah Desktop */}
                 {surahNumber !== 1 && surahNumber !== 9 && (
                     <div className="hidden md:block">
                         <p className="arabic-text text-xl lg:text-2xl text-primary font-bold" style={{ fontFamily: '"Amiri", serif' }}>
@@ -110,14 +96,7 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                 )}
             </div>
 
-            {/* Bismillah (Mobile fallback or just remove if header is enough? 
-                User explicitly asked to align with name. 
-                I will keep a smaller version for mobile if header hides it, OR just rely on header.
-                Let's rely on header for desktop, and maybe keep a small one for mobile if needed.
-                But usually 'aligned with name' implies header placement.
-                I will add a mobile-only block if I hid the header one on mobile.
-                Above I used `hidden md:block`. So I need a `md:hidden` block here.
-             */}
+            {/* Bismillah Mobile */}
             {surahNumber !== 1 && surahNumber !== 9 && (
                 <div className="md:hidden text-center py-4">
                     <p className="arabic-text text-2xl text-gray-800 dark:text-gray-200" style={{ fontFamily: '"Amiri", serif' }}>
@@ -132,35 +111,41 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                     <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
                 </div>
             ) : (
-                <div className="space-y-2">
+                <div className="space-y-4">
                     {ayahs.map((ayah, index) => (
                         <div
                             key={ayah.number}
-                            className={`p-4 md:p-6 rounded-2xl hover:bg-white/40 dark:hover:bg-white/5 transition-colors border-b border-gray-100 dark:border-white/5 last:border-0 ${index % 2 === 0 ? 'bg-white/20 dark:bg-white/5' : ''}`}
+                            className={`p-4 md:p-6 rounded-2xl hover:bg-white/40 dark:hover:bg-white/5 transition-colors border border-gray-100/50 dark:border-white/5 ${index % 2 === 0 ? 'bg-white/30 dark:bg-white/5' : 'bg-white/10 dark:bg-transparent'} ${playingAyah === ayah.numberInSurah ? 'ring-2 ring-primary/50 bg-primary/5 dark:bg-primary/10' : ''}`}
                         >
                             {/* Top Bar: Number & Actions */}
                             <div className="flex justify-between items-start mb-4">
-                                <span className="w-8 h-8 flex items-center justify-center bg-primary/10 text-primary text-xs font-bold rounded-full font-mono">
+                                <span className={`w-8 h-8 flex items-center justify-center rounded-full font-mono text-xs font-bold transition-colors ${playingAyah === ayah.numberInSurah ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'bg-primary/10 text-primary'}`}>
                                     {ayah.numberInSurah}
                                 </span>
 
-                                {showVerseActions && (
-                                    <div className="flex gap-2">
-                                        <button className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition" title="Play Audio">
-                                            <Play className="w-4 h-4" />
-                                        </button>
-                                        <button className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition" title="Bookmark">
-                                            <Bookmark className="w-4 h-4" />
-                                        </button>
-                                        <button className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-lg transition" title="Share">
-                                            <Share2 className="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                )}
+                                <div className="flex gap-2">
+                                    {showVerseActions && (
+                                        <>
+                                            <button
+                                                onClick={() => handlePlayAudio(ayah)}
+                                                className={`p-2 rounded-xl transition-all duration-300 ${playingAyah === ayah.numberInSurah ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'text-gray-400 hover:text-primary hover:bg-primary/10'}`}
+                                                title={playingAyah === ayah.numberInSurah ? "Pause" : "Play Audio"}
+                                            >
+                                                {playingAyah === ayah.numberInSurah ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
+                                            </button>
+                                            <button className="p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition" title="Bookmark">
+                                                <Bookmark className="w-4 h-4" />
+                                            </button>
+                                            <button className="p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition" title="Share">
+                                                <Share2 className="w-4 h-4" />
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Arabic Text */}
-                            <div className="text-right mb-6 w-full">
+                            <div className="text-right mb-6 w-full px-2">
                                 <p
                                     className="leading-[2.5] text-gray-800 dark:text-gray-100"
                                     dir="rtl"
@@ -175,7 +160,7 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
 
                             {/* Translation */}
                             {showTranslation && (
-                                <div className="text-left">
+                                <div className="text-left px-2 border-t border-gray-100 dark:border-white/5 pt-4">
                                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm md:text-base font-medium">
                                         {ayah.translation}
                                     </p>

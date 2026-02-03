@@ -3,34 +3,20 @@ import { motion } from 'framer-motion';
 import { Search, ChevronRight } from 'lucide-react';
 import SurahDetail from '../components/SurahDetail';
 
-interface Surah {
-    number: number;
-    name: string;
-    englishName: string;
-    englishNameTranslation: string;
-    numberOfAyahs: number;
-    revelationType: string;
-}
+import { quranService, SurahMeta } from '../services/quranService';
 
 const QuranPage: React.FC = () => {
-    const [surahs, setSurahs] = useState<Surah[]>([]);
+    const [surahs, setSurahs] = useState<SurahMeta[]>([]);
     const [selectedSurah, setSelectedSurah] = useState<{ number: number; name: string } | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchSurahs = async () => {
-            try {
-                const response = await fetch('https://api.alquran.cloud/v1/surah');
-                const data = await response.json();
-                if (data.code === 200) {
-                    setSurahs(data.data);
-                }
-            } catch (error) {
-                console.error("Failed to fetch Surahs:", error);
-            } finally {
-                setIsLoading(false);
-            }
+            setIsLoading(true);
+            const data = await quranService.getAllSurahs();
+            setSurahs(data);
+            setIsLoading(false);
         };
 
         fetchSurahs();

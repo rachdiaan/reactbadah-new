@@ -19,6 +19,16 @@ const METHOD_MAPPING: Record<string, number> = {
   'jafari': 0,   // Shia Ithna-Ashari
 };
 
+// Initialize Client outside component to avoid recreation
+const client = AlAdhanClient.create({
+  baseUrl: "https://api.aladhan.com/v1",
+  defaultHeaders: { "X-App": "al-matsurat-app" },
+  defaultQuery: { iso8601: true },
+  timeoutMs: 10_000,
+  userAgent: "al-matsurat-client",
+  fetch: globalThis.fetch
+});
+
 export const usePrayerTimes = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [nextPrayer, setNextPrayer] = useState<PrayerTime | null>(null);
@@ -38,9 +48,6 @@ export const usePrayerTimes = () => {
   });
   const [coordinates, setCoordinates] = useState(DEFAULT_COORDINATES);
   const [locationName, setLocationName] = useState('Jakarta');
-
-  // Client init
-  const client = AlAdhanClient.create();
 
   // Update method and persist
   const changeMethod = (methodId: string) => {
@@ -72,20 +79,12 @@ export const usePrayerTimes = () => {
     setError(null);
     try {
       const dateStr = format(new Date(), 'dd-MM-yyyy');
-      const method = METHOD_MAPPING[calculationMethod] || 20; // Default to Kemenag if unknown
+      // Default to Kemenag (20) if unknown
+      const method = METHOD_MAPPING[calculationMethod] ?? 20;
 
-      // Setup Options
-      // We essentially just need the method for now. 
-      // The SDK wrapper makes options optional or configurable.
-      // Based on user snippet: new AlAdhanRequests.PrayerTimesOptions()
-      // We might need to check if we can pass method to Options or if it's a separate param in the request?
-      // Looking at the Requests class usually: 
-      // Request(date, lat, lng, options)
-      // Options usually has 'method' property.
-
+      // Create Request
       const options = new AlAdhanRequests.PrayerTimesOptions();
-      // @ts-ignore - The SDK types might define method setting differently, usually via property or constructor. 
-      // If the SDK follows AlAdhan API param names:
+      // Force method via any cast
       (options as any).method = method;
 
       const request = new AlAdhanRequests.DailyPrayerTimesByCoordinatesRequest(
@@ -96,12 +95,16 @@ export const usePrayerTimes = () => {
       );
 
       const response = await client.prayerTimes().dailyByCoordinates(request);
+
+      if (!response || !response.data || !response.data.timings) {
+        throw new Error("Invalid response from API");
+      }
+
       const timings = response.data.timings;
 
-      // Parse times strings "HH:mm" to Date objects for today
-      // AlAdhan returns "HH:mm" (24h)
+      // Parse AlAdhan "HH:mm" strings to Date objects for today
       const parseTime = (timeStr: string): Date => {
-        // timeStr might be "04:30 (WIB)" or just "04:30". SDK usually gives "HH:mm"
+        // Handle "04:30 (WIB)" edge cases if any, take first part
         const cleanTime = timeStr.split(' ')[0];
         const [hours, minutes] = cleanTime.split(':').map(Number);
         const date = new Date();
@@ -122,7 +125,7 @@ export const usePrayerTimes = () => {
 
     } catch (err) {
       console.error("Failed to fetch prayer times:", err);
-      setError("Gagal memuat jadwal sholat.");
+      setError("Gagal memuat jadwal sholat. Periksa koneksi internet Anda.");
       setIsLoading(false);
     }
   }, [coordinates, calculationMethod]);
@@ -133,36 +136,24 @@ export const usePrayerTimes = () => {
   }, [fetchPrayerTimes]);
 
 
-  const getNextPrayer = (prayers: PrayerTimes): PrayerTime | null => {
+  const getNextPrayer = useCallback((prayers: PrayerTimes): PrayerTime | null => {
     const now = new Date();
     const sorted = Object.values(prayers)
       .sort((a, b) => a.time.getTime() - b.time.getTime());
 
     let next = sorted.find(p => p.time > now);
 
-    // If no next prayer today, it's Fajr tomorrow (simplified logic: just show Fajr time for today + 24h visually?)
-    // For proper "Next Prayer" logic across midnight, we'd need tomorrow's schedule. 
-    // For now, let's wrap around to Subuh and add 24h to the logic if needed, 
-    // or just return null/tomorrow indication. 
-    // To match previous logic roughly:
     if (!next && sorted.length > 0) {
-      // Return Subuh but technically it's tomorrow. 
-      // The UI usually handles "Remaining time".
-      // Let's stick to simple "Subuh" from 'today' array but treat as tomorrow for countdown?
-      // Actually, let's just use the first prayer of the day (Subuh) as next, knowing it's for tomorrow.
       const first = sorted[0];
-      // We can't easily change the Date object in the array without affecting display.
-      // Let's create a copy
       const tomorrowSubuh = new Date(first.time);
       tomorrowSubuh.setDate(tomorrowSubuh.getDate() + 1);
-
       next = { ...first, time: tomorrowSubuh };
     }
 
     return next || null;
-  };
+  }, []);
 
-  const calculateCountdown = (targetTime: Date): CountdownTime => {
+  const calculateCountdown = useCallback((targetTime: Date): CountdownTime => {
     const now = new Date();
     const diff = targetTime.getTime() - now.getTime();
 
@@ -173,14 +164,11 @@ export const usePrayerTimes = () => {
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
     return { hours, minutes, seconds };
-  };
+  }, []);
 
-  const checkPrayerTime = (prayers: PrayerTimes) => {
+  const checkPrayerTime = useCallback((prayers: PrayerTimes) => {
     const now = new Date();
-    // Similar alert logic
     Object.values(prayers).forEach(prayer => {
-      // Check if time matches within this second (or minute?)
-      // We rely on diff being very small
       const diff = Math.abs(now.getTime() - prayer.time.getTime());
 
       // If we are within 5 seconds of the time and haven't alerted yet
@@ -195,7 +183,7 @@ export const usePrayerTimes = () => {
         }, 5000); // Auto dismiss
       }
     });
-  };
+  }, [lastAlertTime]);
 
   // Timer Loop (Clock & Countdown)
   useEffect(() => {
@@ -216,7 +204,7 @@ export const usePrayerTimes = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [todayPrayers, lastAlertTime]);
+  }, [todayPrayers, checkPrayerTime, getNextPrayer, calculateCountdown]);
 
   return {
     currentTime,
