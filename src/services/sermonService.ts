@@ -1,8 +1,8 @@
 
 import { SermonsClient, SermonsRequests } from "@islamicnetwork/sdk";
 
+
 const client = SermonsClient.create({
-    baseUrl: "https://api.islamic.network/v1", // Ensuring correct base for Islamic Network if needed, or default
     defaultHeaders: { "X-App": "al-matsurat-app" },
     timeoutMs: 10_000,
     userAgent: "al-matsurat-client",
