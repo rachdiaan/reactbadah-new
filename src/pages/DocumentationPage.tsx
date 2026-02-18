@@ -15,7 +15,11 @@ import {
   Monitor,
   Wrench,
   Menu,
-  X
+  X,
+  Compass,
+  BookOpen,
+  Mic,
+  ShieldBan
 } from 'lucide-react';
 
 const DocumentationPage: React.FC = () => {
@@ -24,6 +28,7 @@ const DocumentationPage: React.FC = () => {
   const cardClass = "bg-white/50 dark:bg-slate-800/50 border border-gray-100 dark:border-white/10 p-4 rounded-xl shadow-sm";
   const textClass = "text-gray-600 dark:text-gray-300";
   const codeBlockClass = "bg-gray-50 dark:bg-slate-700/50 border border-gray-100 dark:border-white/10 p-3 rounded-lg text-xs font-mono text-gray-700 dark:text-gray-300";
+  const badgeBase = "px-2 py-1 rounded text-xs font-medium";
 
   const sections = [
     {
@@ -33,18 +38,22 @@ const DocumentationPage: React.FC = () => {
       content: (
         <div className="space-y-4">
           <p className={`${textClass} leading-relaxed`}>
-            <strong>Al-Ma'tsurat Sugro</strong> adalah aplikasi Progressive Web App (PWA) modern yang dirancang khusus untuk memperkaya pengalaman spiritual harian umat Muslim. Aplikasi ini mengintegrasikan amalan dzikir Al-Ma'tsurat dengan sistem jadwal shalat yang akurat, dilengkapi dengan teknologi AI untuk memberikan refleksi spiritual yang mendalam.
+            <strong>Al-Ma'tsurat Sugro</strong> adalah Progressive Web App (PWA) komprehensif untuk umat Muslim.
+            Menggabungkan dzikir Al-Ma'tsurat pagi & petang, jadwal shalat GPS-based, Al-Qur'an dengan terjemahan & audio,
+            kompas kiblat interaktif, khutbah Jumat, gerakan boycott, dan AI-powered tadabbur — semua dalam satu aplikasi modern
+            dengan desain <em>liquid glass</em> dan dukungan dark mode penuh.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
             <div className={cardClass}>
               <h4 className="text-primary font-bold mb-2">🎯 Keunggulan Utama</h4>
               <ul className={`text-sm ${textClass} space-y-1`}>
-                <li>• Dzikir Lengkap Al-Ma'tsurat</li>
-                <li>• AI-Powered Tadabbur</li>
-                <li>• Real-time Prayer Times</li>
-                <li>• Modern UI/UX Design</li>
-                <li>• Progressive Web App</li>
+                <li>• 7 fitur utama dalam 1 aplikasi</li>
+                <li>• AI Tadabbur (Google Gemini 2.0 Flash)</li>
+                <li>• Jadwal shalat GPS + multiple methods</li>
+                <li>• Kompas kiblat sensor device + fallback desktop</li>
+                <li>• Al-Qur'an 114 surat + terjemahan + audio</li>
+                <li>• Dark/Light mode, responsive, installable</li>
               </ul>
             </div>
 
@@ -69,45 +78,51 @@ const DocumentationPage: React.FC = () => {
       content: (
         <div className="space-y-4">
           <p className={`${textClass} leading-relaxed`}>
-            Aplikasi dibangun menggunakan teknologi modern yang terbukti reliable dan performant dengan arsitektur yang modular dan scalable.
+            Dibangun sepenuhnya client-side dengan React + TypeScript + Vite. Tidak memerlukan backend — semua data
+            diambil langsung dari REST API publik. State management menggunakan React hooks dan Context API.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Code className="w-4 h-4" />
-                Frontend
+                Frontend Stack
               </h4>
               <div className="flex flex-wrap gap-1">
-                <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs">React 18</span>
-                <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs">TypeScript</span>
-                <span className="bg-primary/10 text-primary px-2 py-1 rounded text-xs">Vite</span>
-                <span className="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 px-2 py-1 rounded text-xs">Tailwind</span>
-                <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded text-xs">Framer Motion</span>
+                <span className={`${badgeBase} bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300`}>React 18</span>
+                <span className={`${badgeBase} bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300`}>TypeScript 5</span>
+                <span className={`${badgeBase} bg-primary/10 text-primary`}>Vite 5</span>
+                <span className={`${badgeBase} bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300`}>Tailwind CSS 3</span>
+                <span className={`${badgeBase} bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300`}>Framer Motion</span>
+                <span className={`${badgeBase} bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300`}>Lucide Icons</span>
               </div>
             </div>
 
             <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
-                AI & APIs
+                API & Libraries
               </h4>
               <div className="flex flex-wrap gap-1">
-                <span className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-2 py-1 rounded text-xs">Gemini AI</span>
-                <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-2 py-1 rounded text-xs">Prayer API</span>
-                <span className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs">Date-fns</span>
+                <span className={`${badgeBase} bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300`}>Gemini AI</span>
+                <span className={`${badgeBase} bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300`}>AlAdhan API</span>
+                <span className={`${badgeBase} bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300`}>Al-Quran Cloud</span>
+                <span className={`${badgeBase} bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300`}>Adhan.js</span>
+                <span className={`${badgeBase} bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300`}>Islamic SDK</span>
+                <span className={`${badgeBase} bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300`}>Date-fns</span>
               </div>
             </div>
 
             <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Monitor className="w-4 h-4" />
-                Design
+                Design System
               </h4>
               <div className="flex flex-wrap gap-1">
-                <span className="bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 px-2 py-1 rounded text-xs">Liquid Glass</span>
-                <span className="bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 px-2 py-1 rounded text-xs">Responsive</span>
-                <span className="bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 px-2 py-1 rounded text-xs">Soft Theme</span>
+                <span className={`${badgeBase} bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300`}>Liquid Glass</span>
+                <span className={`${badgeBase} bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300`}>Responsive</span>
+                <span className={`${badgeBase} bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300`}>Dark Mode</span>
+                <span className={`${badgeBase} bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300`}>Glassmorphism</span>
               </div>
             </div>
           </div>
@@ -120,18 +135,19 @@ const DocumentationPage: React.FC = () => {
       icon: <Target className="w-6 h-6" />,
       content: (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Clock className="w-4 h-4" />
-                Sistem Jadwal Shalat
+                Jadwal Shalat
               </h4>
               <ul className={`text-sm ${textClass} space-y-1`}>
-                <li>• GPS-based prayer times</li>
-                <li>• Real-time clock dengan countdown</li>
-                <li>• Visual highlighting waktu shalat</li>
-                <li>• Auto notification system</li>
-                <li>• Multiple calculation methods</li>
+                <li>• GPS-based (AlAdhan REST API)</li>
+                <li>• Real-time countdown ke waktu berikutnya</li>
+                <li>• 5 waktu: Subuh, Dzuhur, Ashar, Maghrib, Isya</li>
+                <li>• Multiple calculation methods (KEMENAG, MWL, dll)</li>
+                <li>• Alert notification animasi</li>
+                <li>• AI-powered mutiara hikmah</li>
               </ul>
             </div>
 
@@ -141,40 +157,86 @@ const DocumentationPage: React.FC = () => {
                 Dzikir Al-Ma'tsurat
               </h4>
               <ul className={`text-sm ${textClass} space-y-1`}>
-                <li>• Ta'awudz hingga Doa Rabithah</li>
+                <li>• Pagi & Petang dalam 1 halaman (tab selector)</li>
                 <li>• Tap counter dengan progress bar</li>
-                <li>• Arabic typography yang indah</li>
-                <li>• Transliterasi dan terjemahan</li>
-                <li>• Completion status indicator</li>
+                <li>• Arabic typography (Amiri font)</li>
+                <li>• Latin transliterasi + terjemahan Indonesia</li>
+                <li>• AI Tadabbur per dzikir (Gemini)</li>
+                <li>• Completion status & reset</li>
               </ul>
             </div>
 
             <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
-                <Sparkles className="w-4 h-4" />
-                AI Tadabbur
+                <BookOpen className="w-4 h-4" />
+                Al-Qur'an Digital
               </h4>
               <ul className={`text-sm ${textClass} space-y-1`}>
-                <li>• Google Gemini 2.0 Flash</li>
-                <li>• Contextual analysis mendalam</li>
-                <li>• Berdasarkan Al-Qur'an & Hadist</li>
-                <li>• Personalized reflection</li>
-                <li>• Bahasa Indonesia yang indah</li>
+                <li>• 114 surat lengkap (API alquran.cloud)</li>
+                <li>• Teks Arab (Uthmani script)</li>
+                <li>• Terjemahan Bahasa Indonesia</li>
+                <li>• Audio per ayat (Mishari Al-Afasy)</li>
+                <li>• Pencarian surat</li>
+                <li>• Info juz, revelationType, jumlah ayat</li>
               </ul>
             </div>
 
             <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
-                <Smartphone className="w-4 h-4" />
-                UI/UX Design
+                <Compass className="w-4 h-4" />
+                Kompas Kiblat
               </h4>
               <ul className={`text-sm ${textClass} space-y-1`}>
-                <li>• Liquid glass effect</li>
-                <li>• Gradient animation background</li>
-                <li>• Micro-interactions</li>
-                <li>• Responsive layout</li>
-                <li>• Color palette yang menenangkan</li>
+                <li>• Device orientation sensor (real-time)</li>
+                <li>• Kalibrasi kualitas (Rendah/Cukup/Akurat)</li>
+                <li>• Feedback arah: "Putar kiri/kanan X°"</li>
+                <li>• Green glow saat mengarah Ka'bah</li>
+                <li>• Desktop fallback: mode statis + drag manual</li>
+                <li>• Jarak ke Ka'bah (Haversine formula)</li>
               </ul>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
+                <Mic className="w-4 h-4" />
+                Khutbah Jumat
+              </h4>
+              <ul className={`text-sm ${textClass} space-y-1`}>
+                <li>• Data dari UAE Awqaf (Islamic Network SDK)</li>
+                <li>• Daftar khutbah per tahun</li>
+                <li>• Detail modal dengan konten lengkap</li>
+                <li>• Sorted by date (terbaru di atas)</li>
+              </ul>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
+                <ShieldBan className="w-4 h-4" />
+                Boycott Israel
+              </h4>
+              <ul className={`text-sm ${textClass} space-y-1`}>
+                <li>• Data dari Islamic Network SDK</li>
+                <li>• Daftar brand per kategori</li>
+                <li>• Search dan filter</li>
+                <li>• Alternatif brand lokal</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={cardClass}>
+            <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
+              <Smartphone className="w-4 h-4" />
+              UI/UX & Design
+            </h4>
+            <div className={`grid grid-cols-2 md:grid-cols-4 gap-3 text-sm ${textClass}`}>
+              <div>• Liquid glass + glassmorphism</div>
+              <div>• Full dark/light mode</div>
+              <div>• Animated page transitions</div>
+              <div>• Mobile bottom nav + overflow</div>
+              <div>• Desktop sidebar navigation</div>
+              <div>• Responsive (mobile-first)</div>
+              <div>• Custom scrollbar & safe area</div>
+              <div>• Installable PWA</div>
             </div>
           </div>
         </div>
@@ -189,18 +251,42 @@ const DocumentationPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3">🎣 Custom Hooks</h4>
-              <div className={codeBlockClass}>
-                <div>usePrayerTimes() - Jadwal shalat</div>
-                <div>useGeminiAI() - Integrasi AI</div>
+              <div className={codeBlockClass + " space-y-1"}>
+                <div>usePrayerTimes() → GPS + AlAdhan API</div>
+                <div>useGeminiAI() → Tadabbur & Hikmah</div>
+                <div>useSettings() → Dark mode, font, preferences</div>
               </div>
             </div>
 
             <div className={cardClass}>
-              <h4 className="text-primary font-bold mb-3">📊 State Management</h4>
+              <h4 className="text-primary font-bold mb-3">📊 State & Context</h4>
               <ul className={`text-sm ${textClass} space-y-1`}>
-                <li>• useState untuk local state</li>
-                <li>• useEffect untuk side effects</li>
-                <li>• Custom hooks untuk logic kompleks</li>
+                <li>• SettingsContext (dark mode, font size, dll)</li>
+                <li>• useState untuk component-local state</li>
+                <li>• useRef untuk sensor data & throttling</li>
+                <li>• useCallback untuk memoized functions</li>
+              </ul>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="text-primary font-bold mb-3">📂 Struktur File</h4>
+              <div className={codeBlockClass + " space-y-1"}>
+                <div>src/pages/ → 7 halaman utama</div>
+                <div>src/components/ → UI reusable</div>
+                <div>src/hooks/ → 3 custom hooks</div>
+                <div>src/services/ → quranService, sermonService</div>
+                <div>src/contexts/ → SettingsContext</div>
+                <div>src/data/ → dzikir JSON data</div>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="text-primary font-bold mb-3">🌐 Browser APIs</h4>
+              <ul className={`text-sm ${textClass} space-y-1`}>
+                <li>• Geolocation API → lokasi GPS</li>
+                <li>• DeviceOrientation → kompas kiblat</li>
+                <li>• localStorage → settings persistence</li>
+                <li>• Service Worker → PWA & offline</li>
               </ul>
             </div>
           </div>
@@ -226,7 +312,11 @@ const DocumentationPage: React.FC = () => {
               </div>
               <div>
                 <div className="font-semibold text-primary">Browser</div>
-                <div>Modern</div>
+                <div>Chrome / Safari / Edge</div>
+              </div>
+              <div>
+                <div className="font-semibold text-primary">Deploy</div>
+                <div>GitHub Pages</div>
               </div>
             </div>
           </div>
@@ -234,11 +324,19 @@ const DocumentationPage: React.FC = () => {
           <div className={cardClass}>
             <h4 className="text-primary font-bold mb-3">🛠️ Setup Development</h4>
             <div className={codeBlockClass + " space-y-1"}>
-              <div>git clone https://github.com/username/al-matsurat-app.git</div>
-              <div>cd al-matsurat-app</div>
+              <div>git clone https://github.com/rachdiaan/reactbadah-new.git</div>
+              <div>cd reactbadah-new</div>
               <div>npm install</div>
-              <div>cp .env.example .env</div>
-              <div>npm run dev</div>
+              <div>cp .env.example .env   # isi VITE_GEMINI_API_KEY</div>
+              <div>npm run dev            # http://localhost:5173</div>
+            </div>
+          </div>
+
+          <div className={cardClass}>
+            <h4 className="text-primary font-bold mb-3">🚢 Deploy ke GitHub Pages</h4>
+            <div className={codeBlockClass + " space-y-1"}>
+              <div>npm run build          # production build</div>
+              <div>npm run deploy         # gh-pages -d dist</div>
             </div>
           </div>
         </div>
@@ -250,24 +348,55 @@ const DocumentationPage: React.FC = () => {
       icon: <Database className="w-6 h-6" />,
       content: (
         <div className="space-y-4">
-          <div className={cardClass}>
-            <h4 className="text-primary font-bold mb-3">🤖 Gemini AI API</h4>
-            <div className={codeBlockClass}>
-              <div>Endpoint: generativelanguage.googleapis.com</div>
-              <div>Model: gemini-2.0-flash</div>
-              <div>Method: POST</div>
-              <div>Content-Type: application/json</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={cardClass}>
+              <h4 className="text-primary font-bold mb-3">🤖 Gemini AI</h4>
+              <div className={codeBlockClass + " space-y-1"}>
+                <div>Host: generativelanguage.googleapis.com</div>
+                <div>Model: gemini-2.0-flash</div>
+                <div>Auth: VITE_GEMINI_API_KEY (.env)</div>
+                <div>Use: Tadabbur dzikir, mutiara hikmah</div>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="text-primary font-bold mb-3">🕌 AlAdhan Prayer API</h4>
+              <div className={codeBlockClass + " space-y-1"}>
+                <div>GET /v1/timings/&#123;date&#125;</div>
+                <div>Params: latitude, longitude, method</div>
+                <div>Returns: Fajr, Dhuhr, Asr, Maghrib, Isha</div>
+                <div>Method 20 = KEMENAG Indonesia</div>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="text-primary font-bold mb-3">📖 Al-Quran Cloud API</h4>
+              <div className={codeBlockClass + " space-y-1"}>
+                <div>GET /v1/meta → 114 surat metadata</div>
+                <div>GET /v1/surah/&#123;n&#125;/editions/</div>
+                <div>  quran-uthmani (Arab),</div>
+                <div>  id.indonesian (Terjemahan),</div>
+                <div>  ar.alafasy (Audio)</div>
+              </div>
+            </div>
+
+            <div className={cardClass}>
+              <h4 className="text-primary font-bold mb-3">📦 Islamic Network SDK</h4>
+              <div className={codeBlockClass + " space-y-1"}>
+                <div>SermonsClient → Khutbah Jumat</div>
+                <div>  yearSermons(source, year, type)</div>
+                <div>BoycottIsraeliClient → Boycott data</div>
+                <div>  categories(), brands()</div>
+              </div>
             </div>
           </div>
 
           <div className={cardClass}>
-            <h4 className="text-primary font-bold mb-3">🕌 Prayer Data Structure</h4>
-            <div className={codeBlockClass}>
-              <div>interface PrayerTime &#123;</div>
-              <div>&nbsp;&nbsp;name: string;</div>
-              <div>&nbsp;&nbsp;time: Date;</div>
-              <div>&nbsp;&nbsp;key: string;</div>
-              <div>&#125;</div>
+            <h4 className="text-primary font-bold mb-3">🧭 Library: Adhan.js</h4>
+            <div className={codeBlockClass + " space-y-1"}>
+              <div>import &#123; Qibla &#125; from 'adhan';</div>
+              <div>const direction = Qibla(new Coordinates(lat, lng));</div>
+              <div>// Returns degrees from North to Ka'bah</div>
             </div>
           </div>
         </div>
@@ -283,29 +412,35 @@ const DocumentationPage: React.FC = () => {
             <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3">🔍 Troubleshooting</h4>
               <ul className={`text-sm ${textClass} space-y-1`}>
-                <li>• API Key Error - Periksa validitas key</li>
-                <li>• Build Error - Clear node_modules</li>
-                <li>• Performance Issue - Check dev tools</li>
-                <li>• UI Bug - Clear browser cache</li>
+                <li>• <strong>API Key Error</strong> — Periksa .env (VITE_GEMINI_API_KEY)</li>
+                <li>• <strong>Build Error</strong> — rm -rf node_modules && npm i</li>
+                <li>• <strong>Kompas tidak jalan</strong> — Buka di HP (perlu sensor)</li>
+                <li>• <strong>Qur'an kosong</strong> — Cek koneksi ke alquran.cloud</li>
+                <li>• <strong>UI Bug</strong> — Hard reload (Ctrl+Shift+R)</li>
               </ul>
             </div>
 
             <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Heart className="w-4 h-4" />
-                Contributing Guidelines
+                Kontribusi
               </h4>
-              <p className={`text-sm ${textClass}`}>Open source contributions are welcome.</p>
+              <ul className={`text-sm ${textClass} space-y-1`}>
+                <li>• Fork → branch → PR</li>
+                <li>• Laporkan bug via Issues</li>
+                <li>• Koreksi ayat/doa sangat diapresiasi</li>
+                <li>• npm run lint harus clean sebelum PR</li>
+              </ul>
             </div>
           </div>
 
           <div className={`${cardClass} text-center`}>
             <h4 className="text-primary font-bold mb-2">📧 Contact & Support</h4>
             <p className={textClass}>
-              Untuk pertanyaan atau saran, hubungi{' '}
+              Laporkan kesalahan ayat, bug, atau saran ke{' '}
               <a
                 href="mailto:rachdiaaan@gmail.com"
-                className="text-primary hover:opacity-80 underline transition-colors"
+                className="text-primary hover:opacity-80 underline transition-colors font-medium"
               >
                 rachdiaaan@gmail.com
               </a>
@@ -357,19 +492,23 @@ const DocumentationPage: React.FC = () => {
               className="fixed lg:sticky top-0 left-0 h-screen w-72 glass-card p-6 z-40 overflow-y-auto no-scrollbar lg:block border-r border-gray-200/30 dark:border-white/5 bg-white/80 dark:bg-slate-900/80"
             >
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-primary mb-2">📚 Navigasi</h3>
+                <h3 className="text-lg font-bold text-primary mb-2">📚 Navigasi Docs</h3>
                 <div className={`text-sm ${textClass} ${cardClass}`}>
-                  <strong>Versi:</strong> 3.1.5<br />
-                  <strong>Update:</strong> 30 Juni 2025
+                  <strong>Versi:</strong> 1.0.0<br />
+                  <strong>Update:</strong> 18 Februari 2026<br />
+                  <strong>Repo:</strong>{' '}
+                  <a href="https://github.com/rachdiaan/reactbadah-new" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                    GitHub
+                  </a>
                 </div>
               </div>
 
-              <nav className="space-y-2">
+              <nav className="space-y-1">
                 {navigationItems.map((item) => (
                   <button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className={`w-full text-left px-3 py-2 rounded-lg ${textClass} hover:text-primary hover:bg-primary/5 dark:hover:bg-white/5 transition-colors font-medium`}
+                    className={`w-full text-left px-3 py-2 rounded-lg ${textClass} hover:text-primary hover:bg-primary/5 dark:hover:bg-white/5 transition-colors font-medium text-sm`}
                   >
                     {item.title}
                   </button>
@@ -387,7 +526,7 @@ const DocumentationPage: React.FC = () => {
             className="text-center mb-8 pt-8 lg:pt-0"
           >
             <h1 className="text-3xl font-bold text-primary mb-2">Dokumentasi</h1>
-            <p className="text-gray-500 dark:text-gray-400">Panduan lengkap pengembangan dan penggunaan aplikasi</p>
+            <p className="text-gray-500 dark:text-gray-400">Panduan lengkap arsitektur, fitur, API, dan cara pengembangan</p>
           </motion.div>
 
           <div className="space-y-8">
@@ -397,7 +536,7 @@ const DocumentationPage: React.FC = () => {
                 id={section.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.08 }}
                 className="glass-card p-6"
               >
                 <div className="flex items-center gap-3 mb-4">
@@ -421,39 +560,25 @@ const DocumentationPage: React.FC = () => {
             className="glass-card p-6 text-center mt-8"
           >
             <h3 className="text-2xl font-bold text-primary mb-4">🌟 Sumber Data & Referensi</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <a
-                href="https://quran.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${cardClass} hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group`}
-              >
-                <Globe className="w-6 h-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                <div className="text-primary font-semibold">quran.com</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Al-Qur'an Digital</div>
-              </a>
-
-              <a
-                href="https://almatsurat.net"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${cardClass} hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group`}
-              >
-                <Book className="w-6 h-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                <div className="text-primary font-semibold">almatsurat.net</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Referensi Dzikir</div>
-              </a>
-
-              <a
-                href="https://radioadzanfmbandung.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${cardClass} hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group`}
-              >
-                <Clock className="w-6 h-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                <div className="text-primary font-semibold">Radio Adzan FM</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Jadwal Shalat Bandung</div>
-              </a>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { href: 'https://api.alquran.cloud', icon: <Globe className="w-5 h-5" />, name: 'Al-Quran Cloud', desc: 'Qur\'an API' },
+                { href: 'https://aladhan.com', icon: <Clock className="w-5 h-5" />, name: 'AlAdhan', desc: 'Prayer Times' },
+                { href: 'https://almatsurat.net', icon: <Book className="w-5 h-5" />, name: 'almatsurat.net', desc: 'Referensi Dzikir' },
+                { href: 'https://api.islamic.network', icon: <Database className="w-5 h-5" />, name: 'Islamic Network', desc: 'Sermons & Boycott' },
+              ].map((src) => (
+                <a
+                  key={src.name}
+                  href={src.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${cardClass} hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group text-center`}
+                >
+                  <div className="text-primary mx-auto mb-1 w-fit group-hover:scale-110 transition-transform">{src.icon}</div>
+                  <div className="text-primary font-semibold text-sm">{src.name}</div>
+                  <div className="text-[10px] text-gray-400 dark:text-gray-500">{src.desc}</div>
+                </a>
+              ))}
             </div>
           </motion.div>
         </div>
