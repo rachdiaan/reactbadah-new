@@ -1,34 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Search, AlertTriangle, ChevronRight, Info, ShoppingBag } from 'lucide-react';
 import { BoycottIsraeliClient, BoycottIsraeliRequests } from '@islamicnetwork/sdk';
 
+interface Category {
+    name: string;
+    description?: string | null;
+}
+
+// Initialize SDK Client
+const client = BoycottIsraeliClient.create();
+
 const BoycottPage: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [categories, setCategories] = useState<any[]>([]);
-    const [searchResults, setSearchResults] = useState<any[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [searchResults, setSearchResults] = useState<Category[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [activeTab, setActiveTab] = useState<'search' | 'categories'>('search');
 
-    // Initialize SDK Client
-    const client = BoycottIsraeliClient.create();
-
-    useEffect(() => {
-        fetchCategories();
-    }, []);
-
-    const fetchCategories = async () => {
+    const fetchCategories = useCallback(async () => {
         try {
             const response = await client.categories(
                 new BoycottIsraeliRequests.CategoriesRequest(
                     new BoycottIsraeliRequests.PaginationOptions({ limit: 20 })
                 )
             );
-            setCategories(response.data || []);
+            setCategories((response.data as unknown as Category[]) || []);
         } catch (error) {
             console.error("Failed to fetch categories:", error);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        fetchCategories();
+    }, [fetchCategories]);
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -43,7 +48,7 @@ const BoycottPage: React.FC = () => {
                     new BoycottIsraeliRequests.PaginationOptions({ limit: 20 })
                 )
             );
-            setSearchResults(response.data || []);
+            setSearchResults((response.data as unknown as Category[]) || []);
         } catch (error) {
             console.error("Failed to search:", error);
             setSearchResults([]);
@@ -53,7 +58,7 @@ const BoycottPage: React.FC = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 pt-24 pb-24 max-w-4xl">
+        <div className="container mx-auto px-4 pb-24 max-w-4xl">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

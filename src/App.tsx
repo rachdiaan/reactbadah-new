@@ -9,13 +9,12 @@ import QuranPage from './pages/QuranPage';
 import QiblaPage from './pages/QiblaPage';
 import PrayerAlert from './components/PrayerAlert';
 import ControlPanel from './components/ControlPanel';
-import { dzikirDataPagi, dzikirDataPetang } from './data/dzikirData';
 import { usePrayerTimes } from './hooks/usePrayerTimes';
 
 import BoycottPage from './pages/BoycottPage';
 import SermonsPage from './pages/SermonsPage';
 
-type Page = 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott' | 'khutbah';
+type Page = 'home' | 'dzikir' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott' | 'khutbah';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -46,10 +45,8 @@ function App() {
     switch (currentPage) {
       case 'home':
         return <HomePage onNavigate={handleNavigate} />;
-      case 'dzikir-pagi':
-        return <DzikirPage dzikirData={dzikirDataPagi} type="pagi" />;
-      case 'dzikir-petang':
-        return <DzikirPage dzikirData={dzikirDataPetang} type="petang" />;
+      case 'dzikir':
+        return <DzikirPage />;
       case 'quran':
         return <QuranPage />;
       case 'qibla':
@@ -87,7 +84,7 @@ function App() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Settings Panel (Reusing ControlPanel as Settings Modal) */}
+      {/* Settings Panel */}
       <ControlPanel
         isVisible={showControls}
         onToggle={() => setShowControls(!showControls)}

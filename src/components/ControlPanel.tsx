@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Home, Info, FileText, Bell, Settings, X, Moon, Sun, Eye, EyeOff, Play } from 'lucide-react';
-import { useSettings } from '../contexts/SettingsContext';
+import { useSettings } from '../hooks/useSettings';
 
 interface ControlPanelProps {
   isVisible: boolean;
@@ -34,12 +34,12 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   } = useSettings();
   return (
     <>
-      {/* Toggle Button */}
+      {/* Toggle Button - Desktop only */}
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={onToggle}
-        className="fixed bottom-4 right-4 z-50 glass-card p-3 hover:bg-white/20 transition"
+        className="hidden lg:block fixed bottom-4 right-4 z-50 glass-card p-3 hover:bg-white/20 transition"
         title="Toggle Controls"
       >
         {isVisible ? (

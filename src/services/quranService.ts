@@ -45,13 +45,17 @@ export const quranService = {
             const data = await response.json();
 
             if (data.code === 200 && data.data && data.data.length >= 3) {
-                const arabic = data.data.find((e: any) => e.identifier === 'quran-uthmani');
-                const translation = data.data.find((e: any) => e.language === 'id' || e.identifier === 'id.indonesian');
-                const audio = data.data.find((e: any) => e.format === 'audio'); // generic check for audio edition
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const arabic = data.data.find((e: any) => e.edition?.identifier === 'quran-uthmani');
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const translation = data.data.find((e: any) => e.edition?.language === 'id' || e.edition?.identifier === 'id.indonesian');
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const audio = data.data.find((e: any) => e.edition?.format === 'audio');
 
                 if (!arabic) return null;
 
                 // Merge into single Ayah objects
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const mergedAyahs: Ayah[] = arabic.ayahs.map((ayah: any, index: number) => ({
                     number: ayah.number,
                     text: ayah.text,

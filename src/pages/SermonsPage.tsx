@@ -140,24 +140,32 @@ const SermonsPage: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    {/* Since SDK might not give full text in the list response, we normally need another call.
-                                        However, looking at user snippet, `sermons` array might just be metadata.
-                                        But wait, user snippet showed `months[0]?.sermons[0]?.title`.
-                                        Does it include content? Usually no.
-                                        For this MVP, I will show a placeholder or brief if available.
-                                        Checking SDK Types: Sermon usually has `editions`.
-                                    */}
-                                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line font-serif text-lg">
-                                        {/* Fallback content message if actual text isn't in the list object */}
-                                        This is the summary or full text of the sermon titled "{selectedSermon.title}".
+                                    <div className="space-y-4">
+                                        <div className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-white/10">
+                                            <h3 className="font-bold text-gray-800 dark:text-white text-lg mb-2">
+                                                {selectedSermon.title}
+                                            </h3>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                {new Date(selectedSermon.date).toLocaleDateString('id-ID', {
+                                                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                                                })}
+                                            </p>
+                                        </div>
 
-                                        Please note that the current API integration retrieves the metadata.
-                                        To view the full text, we might need to fetch the specific PDF or detail endpoint if available.
+                                        <div className="p-4 bg-teal-50/50 dark:bg-teal-900/10 rounded-xl border border-teal-100 dark:border-teal-900/20">
+                                            <p className="text-sm text-teal-700 dark:text-teal-300 leading-relaxed">
+                                                Khutbah ini bersumber dari UAE Awqaf dan tersedia dalam Bahasa Inggris.
+                                                Untuk konten lengkap, silakan kunjungi sumber resmi atau hubungi pengurus masjid terdekat.
+                                            </p>
+                                        </div>
 
-                                        (Simulated Content)
-                                        In the name of Allah, the Most Gracious, the Most Merciful.
-                                        All praise is due to Allah, Lord of the worlds...
-                                    </p>
+                                        {selectedSermon.source && (
+                                            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                                <Globe className="w-4 h-4" />
+                                                <span>Sumber: {selectedSermon.source}</span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 

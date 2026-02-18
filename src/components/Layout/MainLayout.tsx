@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Home, Sun, Moon, Info, FileText, Settings, BookOpen, Compass, Ban, ChevronLeft, ChevronRight, Mic } from 'lucide-react';
+import { Home, Info, FileText, Settings, BookOpen, Compass, Ban, ChevronLeft, ChevronRight, Mic, Book, MoreHorizontal, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import Logo from '../Logo';
+
+type Page = 'home' | 'dzikir' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott' | 'khutbah';
 
 interface MainLayoutProps {
     children: React.ReactNode;
-    currentPage: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott' | 'khutbah';
-    onNavigate: (page: 'home' | 'dzikir-pagi' | 'dzikir-petang' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott' | 'khutbah') => void;
+    currentPage: Page;
+    onNavigate: (page: Page) => void;
     onToggleSettings: () => void;
 }
 
@@ -16,41 +19,52 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     onToggleSettings
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [showMoreMenu, setShowMoreMenu] = useState(false);
 
     const navItems = [
-        { id: 'home', label: 'Home', icon: Home },
-        { id: 'quran', label: "Al-Qur'an", icon: BookOpen },
-        { id: 'qibla', label: 'Kiblat', icon: Compass },
-        { id: 'khutbah', label: 'Khutbah', icon: Mic },
-        { id: 'boycott', label: 'Cek Boikot', icon: Ban },
-        { id: 'dzikir-pagi', label: 'Pagi', icon: Sun },
-        { id: 'dzikir-petang', label: 'Petang', icon: Moon },
+        { id: 'home' as Page, label: 'Home', icon: Home },
+        { id: 'dzikir' as Page, label: 'Dzikir', icon: Book },
+        { id: 'quran' as Page, label: "Al-Qur'an", icon: BookOpen },
+        { id: 'qibla' as Page, label: 'Kiblat', icon: Compass },
+        { id: 'khutbah' as Page, label: 'Khutbah', icon: Mic },
+        { id: 'boycott' as Page, label: 'Cek Boikot', icon: Ban },
     ];
 
     const secondaryNavItems = [
-        { id: 'about', label: 'About', icon: Info },
-        { id: 'documentation', label: 'Docs', icon: FileText },
+        { id: 'about' as Page, label: 'About', icon: Info },
+        { id: 'documentation' as Page, label: 'Docs', icon: FileText },
     ];
+
+    // Mobile: 4 core items + More
+    const mobileMainItems = [
+        { id: 'home' as Page, label: 'Home', icon: Home },
+        { id: 'dzikir' as Page, label: 'Dzikir', icon: Book },
+        { id: 'quran' as Page, label: "Qur'an", icon: BookOpen },
+        { id: 'qibla' as Page, label: 'Kiblat', icon: Compass },
+    ];
+
+    const mobileOverflowItems = [
+        { id: 'khutbah' as Page, label: 'Khutbah Jumat', icon: Mic },
+        { id: 'boycott' as Page, label: 'Cek Boikot', icon: Ban },
+        { id: 'about' as Page, label: 'Tentang', icon: Info },
+        { id: 'documentation' as Page, label: 'Dokumentasi', icon: FileText },
+    ];
+
+    const handleMobileNav = (page: Page) => {
+        onNavigate(page);
+        setShowMoreMenu(false);
+    };
 
     return (
         <div className="flex min-h-screen relative text-gray-800 dark:text-gray-100">
-            {/* Background is handled globally by body/liquid-bg, but we add a subtle overlay pattern if desired */}
 
-            {/* Desktop Sidebar (Visible on lg screens) */}
+            {/* Desktop Sidebar */}
             <aside
                 className={`hidden lg:flex flex-col h-screen fixed left-0 top-0 glass-card m-4 my-4 rounded-3xl z-40 border-opacity-40 bg-white/60 dark:bg-slate-900/60 transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'
                     }`}
             >
-                {/* Header with Toggle */}
                 <div className={`p-6 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} border-b border-gray-200/30 dark:border-white/10`}>
-                    {!isCollapsed && (
-                        <Logo />
-                    )}
-                    {isCollapsed && (
-                        <div className="absolute top-20 opacity-0 group-hover:opacity-100 transition-opacity">
-                            {/* Optional: Show icon on hover or maybe just leave it clean */}
-                        </div>
-                    )}
+                    {!isCollapsed && <Logo />}
                     <button
                         onClick={() => setIsCollapsed(!isCollapsed)}
                         className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400 hover:text-primary transition-colors"
@@ -60,17 +74,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                     </button>
                 </div>
 
-                {/* Scrollable Nav Area */}
                 <nav className="flex-1 flex flex-col gap-2 p-3 overflow-y-auto no-scrollbar">
-                    {/* Main Menu */}
                     <div className={`text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-4 mb-2 mt-2 ${isCollapsed ? 'text-center' : ''}`}>
-                        {isCollapsed ? '...' : 'Menu'}
+                        {isCollapsed ? '•' : 'Menu'}
                     </div>
 
                     {navItems.map((item) => (
                         <button
                             key={item.id}
-                            onClick={() => onNavigate(item.id as any)}
+                            onClick={() => onNavigate(item.id)}
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${currentPage === item.id
                                 ? 'bg-primary text-white shadow-lg shadow-primary/30'
                                 : 'hover:bg-primary/10 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary'
@@ -84,15 +96,14 @@ const MainLayout: React.FC<MainLayoutProps> = ({
 
                     <div className="my-2 border-t border-gray-200/30 dark:border-white/10"></div>
 
-                    {/* Secondary Menu */}
                     <div className={`text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-4 mb-2 mt-2 ${isCollapsed ? 'text-center' : ''}`}>
-                        {isCollapsed ? '...' : 'Info'}
+                        {isCollapsed ? '•' : 'Info'}
                     </div>
 
                     {secondaryNavItems.map((item) => (
                         <button
                             key={item.id}
-                            onClick={() => onNavigate(item.id as any)}
+                            onClick={() => onNavigate(item.id)}
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${currentPage === item.id
                                 ? 'bg-primary text-white shadow-lg shadow-primary/30'
                                 : 'hover:bg-primary/10 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary'
@@ -103,6 +114,17 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                             {!isCollapsed && <span className="font-medium">{item.label}</span>}
                         </button>
                     ))}
+
+                    <div className="mt-auto pt-2 border-t border-gray-200/30 dark:border-white/10">
+                        <button
+                            onClick={onToggleSettings}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-primary/10 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400 hover:text-primary w-full ${isCollapsed ? 'justify-center px-2' : ''}`}
+                            title={isCollapsed ? 'Settings' : ''}
+                        >
+                            <Settings className="w-5 h-5" />
+                            {!isCollapsed && <span className="font-medium">Settings</span>}
+                        </button>
+                    </div>
                 </nav>
             </aside>
 
@@ -112,35 +134,83 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             </main>
 
             {/* Mobile Bottom Navigation */}
-            <div className="lg:hidden fixed bottom-0 left-0 w-full glass-card border-t border-gray-200/50 dark:border-white/10 z-50 rounded-none rounded-t-2xl pb-safe">
-                <div className="flex justify-around items-center p-2">
-                    {navItems.map((item) => (
+            <div className="lg:hidden fixed bottom-0 left-0 w-full glass-card border-t border-gray-200/50 dark:border-white/10 z-50 rounded-none rounded-t-2xl pb-safe bg-white/80 dark:bg-slate-900/80">
+                <div className="flex justify-around items-center p-1.5">
+                    {mobileMainItems.map((item) => (
                         <button
                             key={item.id}
-                            onClick={() => onNavigate(item.id as any)}
-                            className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-300 ${currentPage === item.id
+                            onClick={() => handleMobileNav(item.id)}
+                            className={`flex flex-col items-center gap-0.5 p-1.5 rounded-xl transition-all duration-300 min-w-0 flex-1 ${currentPage === item.id
                                 ? 'text-primary'
                                 : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                                 }`}
                         >
-                            <div className={`p-2 rounded-full ${currentPage === item.id ? 'bg-primary/10' : ''}`}>
-                                <item.icon className={`w-6 h-6 ${currentPage === item.id ? 'fill-current' : ''}`} />
+                            <div className={`p-1.5 rounded-full transition-colors ${currentPage === item.id ? 'bg-primary/10' : ''}`}>
+                                <item.icon className="w-5 h-5" />
                             </div>
-                            <span className="text-[10px] font-medium">{item.label}</span>
+                            <span className="text-[10px] font-medium leading-tight">{item.label}</span>
                         </button>
                     ))}
 
+                    {/* More button */}
                     <button
-                        onClick={onToggleSettings}
-                        className="flex flex-col items-center gap-1 p-2 rounded-xl text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+                        onClick={() => setShowMoreMenu(!showMoreMenu)}
+                        className={`flex flex-col items-center gap-0.5 p-1.5 rounded-xl transition-all duration-300 min-w-0 flex-1 ${showMoreMenu
+                            ? 'text-primary'
+                            : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
+                            }`}
                     >
-                        <div className="p-2">
-                            <Settings className="w-6 h-6" />
+                        <div className={`p-1.5 rounded-full transition-colors ${showMoreMenu ? 'bg-primary/10' : ''}`}>
+                            <MoreHorizontal className="w-5 h-5" />
                         </div>
-                        <span className="text-[10px] font-medium">Settings</span>
+                        <span className="text-[10px] font-medium leading-tight">Lainnya</span>
                     </button>
                 </div>
             </div>
+
+            {/* Mobile More Menu Overlay */}
+            <AnimatePresence>
+                {showMoreMenu && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowMoreMenu(false)}
+                            className="lg:hidden fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, y: 80 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 80 }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                            className="lg:hidden fixed bottom-16 left-3 right-3 z-50 glass-card p-3 rounded-2xl bg-white/95 dark:bg-slate-900/95 shadow-2xl border border-gray-200/50 dark:border-white/10"
+                        >
+                            <div className="flex items-center justify-between px-2 pb-2 mb-2 border-b border-gray-100 dark:border-white/10">
+                                <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Menu Lainnya</span>
+                                <button onClick={() => setShowMoreMenu(false)} className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10">
+                                    <X className="w-4 h-4 text-gray-400" />
+                                </button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                                {mobileOverflowItems.map((item) => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => handleMobileNav(item.id)}
+                                        className={`flex items-center gap-3 p-3 rounded-xl transition-all ${currentPage === item.id
+                                            ? 'bg-primary/10 text-primary'
+                                            : 'hover:bg-gray-50 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300'
+                                            }`}
+                                    >
+                                        <item.icon className="w-5 h-5" />
+                                        <span className="text-sm font-medium">{item.label}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

@@ -38,10 +38,11 @@ export const sermonService = {
                 response.forEach(month => {
                     if (month.sermons) {
                         // Map SDK sermon to our interface, generating an ID if missing
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         const mappedSermons = month.sermons.map((s: any) => ({
-                            id: s.id || `${s.source}-${s.date}-${s.type}`,
+                            id: s.id || `${s.source}-${s.date?.iso8601 || s.date}-${s.type}`,
                             title: s.title,
-                            date: s.date,
+                            date: s.date?.iso8601 || (typeof s.date === 'string' ? s.date : new Date().toISOString()),
                             type: s.type,
                             source: s.source,
                             editions: s.editions

@@ -21,17 +21,19 @@ export const CALCULATION_METHODS = [
 
 export const getCalculationParameters = (methodId: string): CalculationParameters => {
   switch (methodId) {
-    case 'kemenag':
+    case 'kemenag': {
       // Kemenag RI: Fajr 20, Isya 18
-      const paramsKemenag = new CalculationParameters('Kemenag', 20, 18);
+      const paramsKemenag = new CalculationParameters('Other', 20, 18);
       // Optional: Adjust adjustments if needed, usually Kemenag has specific minutes added
       // But standard 20/18 is the core.
       return paramsKemenag;
-      
-    case 'muhammadiyah':
-        // Muhammadiyah: Fajr 18, Isya 18 (Sesuai Putusan Tarjih 2021)
-      const paramsMuhammadiyah = new CalculationParameters('Muhammadiyah', 18, 18);
+    }
+
+    case 'muhammadiyah': {
+      // Muhammadiyah: Fajr 18, Isya 18 (Sesuai Putusan Tarjih 2021)
+      const paramsMuhammadiyah = new CalculationParameters('Other', 18, 18);
       return paramsMuhammadiyah;
+    }
 
     case 'umm_al_qura':
       return CalculationMethod.UmmAlQura();
@@ -46,7 +48,7 @@ export const getCalculationParameters = (methodId: string): CalculationParameter
     case 'tehran':
       return CalculationMethod.Tehran();
     default:
-      return new CalculationParameters('Kemenag', 20, 18); // Default to Kemenag
+      return new CalculationParameters('Other', 20, 18); // Default to Kemenag
   }
 };
 
@@ -59,7 +61,7 @@ export const calculatePrayerTimes = (
   try {
     const coordinates = new Coordinates(lat, lng);
     const params = getCalculationParameters(methodId);
-    
+
     // Set Madhab to Shafi (Standard for Indonesia/Kemenag)
     // You might want to make this configurable too, but Shafi is safe default
     params.madhab = Madhab.Shafi;

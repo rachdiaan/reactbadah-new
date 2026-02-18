@@ -21,6 +21,10 @@ import {
 const DocumentationPage: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const cardClass = "bg-white/50 dark:bg-slate-800/50 border border-gray-100 dark:border-white/10 p-4 rounded-xl shadow-sm";
+  const textClass = "text-gray-600 dark:text-gray-300";
+  const codeBlockClass = "bg-gray-50 dark:bg-slate-700/50 border border-gray-100 dark:border-white/10 p-3 rounded-lg text-xs font-mono text-gray-700 dark:text-gray-300";
+
   const sections = [
     {
       id: 'overview',
@@ -28,14 +32,14 @@ const DocumentationPage: React.FC = () => {
       icon: <Sparkles className="w-6 h-6" />,
       content: (
         <div className="space-y-4">
-          <p className="text-gray-600 leading-relaxed">
+          <p className={`${textClass} leading-relaxed`}>
             <strong>Al-Ma'tsurat Sugro</strong> adalah aplikasi Progressive Web App (PWA) modern yang dirancang khusus untuk memperkaya pengalaman spiritual harian umat Muslim. Aplikasi ini mengintegrasikan amalan dzikir Al-Ma'tsurat dengan sistem jadwal shalat yang akurat, dilengkapi dengan teknologi AI untuk memberikan refleksi spiritual yang mendalam.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-2">🎯 Keunggulan Utama</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <ul className={`text-sm ${textClass} space-y-1`}>
                 <li>• Dzikir Lengkap Al-Ma'tsurat</li>
                 <li>• AI-Powered Tadabbur</li>
                 <li>• Real-time Prayer Times</li>
@@ -44,9 +48,9 @@ const DocumentationPage: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-2">👥 Target Pengguna</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <ul className={`text-sm ${textClass} space-y-1`}>
                 <li>• Muslim Milenial & Gen Z</li>
                 <li>• Profesional Sibuk</li>
                 <li>• Pelajar & Mahasiswa</li>
@@ -64,46 +68,46 @@ const DocumentationPage: React.FC = () => {
       icon: <Layers className="w-6 h-6" />,
       content: (
         <div className="space-y-4">
-          <p className="text-gray-600 leading-relaxed">
+          <p className={`${textClass} leading-relaxed`}>
             Aplikasi dibangun menggunakan teknologi modern yang terbukti reliable dan performant dengan arsitektur yang modular dan scalable.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Code className="w-4 h-4" />
                 Frontend
               </h4>
               <div className="flex flex-wrap gap-1">
-                <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">React 18</span>
-                <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">TypeScript</span>
+                <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs">React 18</span>
+                <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs">TypeScript</span>
                 <span className="bg-primary/10 text-primary px-2 py-1 rounded text-xs">Vite</span>
-                <span className="bg-cyan-100 text-cyan-700 px-2 py-1 rounded text-xs">Tailwind</span>
-                <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">Framer Motion</span>
+                <span className="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 px-2 py-1 rounded text-xs">Tailwind</span>
+                <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded text-xs">Framer Motion</span>
               </div>
             </div>
 
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 AI & APIs
               </h4>
               <div className="flex flex-wrap gap-1">
-                <span className="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs">Gemini AI</span>
-                <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-xs">Prayer API</span>
-                <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">Date-fns</span>
+                <span className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-2 py-1 rounded text-xs">Gemini AI</span>
+                <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-2 py-1 rounded text-xs">Prayer API</span>
+                <span className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs">Date-fns</span>
               </div>
             </div>
 
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Monitor className="w-4 h-4" />
                 Design
               </h4>
               <div className="flex flex-wrap gap-1">
-                <span className="bg-pink-100 text-pink-700 px-2 py-1 rounded text-xs">Liquid Glass</span>
-                <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded text-xs">Responsive</span>
-                <span className="bg-violet-100 text-violet-700 px-2 py-1 rounded text-xs">Soft Theme</span>
+                <span className="bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 px-2 py-1 rounded text-xs">Liquid Glass</span>
+                <span className="bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 px-2 py-1 rounded text-xs">Responsive</span>
+                <span className="bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 px-2 py-1 rounded text-xs">Soft Theme</span>
               </div>
             </div>
           </div>
@@ -117,26 +121,26 @@ const DocumentationPage: React.FC = () => {
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Clock className="w-4 h-4" />
                 Sistem Jadwal Shalat
               </h4>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>• Data lengkap 12 bulan untuk Bandung</li>
+              <ul className={`text-sm ${textClass} space-y-1`}>
+                <li>• GPS-based prayer times</li>
                 <li>• Real-time clock dengan countdown</li>
                 <li>• Visual highlighting waktu shalat</li>
                 <li>• Auto notification system</li>
-                <li>• Akurasi tinggi dari Radio Adzan FM</li>
+                <li>• Multiple calculation methods</li>
               </ul>
             </div>
 
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Book className="w-4 h-4" />
                 Dzikir Al-Ma'tsurat
               </h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <ul className={`text-sm ${textClass} space-y-1`}>
                 <li>• Ta'awudz hingga Doa Rabithah</li>
                 <li>• Tap counter dengan progress bar</li>
                 <li>• Arabic typography yang indah</li>
@@ -145,12 +149,12 @@ const DocumentationPage: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 AI Tadabbur
               </h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <ul className={`text-sm ${textClass} space-y-1`}>
                 <li>• Google Gemini 2.0 Flash</li>
                 <li>• Contextual analysis mendalam</li>
                 <li>• Berdasarkan Al-Qur'an & Hadist</li>
@@ -159,12 +163,12 @@ const DocumentationPage: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Smartphone className="w-4 h-4" />
                 UI/UX Design
               </h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <ul className={`text-sm ${textClass} space-y-1`}>
                 <li>• Liquid glass effect</li>
                 <li>• Gradient animation background</li>
                 <li>• Micro-interactions</li>
@@ -183,17 +187,17 @@ const DocumentationPage: React.FC = () => {
       content: (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3">🎣 Custom Hooks</h4>
-              <div className="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs font-mono text-gray-700">
+              <div className={codeBlockClass}>
                 <div>usePrayerTimes() - Jadwal shalat</div>
                 <div>useGeminiAI() - Integrasi AI</div>
               </div>
             </div>
 
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3">📊 State Management</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <ul className={`text-sm ${textClass} space-y-1`}>
                 <li>• useState untuk local state</li>
                 <li>• useEffect untuk side effects</li>
                 <li>• Custom hooks untuk logic kompleks</li>
@@ -209,27 +213,27 @@ const DocumentationPage: React.FC = () => {
       icon: <Server className="w-6 h-6" />,
       content: (
         <div className="space-y-4">
-          <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+          <div className={cardClass}>
             <h4 className="text-primary font-bold mb-3">💻 System Requirements</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-              <div className="text-gray-600">
+            <div className={`grid grid-cols-2 md:grid-cols-4 gap-3 text-sm ${textClass}`}>
+              <div>
                 <div className="font-semibold text-primary">Node.js</div>
                 <div>v18.0.0+</div>
               </div>
-              <div className="text-gray-600">
+              <div>
                 <div className="font-semibold text-primary">npm</div>
                 <div>v8.0.0+</div>
               </div>
-              <div className="text-gray-600">
+              <div>
                 <div className="font-semibold text-primary">Browser</div>
                 <div>Modern</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+          <div className={cardClass}>
             <h4 className="text-primary font-bold mb-3">🛠️ Setup Development</h4>
-            <div className="bg-gray-50 border border-gray-100 p-3 rounded-lg text-sm font-mono text-gray-700 space-y-1">
+            <div className={codeBlockClass + " space-y-1"}>
               <div>git clone https://github.com/username/al-matsurat-app.git</div>
               <div>cd al-matsurat-app</div>
               <div>npm install</div>
@@ -246,9 +250,9 @@ const DocumentationPage: React.FC = () => {
       icon: <Database className="w-6 h-6" />,
       content: (
         <div className="space-y-4">
-          <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+          <div className={cardClass}>
             <h4 className="text-primary font-bold mb-3">🤖 Gemini AI API</h4>
-            <div className="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs font-mono text-gray-700">
+            <div className={codeBlockClass}>
               <div>Endpoint: generativelanguage.googleapis.com</div>
               <div>Model: gemini-2.0-flash</div>
               <div>Method: POST</div>
@@ -256,9 +260,9 @@ const DocumentationPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+          <div className={cardClass}>
             <h4 className="text-primary font-bold mb-3">🕌 Prayer Data Structure</h4>
-            <div className="bg-gray-50 border border-gray-100 p-3 rounded-lg text-xs font-mono text-gray-700">
+            <div className={codeBlockClass}>
               <div>interface PrayerTime &#123;</div>
               <div>&nbsp;&nbsp;name: string;</div>
               <div>&nbsp;&nbsp;time: Date;</div>
@@ -276,9 +280,9 @@ const DocumentationPage: React.FC = () => {
       content: (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3">🔍 Troubleshooting</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <ul className={`text-sm ${textClass} space-y-1`}>
                 <li>• API Key Error - Periksa validitas key</li>
                 <li>• Build Error - Clear node_modules</li>
                 <li>• Performance Issue - Check dev tools</li>
@@ -286,22 +290,22 @@ const DocumentationPage: React.FC = () => {
               </ul>
             </div>
 
-            <div className="bg-white/50 border border-white/60 p-4 rounded-xl shadow-sm">
+            <div className={cardClass}>
               <h4 className="text-primary font-bold mb-3 flex items-center gap-2">
                 <Heart className="w-4 h-4" />
                 Contributing Guidelines
               </h4>
-              <p className="text-sm text-gray-600">Open source contributions are welcome.</p>
+              <p className={`text-sm ${textClass}`}>Open source contributions are welcome.</p>
             </div>
           </div>
 
-          <div className="bg-white/50 border border-white/60 p-4 rounded-xl text-center shadow-sm">
+          <div className={`${cardClass} text-center`}>
             <h4 className="text-primary font-bold mb-2">📧 Contact & Support</h4>
-            <p className="text-gray-600">
+            <p className={textClass}>
               Untuk pertanyaan atau saran, hubungi{' '}
               <a
                 href="mailto:rachdiaaan@gmail.com"
-                className="text-primary hover:text-primary-dark underline transition-colors"
+                className="text-primary hover:opacity-80 underline transition-colors"
               >
                 rachdiaaan@gmail.com
               </a>
@@ -331,7 +335,7 @@ const DocumentationPage: React.FC = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative max-w-4xl mx-auto">
       {/* Mobile Navigation Toggle */}
       <motion.button
         whileHover={{ scale: 1.1 }}
@@ -350,11 +354,11 @@ const DocumentationPage: React.FC = () => {
               initial={{ x: -300, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
-              className="fixed lg:sticky top-0 left-0 h-screen w-80 glass-card p-6 z-40 overflow-y-auto lg:block border-r border-white/30 dark:border-white/5"
+              className="fixed lg:sticky top-0 left-0 h-screen w-72 glass-card p-6 z-40 overflow-y-auto no-scrollbar lg:block border-r border-gray-200/30 dark:border-white/5 bg-white/80 dark:bg-slate-900/80"
             >
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-primary mb-2">📚 Navigasi</h3>
-                <div className="text-sm text-gray-500 bg-white/50 dark:bg-slate-800/50 p-2 rounded-lg border border-white/60 dark:border-white/10">
+                <div className={`text-sm ${textClass} ${cardClass}`}>
                   <strong>Versi:</strong> 3.1.5<br />
                   <strong>Update:</strong> 30 Juni 2025
                 </div>
@@ -365,7 +369,7 @@ const DocumentationPage: React.FC = () => {
                   <button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className="w-full text-left px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5 dark:hover:bg-white/5 transition-colors font-medium"
+                    className={`w-full text-left px-3 py-2 rounded-lg ${textClass} hover:text-primary hover:bg-primary/5 dark:hover:bg-white/5 transition-colors font-medium`}
                   >
                     {item.title}
                   </button>
@@ -394,7 +398,7 @@ const DocumentationPage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="glass-card p-6 border border-white/40 dark:border-white/5 shadow-sm"
+                className="glass-card p-6"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="text-primary bg-primary/10 p-2 rounded-lg">
@@ -403,7 +407,7 @@ const DocumentationPage: React.FC = () => {
                   <h2 className="text-xl font-bold text-gray-800 dark:text-white">{section.title}</h2>
                 </div>
 
-                <div className="text-gray-600 dark:text-gray-300">
+                <div className={textClass}>
                   {section.content}
                 </div>
               </motion.div>
@@ -414,7 +418,7 @@ const DocumentationPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="glass-card p-6 text-center mt-8 border border-white/40 dark:border-white/5 shadow-sm"
+            className="glass-card p-6 text-center mt-8"
           >
             <h3 className="text-2xl font-bold text-primary mb-4">🌟 Sumber Data & Referensi</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -422,7 +426,7 @@ const DocumentationPage: React.FC = () => {
                 href="https://quran.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/50 dark:bg-slate-800/50 border border-white/60 dark:border-white/10 p-4 rounded-xl hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group"
+                className={`${cardClass} hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group`}
               >
                 <Globe className="w-6 h-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
                 <div className="text-primary font-semibold">quran.com</div>
@@ -433,7 +437,7 @@ const DocumentationPage: React.FC = () => {
                 href="https://almatsurat.net"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/50 dark:bg-slate-800/50 border border-white/60 dark:border-white/10 p-4 rounded-xl hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group"
+                className={`${cardClass} hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group`}
               >
                 <Book className="w-6 h-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
                 <div className="text-primary font-semibold">almatsurat.net</div>
@@ -444,10 +448,10 @@ const DocumentationPage: React.FC = () => {
                 href="https://radioadzanfmbandung.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/50 dark:bg-slate-800/50 border border-white/60 dark:border-white/10 p-4 rounded-xl hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group"
+                className={`${cardClass} hover:bg-white/80 dark:hover:bg-slate-700/50 transition-colors group`}
               >
-                <Clock className="w-6 h-6 text-orange-500 mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                <div className="text-orange-600 font-semibold">Radio Adzan FM</div>
+                <Clock className="w-6 h-6 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <div className="text-primary font-semibold">Radio Adzan FM</div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">Jadwal Shalat Bandung</div>
               </a>
             </div>

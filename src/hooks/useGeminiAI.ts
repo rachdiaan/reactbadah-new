@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const GEMINI_API_KEY = 'AIzaSyDcZH1x0LFY6uKEYFIyt21RghNTRGMtXTA';
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
 
 export const useGeminiAI = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,7 +11,7 @@ export const useGeminiAI = () => {
     }
 
     setIsLoading(true);
-    
+
     try {
       const prompt = `Berikan refleksi (Tadabbur) singkat dalam Bahasa Indonesia, sekitar 80-120 kata, tentang makna dan hikmah dari doa/ayat berikut. Fokus pada relevansinya untuk kehidupan sehari-hari seorang Muslim berdasarkan Al-Qur'an dan hadist shahih. Jangan ulangi teks doa dalam respons. Berikan hikmah yang mendalam dan praktis.
 
@@ -45,7 +45,7 @@ Berikan refleksi yang:
       }
 
       const result = await response.json();
-      
+
       if (result.candidates && result.candidates[0]?.content?.parts?.[0]) {
         return result.candidates[0].content.parts[0].text;
       } else {
@@ -65,7 +65,7 @@ Berikan refleksi yang:
     }
 
     setIsLoading(true);
-    
+
     try {
       const timeContext = nextPrayerName ? `Saat ini mendekati waktu ${nextPrayerName}.` : '';
       const prompt = `Berikan satu mutiara hikmah Islami yang indah dan menyentuh hati, berdasarkan Al-Qur'an dan hadist shahih. ${timeContext} 
@@ -100,7 +100,7 @@ Fokus pada tema: ketaqwaan, syukur, sabar, tawakkal, atau cinta kepada Allah.`;
       }
 
       const result = await response.json();
-      
+
       if (result.candidates && result.candidates[0]?.content?.parts?.[0]) {
         return result.candidates[0].content.parts[0].text;
       } else {

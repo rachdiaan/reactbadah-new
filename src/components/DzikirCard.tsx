@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { DzikirItem } from '../types';
 import { useGeminiAI } from '../hooks/useGeminiAI';
-import { useSettings } from '../contexts/SettingsContext';
+import { useSettings } from '../hooks/useSettings';
 
 interface DzikirCardProps {
   dzikir: DzikirItem;
@@ -48,7 +48,7 @@ const DzikirCard: React.FC<DzikirCardProps> = ({ dzikir, onTadabbur }) => {
         {item.ayat_number && (
           <div className="flex items-center gap-2 mb-3">
             <span className="bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded-md">Ayat {item.ayat_number}</span>
-            <span className="text-xs text-gray-400 uppercase tracking-widest">{(item as any).title_extra || ''}</span>
+            <span className="text-xs text-gray-400 uppercase tracking-widest">{(item as { title_extra?: string }).title_extra || ''}</span>
           </div>
         )}
         <p className="arabic-text mb-4 text-right leading-loose text-gray-800 dark:text-gray-100" style={{ fontFamily: '"Amiri", serif', fontSize: `${arabicFontSize}px` }}>{item.arabic}</p>

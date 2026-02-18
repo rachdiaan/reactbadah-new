@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { PrayerTimes, PrayerTime, CountdownTime } from '../types';
-import { AlAdhanClient, AlAdhanRequests } from "@islamicnetwork/sdk";
 import { format } from 'date-fns';
 
 const DEFAULT_COORDINATES = {
@@ -19,14 +18,14 @@ const METHOD_MAPPING: Record<string, number> = {
   'jafari': 0,   // Shia Ithna-Ashari
 };
 
-// Initialize Client outside component to avoid recreation
-const client = AlAdhanClient.create({
-  baseUrl: "https://api.aladhan.com/v1",
-  defaultHeaders: { "X-App": "al-matsurat-app" },
-  timeoutMs: 10_000,
-  userAgent: "al-matsurat-client",
-  fetch: globalThis.fetch
-});
+interface AlAdhanTimings {
+  Fajr: string;
+  Dhuhr: string;
+  Asr: string;
+  Maghrib: string;
+  Isha: string;
+  [key: string]: string;
+}
 
 export const usePrayerTimes = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -65,8 +64,8 @@ export const usePrayerTimes = () => {
           });
           setLocationName('Lokasi Saat Ini');
         },
-        (error) => {
-          console.warn('Geolocation error:', error);
+        (geoError) => {
+          console.warn('Geolocation error:', geoError);
           setLocationName('Jakarta (Default)');
         }
       );
@@ -78,32 +77,25 @@ export const usePrayerTimes = () => {
     setError(null);
     try {
       const dateStr = format(new Date(), 'dd-MM-yyyy');
-      // Default to Kemenag (20) if unknown
       const method = METHOD_MAPPING[calculationMethod] ?? 20;
 
-      // Create Request
-      const options = new AlAdhanRequests.PrayerTimesOptions();
-      // Force method via any cast
-      (options as any).method = method;
+      const url = `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${coordinates.lat}&longitude=${coordinates.lng}&method=${method}`;
+      const response = await fetch(url);
 
-      const request = new AlAdhanRequests.DailyPrayerTimesByCoordinatesRequest(
-        dateStr,
-        coordinates.lat,
-        coordinates.lng,
-        options
-      );
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
 
-      const response = await client.prayerTimes().dailyByCoordinates(request);
+      const result = await response.json();
 
-      if (!response || !response.data || !response.data.timings) {
+      if (!result || !result.data || !result.data.timings) {
         throw new Error("Invalid response from API");
       }
 
-      const timings = response.data.timings;
+      const timings: AlAdhanTimings = result.data.timings;
 
       // Parse AlAdhan "HH:mm" strings to Date objects for today
       const parseTime = (timeStr: string): Date => {
-        // Handle "04:30 (WIB)" edge cases if any, take first part
         const cleanTime = timeStr.split(' ')[0];
         const [hours, minutes] = cleanTime.split(':').map(Number);
         const date = new Date();
