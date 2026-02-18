@@ -154,7 +154,23 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                                         fontSize: `${arabicFontSize}px`
                                     }}
                                 >
-                                    {ayah.text}
+                                    {/* Strip Bismillah from ayah 1 since it's shown separately above */}
+                                    {(() => {
+                                        if (ayah.numberInSurah === 1 && surahNumber !== 1 && surahNumber !== 9) {
+                                            const t = ayah.text;
+                                            // Check if starts with بِسْ (ba + kasra + sin)
+                                            if (t.charCodeAt(0) === 1576 && t.charCodeAt(1) === 1616 && t.charCodeAt(2) === 1587) {
+                                                let spaceCount = 0;
+                                                for (let i = 0; i < t.length; i++) {
+                                                    if (t[i] === ' ') {
+                                                        spaceCount++;
+                                                        if (spaceCount === 4) return t.substring(i + 1);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        return ayah.text;
+                                    })()}
                                 </p>
                             </div>
 
