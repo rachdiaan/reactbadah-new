@@ -206,6 +206,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                                         <span className="text-sm font-medium">{item.label}</span>
                                     </button>
                                 ))}
+                                <button
+                                    onClick={() => { onToggleSettings(); setShowMoreMenu(false); }}
+                                    className="flex items-center gap-3 p-3 rounded-xl transition-all hover:bg-gray-50 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300"
+                                >
+                                    <Settings className="w-5 h-5" />
+                                    <span className="text-sm font-medium">Pengaturan</span>
+                                </button>
                             </div>
                         </motion.div>
                     </>
