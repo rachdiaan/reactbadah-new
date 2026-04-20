@@ -17,6 +17,7 @@ const HeroPrayerCard: React.FC = () => {
         locationName,
         isLoading: isTimeLoading,
         error: timeError,
+        retry,
     } = usePrayerTimes();
 
     const { getDailyWisdom, isLoading: isWisdomLoading } = useGeminiAI();
@@ -51,9 +52,15 @@ const HeroPrayerCard: React.FC = () => {
 
     if (timeError) {
         return (
-            <div className="glass-card w-full p-8 mb-6 flex items-center justify-center gap-3 text-red-500 bg-red-50/50 dark:bg-red-900/10">
-                <RefreshCw className="w-5 h-5" />
-                <p className="font-medium">Gagal memuat jadwal sholat. Periksa koneksi internet Anda.</p>
+            <div className="glass-card w-full p-8 mb-6 flex flex-col items-center justify-center gap-3 text-center bg-red-50/50 dark:bg-red-900/10">
+                <RefreshCw className="w-6 h-6 text-red-400" />
+                <p className="font-medium text-[var(--text-main)] text-sm">{timeError}</p>
+                <button
+                    onClick={retry}
+                    className="mt-1 px-5 py-2 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors"
+                >
+                    Coba Lagi
+                </button>
             </div>
         );
     }
