@@ -26,6 +26,13 @@ const DzikirCard: React.FC<DzikirCardProps> = ({ dzikir, onTadabbur }) => {
         if (next >= dzikir.total_taps) setIsCompleted(true);
     }, [currentTaps, isCompleted, dzikir.total_taps]);
 
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            handleTap();
+        }
+    }, [handleTap]);
+
     const handleReset = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
         setCurrentTaps(0);
@@ -161,8 +168,9 @@ const DzikirCard: React.FC<DzikirCardProps> = ({ dzikir, onTadabbur }) => {
                         <div className="relative flex-shrink-0">
                             <motion.button
                                 onClick={handleTap}
+                                onKeyDown={handleKeyDown}
                                 disabled={isCompleted}
-                                aria-label={`Hitung dzikir, ${currentTaps} dari ${dzikir.total_taps}`}
+                                aria-label={`Hitung dzikir, ${currentTaps} dari ${dzikir.total_taps}. Tekan Spasi atau Enter untuk menghitung`}
                                 whileTap={isCompleted ? {} : { scale: 0.88 }}
                                 className={`relative w-20 h-20 rounded-full font-bold text-xl tabular-nums shadow-lg transition-all duration-200 select-none overflow-hidden
                                     ${isCompleted

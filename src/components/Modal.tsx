@@ -10,11 +10,30 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
-    // Close on Escape
+    const panelRef = React.useRef<HTMLDivElement>(null);
+
+    // Close on Escape + focus trap
     useEffect(() => {
         if (!isOpen) return;
-        const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+        const handler = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') { onClose(); return; }
+            if (e.key !== 'Tab') return;
+            const panel = panelRef.current;
+            if (!panel) return;
+            const focusable = panel.querySelectorAll<HTMLElement>(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey ? document.activeElement === first : document.activeElement === last) {
+                e.preventDefault();
+                (e.shiftKey ? last : first)?.focus();
+            }
+        };
         document.addEventListener('keydown', handler);
+        // Move focus inside modal on open
+        const firstFocusable = panelRef.current?.querySelector<HTMLElement>('button');
+        firstFocusable?.focus();
         return () => document.removeEventListener('keydown', handler);
     }, [isOpen, onClose]);
 
@@ -32,6 +51,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
                     aria-label={title}
                 >
                     <motion.div
+                        ref={panelRef}
                         initial={{ opacity: 0, y: 40, scale: 0.96 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 24, scale: 0.97 }}
