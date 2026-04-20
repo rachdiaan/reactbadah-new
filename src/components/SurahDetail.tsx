@@ -72,13 +72,16 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
     const loadSurah = useCallback(async () => {
         setIsLoading(true);
         setHasError(false);
-        const data = await quranService.getSurah(surahNumber);
-        if (data) {
-            setAyahs(data.ayahs);
-        } else {
-            setHasError(true);
+        try {
+            const data = await quranService.getSurah(surahNumber);
+            if (data) {
+                setAyahs(data.ayahs);
+            } else {
+                setHasError(true);
+            }
+        } finally {
+            setIsLoading(false);
         }
-        setIsLoading(false);
     }, [surahNumber]);
 
     useEffect(() => {

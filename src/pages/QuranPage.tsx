@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, ChevronRight, BookOpen, X } from 'lucide-react';
+import { Search, ChevronRight, BookOpen, X, AlertCircle } from 'lucide-react';
 import SurahDetail from '../components/SurahDetail';
 import { quranService, SurahMeta } from '../services/quranService';
 
@@ -14,13 +14,24 @@ const QuranPage: React.FC = () => {
     const [selectedSurah, setSelectedSurah] = useState<{ number: number; name: string } | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
-    useEffect(() => {
-        quranService.getAllSurahs().then(data => {
-            setSurahs(data);
+    const fetchSurahs = useCallback(async () => {
+        setIsLoading(true);
+        setHasError(false);
+        try {
+            const data = await quranService.getAllSurahs();
+            if (data.length === 0) {
+                setHasError(true);
+            } else {
+                setSurahs(data);
+            }
+        } finally {
             setIsLoading(false);
-        });
+        }
     }, []);
+
+    useEffect(() => { fetchSurahs(); }, [fetchSurahs]);
 
     const filteredSurahs = useMemo(() =>
         surahs.filter(s =>
@@ -108,14 +119,33 @@ const QuranPage: React.FC = () => {
                 </motion.p>
             )}
 
+            {/* ── Error ──────────────────── */}
+            {!isLoading && hasError && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="glass-card p-10 flex flex-col items-center gap-3 text-center"
+                >
+                    <AlertCircle className="w-10 h-10 text-red-400" />
+                    <p className="font-semibold text-[var(--text-main)]">Gagal memuat daftar surah</p>
+                    <p className="text-sm text-[var(--text-muted)]">Periksa koneksi internet, lalu coba lagi.</p>
+                    <button
+                        onClick={fetchSurahs}
+                        className="mt-2 px-5 py-2 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors"
+                    >
+                        Coba Lagi
+                    </button>
+                </motion.div>
+            )}
+
             {/* ── Surah List ─────────────── */}
-            {isLoading ? (
+            {!hasError && isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {Array.from({ length: 10 }).map((_, i) => (
                         <div key={i} className="h-20 rounded-2xl shimmer" />
                     ))}
                 </div>
-            ) : (
+            ) : !hasError ? (
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -195,7 +225,7 @@ const QuranPage: React.FC = () => {
                         </motion.div>
                     )}
                 </motion.div>
-            )}
+            ) : null}
         </div>
     );
 };
