@@ -21,13 +21,23 @@ export interface SurahFull extends SurahMeta {
     ayahs: Ayah[];
 }
 
+async function fetchWithTimeout(url: string, timeoutMs = 8000): Promise<Response> {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        const res = await fetch(url, { signal: controller.signal });
+        return res;
+    } finally {
+        clearTimeout(id);
+    }
+}
+
 export const quranService = {
-    // Get list of all Surahs (Metadata)
     getAllSurahs: async (): Promise<SurahMeta[]> => {
         try {
-            const response = await fetch('https://api.alquran.cloud/v1/meta');
+            const response = await fetchWithTimeout('https://api.alquran.cloud/v1/meta');
             const data = await response.json();
-            if (data.code === 200 && data.data && data.data.surahs) {
+            if (data.code === 200 && data.data?.surahs?.references) {
                 return data.data.surahs.references;
             }
             return [];
@@ -37,11 +47,12 @@ export const quranService = {
         }
     },
 
-    // Get specific Surah with Text, Translation, and Audio
     getSurah: async (number: number): Promise<SurahFull | null> => {
         try {
-            // Fetch 3 editions: Uthmani Text, Indonesian Translation, Alafasy Audio
-            const response = await fetch(`https://api.alquran.cloud/v1/surah/${number}/editions/quran-uthmani,id.indonesian,ar.alafasy`);
+            const response = await fetchWithTimeout(
+                `https://api.alquran.cloud/v1/surah/${number}/editions/quran-uthmani,id.indonesian,ar.alafasy`,
+                12000
+            );
             const data = await response.json();
 
             if (data.code === 200 && data.data && data.data.length >= 3) {
@@ -54,7 +65,6 @@ export const quranService = {
 
                 if (!arabic) return null;
 
-                // Merge into single Ayah objects
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const mergedAyahs: Ayah[] = arabic.ayahs.map((ayah: any, index: number) => ({
                     number: ayah.number,
@@ -62,7 +72,7 @@ export const quranService = {
                     translation: (translation?.ayahs?.[index]?.text) ?? '',
                     audio: (audio?.ayahs?.[index]?.audio) ?? '',
                     numberInSurah: ayah.numberInSurah,
-                    juz: ayah.juz
+                    juz: ayah.juz,
                 }));
 
                 return {
@@ -72,7 +82,7 @@ export const quranService = {
                     englishNameTranslation: arabic.englishNameTranslation,
                     numberOfAyahs: arabic.numberOfAyahs,
                     revelationType: arabic.revelationType,
-                    ayahs: mergedAyahs
+                    ayahs: mergedAyahs,
                 };
             }
             return null;
@@ -80,5 +90,5 @@ export const quranService = {
             console.error('Failed to fetch surah details:', error);
             return null;
         }
-    }
+    },
 };
