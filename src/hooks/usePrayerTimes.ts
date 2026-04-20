@@ -1,31 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { PrayerTimes, PrayerTime, CountdownTime } from '../types';
-import { format } from 'date-fns';
+import { calculatePrayerTimes, CALCULATION_METHODS } from '../utils/prayerCalculation';
 
 const DEFAULT_COORDINATES = {
   lat: -6.2088, // Jakarta
   lng: 106.8456
 };
-
-// Method Mapping for AlAdhan
-const METHOD_MAPPING: Record<string, number> = {
-  'kemenag': 20, // Indonesia (Kemenag)
-  'mwl': 3,      // Muslim World League
-  'egypt': 5,    // Egyptian General Authority
-  'makkah': 4,   // Umm al-Qura
-  'karachi': 1,  // Karachi
-  'tehran': 7,   // Tehran
-  'jafari': 0,   // Shia Ithna-Ashari
-};
-
-interface AlAdhanTimings {
-  Fajr: string;
-  Dhuhr: string;
-  Asr: string;
-  Maghrib: string;
-  Isha: string;
-  [key: string]: string;
-}
 
 export const usePrayerTimes = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -72,51 +52,26 @@ export const usePrayerTimes = () => {
     }
   }, []);
 
-  const fetchPrayerTimes = useCallback(async () => {
+  const fetchPrayerTimes = useCallback(() => {
     setIsLoading(true);
     setError(null);
     try {
-      const dateStr = format(new Date(), 'dd-MM-yyyy');
-      const method = METHOD_MAPPING[calculationMethod] ?? 20;
-
-      const url = `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${coordinates.lat}&longitude=${coordinates.lng}&method=${method}`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      if (!result || !result.data || !result.data.timings) {
-        throw new Error("Invalid response from API");
-      }
-
-      const timings: AlAdhanTimings = result.data.timings;
-
-      // Parse AlAdhan "HH:mm" strings to Date objects for today
-      const parseTime = (timeStr: string): Date => {
-        const cleanTime = timeStr.split(' ')[0];
-        const [hours, minutes] = cleanTime.split(':').map(Number);
-        const date = new Date();
-        date.setHours(hours, minutes, 0, 0);
-        return date;
-      };
+      const result = calculatePrayerTimes(new Date(), coordinates.lat, coordinates.lng, calculationMethod);
+      if (!result) throw new Error('Calculation failed');
 
       const newPrayers: PrayerTimes = {
-        subuh: { name: 'Subuh', time: parseTime(timings.Fajr), key: 'subuh' },
-        dzuhur: { name: 'Dzuhur', time: parseTime(timings.Dhuhr), key: 'dzuhur' },
-        ashar: { name: 'Ashar', time: parseTime(timings.Asr), key: 'ashar' },
-        maghrib: { name: 'Maghrib', time: parseTime(timings.Maghrib), key: 'maghrib' },
-        isya: { name: 'Isya', time: parseTime(timings.Isha), key: 'isya' },
+        subuh:   { name: 'Subuh',   time: result.subuh,   key: 'subuh'   },
+        dzuhur:  { name: 'Dzuhur',  time: result.dzuhur,  key: 'dzuhur'  },
+        ashar:   { name: 'Ashar',   time: result.ashar,   key: 'ashar'   },
+        maghrib: { name: 'Maghrib', time: result.maghrib, key: 'maghrib' },
+        isya:    { name: 'Isya',    time: result.isya,    key: 'isya'    },
       };
 
       setTodayPrayers(newPrayers);
-      setIsLoading(false);
-
     } catch (err) {
-      console.error("Failed to fetch prayer times:", err);
-      setError("Gagal memuat jadwal sholat. Periksa koneksi internet Anda.");
+      console.error('Prayer time calculation failed:', err);
+      setError('Gagal menghitung jadwal sholat.');
+    } finally {
       setIsLoading(false);
     }
   }, [coordinates, calculationMethod]);
@@ -218,13 +173,7 @@ export const usePrayerTimes = () => {
     },
     calculationMethod,
     changeMethod,
-    availableMethods: [
-      { id: 'kemenag', name: 'Kemenag RI' },
-      { id: 'mwl', name: 'Muslim World League' },
-      { id: 'egypt', name: 'Egyptian General Auth' },
-      { id: 'makkah', name: 'Umm al-Qura' },
-      { id: 'karachi', name: 'Karachi' },
-    ],
+    availableMethods: CALCULATION_METHODS.map(m => ({ id: m.id, name: m.name })),
     locationName,
     isLoading,
     error
