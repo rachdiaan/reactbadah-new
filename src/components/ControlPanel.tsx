@@ -1,238 +1,232 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Info, FileText, Bell, Settings, X, Moon, Sun, Eye, EyeOff, Play } from 'lucide-react';
+import { Home, Info, FileText, Bell, Settings, X, Moon, Sun, Eye, EyeOff, Play, MapPin } from 'lucide-react';
 import { useSettings } from '../hooks/useSettings';
 
 interface ControlPanelProps {
-  isVisible: boolean;
-  onToggle: () => void;
-  onNavigate: (page: 'home' | 'about' | 'documentation') => void;
-  onTriggerAlert: () => void;
-  // New props
-  currentMethod?: string;
-  onMethodChange?: (methodId: string) => void;
-  availableMethods?: { id: string; name: string }[];
-  locationName?: string;
+    isVisible: boolean;
+    onToggle: () => void;
+    onNavigate: (page: 'home' | 'about' | 'documentation') => void;
+    onTriggerAlert: () => void;
+    currentMethod?: string;
+    onMethodChange?: (methodId: string) => void;
+    availableMethods?: { id: string; name: string }[];
+    locationName?: string;
 }
 
+const Toggle: React.FC<{ on: boolean; onChange: () => void; label: string }> = ({ on, onChange, label }) => (
+    <button
+        role="switch"
+        aria-checked={on}
+        aria-label={label}
+        onClick={onChange}
+        className={`relative w-11 h-6 rounded-full transition-colors duration-250 flex-shrink-0 ${on ? 'bg-primary' : 'bg-gray-200 dark:bg-slate-600'}`}
+    >
+        <motion.div
+            animate={{ x: on ? 22 : 2 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+            className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-sm"
+        />
+    </button>
+);
+
 const ControlPanel: React.FC<ControlPanelProps> = ({
-  isVisible,
-  onToggle,
-  onNavigate,
-  onTriggerAlert,
-  currentMethod,
-  onMethodChange,
-  availableMethods = [],
-  locationName
+    isVisible, onToggle, onNavigate, onTriggerAlert,
+    currentMethod, onMethodChange, availableMethods = [], locationName,
 }) => {
-  const [activeTab, setActiveTab] = React.useState<'general' | 'settings'>('general');
-  const {
-    isDarkMode, toggleDarkMode,
-    showTranslation, toggleTranslation,
-    showVerseActions, toggleVerseActions,
-    arabicFontSize, setArabicFontSize
-  } = useSettings();
-  return (
-    <>
-      {/* Toggle Button - Desktop only */}
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={onToggle}
-        className="hidden lg:block fixed bottom-4 right-4 z-50 glass-card p-3 hover:bg-white/20 transition"
-        title="Toggle Controls"
-      >
-        {isVisible ? (
-          <X className="w-6 h-6 text-primary" />
-        ) : (
-          <Settings className="w-6 h-6 text-primary" />
-        )}
-      </motion.button>
+    const [activeTab, setActiveTab] = React.useState<'general' | 'settings'>('general');
+    const { isDarkMode, toggleDarkMode, showTranslation, toggleTranslation, showVerseActions, toggleVerseActions, arabicFontSize, setArabicFontSize } = useSettings();
 
-      {/* Control Panel */}
-      <AnimatePresence>
-        {isVisible && (
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 100 }}
-            className="fixed bottom-20 right-4 z-40 glass-card p-4 w-72 max-h-[80vh] overflow-y-auto dark:border-white/10"
-          >
-            {/* Tabs */}
-            <div className="flex gap-2 mb-4 bg-white/10 dark:bg-white/5 p-1 rounded-lg">
-              <button
-                onClick={() => setActiveTab('general')}
-                className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${activeTab === 'general' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:bg-white/10'
-                  }`}
-              >
-                General
-              </button>
-              <button
-                onClick={() => setActiveTab('settings')}
-                className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${activeTab === 'settings' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:bg-white/10'
-                  }`}
-              >
-                Settings
-              </button>
-            </div>
+    return (
+        <>
+            {/* Floating toggle button (desktop) */}
+            <motion.button
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.93 }}
+                onClick={onToggle}
+                aria-label={isVisible ? 'Tutup pengaturan' : 'Buka pengaturan'}
+                className="hidden lg:flex fixed bottom-5 right-5 z-50 w-12 h-12 rounded-2xl items-center justify-center
+                    bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl
+                    border border-white/60 dark:border-white/10
+                    shadow-lg shadow-black/8 hover:shadow-glow
+                    text-primary transition-all"
+            >
+                <AnimatePresence mode="wait">
+                    {isVisible
+                        ? <motion.div key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}><X className="w-5 h-5" /></motion.div>
+                        : <motion.div key="s" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}><Settings className="w-5 h-5" /></motion.div>
+                    }
+                </AnimatePresence>
+            </motion.button>
 
-            {activeTab === 'general' ? (
-              <div className="space-y-2">
-                <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">Navigation</div>
+            {/* Panel */}
+            <AnimatePresence>
+                {isVisible && (
+                    <>
+                        {/* Backdrop (mobile) */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={onToggle}
+                            className="lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+                        />
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => onNavigate('home')}
-                  className="flex items-center gap-3 w-full p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 transition text-gray-700 dark:text-gray-200 text-sm font-medium"
-                >
-                  <Home className="w-4 h-4 text-primary" />
-                  Home
-                </motion.button>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 16, scale: 0.97 }}
+                            transition={{ type: 'spring', stiffness: 280, damping: 26 }}
+                            className="fixed bottom-20 right-3 lg:bottom-20 lg:right-20 z-50 w-72 max-h-[80vh] overflow-y-auto no-scrollbar
+                                rounded-2xl bg-white/95 dark:bg-slate-900/96 backdrop-blur-2xl
+                                border border-white/70 dark:border-white/10
+                                shadow-xl shadow-black/12"
+                        >
+                            {/* Header */}
+                            <div className="flex items-center justify-between px-4 pt-4 pb-2">
+                                <h3 className="text-sm font-bold text-[var(--text-main)]">Pengaturan</h3>
+                                <button onClick={onToggle} className="p-1.5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/8 text-[var(--text-muted)] transition-colors">
+                                    <X className="w-4 h-4" />
+                                </button>
+                            </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => onNavigate('about')}
-                  className="flex items-center gap-3 w-full p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 transition text-gray-700 dark:text-gray-200 text-sm font-medium"
-                >
-                  <Info className="w-4 h-4 text-primary" />
-                  About
-                </motion.button>
+                            {/* Tabs */}
+                            <div className="px-3 pb-2">
+                                <div className="flex gap-1 bg-gray-100/80 dark:bg-white/6 p-1 rounded-xl">
+                                    {(['general', 'settings'] as const).map(tab => (
+                                        <button
+                                            key={tab}
+                                            onClick={() => setActiveTab(tab)}
+                                            className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all capitalize ${activeTab === tab ? 'bg-white dark:bg-slate-700 text-primary shadow-sm' : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'}`}
+                                        >
+                                            {tab === 'general' ? 'Navigasi' : 'Tampilan'}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => onNavigate('documentation')}
-                  className="flex items-center gap-3 w-full p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 transition text-gray-700 dark:text-gray-200 text-sm font-medium"
-                >
-                  <FileText className="w-4 h-4 text-primary" />
-                  Documentation
-                </motion.button>
+                            <div className="px-3 pb-4">
+                                {activeTab === 'general' ? (
+                                    <div className="space-y-1">
+                                        {/* Nav shortcuts */}
+                                        {[
+                                            { page: 'home'          as const, label: 'Home',           icon: Home },
+                                            { page: 'about'         as const, label: 'Tentang',         icon: Info },
+                                            { page: 'documentation' as const, label: 'Dokumentasi',     icon: FileText },
+                                        ].map(({ page, label, icon: Icon }) => (
+                                            <button
+                                                key={page}
+                                                onClick={() => onNavigate(page)}
+                                                className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl hover:bg-primary/6 dark:hover:bg-white/6 transition text-[var(--text-main)] text-sm font-medium"
+                                            >
+                                                <Icon className="w-4 h-4 text-primary" />
+                                                {label}
+                                            </button>
+                                        ))}
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={onTriggerAlert}
-                  className="flex items-center gap-3 w-full p-2.5 rounded-xl hover:bg-primary/5 dark:hover:bg-white/5 transition text-gray-700 dark:text-gray-200 text-sm font-medium"
-                >
-                  <Bell className="w-4 h-4 text-primary" />
-                  Test Notification
-                </motion.button>
+                                        <button
+                                            onClick={onTriggerAlert}
+                                            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl hover:bg-primary/6 dark:hover:bg-white/6 transition text-[var(--text-main)] text-sm font-medium"
+                                        >
+                                            <Bell className="w-4 h-4 text-primary" />
+                                            Test Notifikasi
+                                        </button>
 
-                {onMethodChange && availableMethods.length > 0 && (
-                  <div className="pt-4 mt-2 border-t border-gray-100 dark:border-white/10">
-                    <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">Prayer Calculation</div>
-                    <select
-                      value={currentMethod}
-                      onChange={(e) => onMethodChange(e.target.value)}
-                      className="w-full bg-gray-50 dark:bg-slate-700 text-gray-700 dark:text-white text-xs rounded-lg p-2 border border-gray-200 dark:border-slate-600 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                    >
-                      {availableMethods.map(method => (
-                        <option key={method.id} value={method.id}>
-                          {method.name}
-                        </option>
-                      ))}
-                    </select>
-                    {locationName && (
-                      <div className="text-[10px] text-gray-500 mt-2 flex items-center gap-1 justify-center">
-                        📍 {locationName}
-                      </div>
-                    )}
-                  </div>
+                                        {/* Prayer method */}
+                                        {onMethodChange && availableMethods.length > 0 && (
+                                            <div className="pt-3 mt-2 border-t border-gray-100 dark:border-white/8">
+                                                <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-[0.18em] mb-2 px-1">
+                                                    Metode Perhitungan
+                                                </p>
+                                                <select
+                                                    value={currentMethod}
+                                                    onChange={(e) => onMethodChange(e.target.value)}
+                                                    className="w-full bg-gray-50 dark:bg-slate-800 text-[var(--text-main)] text-xs rounded-xl px-3 py-2.5 border border-gray-200 dark:border-slate-600 focus:outline-none focus:border-primary"
+                                                >
+                                                    {availableMethods.map(m => (
+                                                        <option key={m.id} value={m.id}>{m.name}</option>
+                                                    ))}
+                                                </select>
+                                                {locationName && (
+                                                    <div className="flex items-center gap-1.5 mt-2 px-1 text-[10px] text-[var(--text-muted)]">
+                                                        <MapPin className="w-3 h-3" />
+                                                        {locationName}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="space-y-4">
+                                        {/* Dark mode */}
+                                        <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50/60 dark:bg-white/4">
+                                            <div className="flex items-center gap-2.5">
+                                                {isDarkMode ? <Moon className="w-4 h-4 text-primary" /> : <Sun className="w-4 h-4 text-amber-500" />}
+                                                <div>
+                                                    <p className="text-sm font-semibold text-[var(--text-main)]">Mode Gelap</p>
+                                                </div>
+                                            </div>
+                                            <Toggle on={isDarkMode} onChange={toggleDarkMode} label="Toggle mode gelap" />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-[0.18em]">Konten</p>
+
+                                            <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50/60 dark:bg-white/4">
+                                                <div className="flex items-center gap-2.5">
+                                                    {showTranslation ? <Eye className="w-4 h-4 text-primary" /> : <EyeOff className="w-4 h-4 text-[var(--text-muted)]" />}
+                                                    <div>
+                                                        <p className="text-sm font-semibold text-[var(--text-main)]">Terjemahan</p>
+                                                        <p className="text-[10px] text-[var(--text-muted)]">Tampilkan arti ayat</p>
+                                                    </div>
+                                                </div>
+                                                <Toggle on={showTranslation} onChange={toggleTranslation} label="Toggle terjemahan" />
+                                            </div>
+
+                                            <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50/60 dark:bg-white/4">
+                                                <div className="flex items-center gap-2.5">
+                                                    <Play className="w-4 h-4 text-primary" />
+                                                    <div>
+                                                        <p className="text-sm font-semibold text-[var(--text-main)]">Tombol Aksi</p>
+                                                        <p className="text-[10px] text-[var(--text-muted)]">Play, Bookmark, Share</p>
+                                                    </div>
+                                                </div>
+                                                <Toggle on={showVerseActions} onChange={toggleVerseActions} label="Toggle tombol aksi" />
+                                            </div>
+                                        </div>
+
+                                        {/* Font size */}
+                                        <div>
+                                            <div className="flex items-center justify-between mb-2">
+                                                <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-[0.18em]">Ukuran Teks Arab</p>
+                                                <span className="text-xs font-mono bg-primary/10 text-primary px-2 py-0.5 rounded-lg">{arabicFontSize}px</span>
+                                            </div>
+                                            <div className="bg-white dark:bg-slate-800 p-3 rounded-xl border border-gray-100 dark:border-slate-700 mb-3 text-right overflow-hidden">
+                                                <p style={{ fontFamily: '"Scheherazade New","Amiri",serif', fontSize: `${arabicFontSize}px`, lineHeight: 2 }}
+                                                    dir="rtl" className="text-[var(--text-main)]">
+                                                    بِسْمِ اللَّهِ
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center gap-3 px-1">
+                                                <span className="text-xs text-[var(--text-muted)]">A</span>
+                                                <input
+                                                    type="range" min="18" max="60" step="2"
+                                                    value={arabicFontSize}
+                                                    onChange={(e) => setArabicFontSize(Number(e.target.value))}
+                                                    className="flex-1 h-1.5 rounded-full accent-primary cursor-pointer"
+                                                />
+                                                <span className="text-sm font-bold text-[var(--text-muted)]">A</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    </>
                 )}
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {/* Visual Settings */}
-                <div>
-                  <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">Tampilan</div>
-
-                  <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50/50 dark:bg-white/5 mb-2">
-                    <div className="flex items-center gap-2">
-                      {isDarkMode ? <Moon className="w-4 h-4 text-primary" /> : <Sun className="w-4 h-4 text-primary" />}
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Mode Gelap</span>
-                    </div>
-                    <button
-                      onClick={toggleDarkMode}
-                      className={`w-10 h-6 rounded-full p-1 transition-colors ${isDarkMode ? 'bg-primary' : 'bg-gray-300'}`}
-                    >
-                      <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${isDarkMode ? 'translate-x-4' : ''}`} />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Content Settings */}
-                <div>
-                  <div className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">Konten</div>
-
-                  <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50/50 dark:bg-white/5 mb-2">
-                    <div className="flex items-center gap-2">
-                      {showTranslation ? <Eye className="w-4 h-4 text-primary" /> : <EyeOff className="w-4 h-4 text-gray-400" />}
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Terjemahan</span>
-                        <span className="text-[10px] text-gray-500">Tampilkan arti ayat</span>
-                      </div>
-                    </div>
-                    <button
-                      onClick={toggleTranslation}
-                      className={`w-10 h-6 rounded-full p-1 transition-colors ${showTranslation ? 'bg-primary' : 'bg-gray-300'}`}
-                    >
-                      <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${showTranslation ? 'translate-x-4' : ''}`} />
-                    </button>
-                  </div>
-
-                  <div className="flex items-center justify-between p-2 rounded-xl bg-gray-50/50 dark:bg-white/5 mb-2">
-                    <div className="flex items-center gap-2">
-                      <Play className="w-4 h-4 text-primary" />
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Tombol Aksi</span>
-                        <span className="text-[10px] text-gray-500">Play, Bookmark, dll</span>
-                      </div>
-                    </div>
-                    <button
-                      onClick={toggleVerseActions}
-                      className={`w-10 h-6 rounded-full p-1 transition-colors ${showVerseActions ? 'bg-primary' : 'bg-gray-300'}`}
-                    >
-                      <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${showVerseActions ? 'translate-x-4' : ''}`} />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Typography Settings */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="text-gray-500 text-xs font-bold uppercase tracking-wider">Ukuran Teks Arab</div>
-                    <span className="text-xs font-mono bg-primary/10 text-primary px-2 py-0.5 rounded">{arabicFontSize}px</span>
-                  </div>
-
-                  <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-gray-100 dark:border-slate-700 mb-3 shadow-inner">
-                    <p className="font-serif text-right text-gray-800 dark:text-white leading-loose" style={{ fontSize: `${arabicFontSize}px` }}>
-                      بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-gray-400">Kecil</span>
-                    <input
-                      type="range"
-                      min="20"
-                      max="60"
-                      step="2"
-                      value={arabicFontSize}
-                      onChange={(e) => setArabicFontSize(Number(e.target.value))}
-                      className="flex-1 h-2 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary"
-                    />
-                    <span className="text-xs text-gray-400">Besar</span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
+            </AnimatePresence>
+        </>
+    );
 };
 
 export default ControlPanel;
