@@ -5,8 +5,7 @@ const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-
 
 // Simple in-memory cache to avoid repeated API calls for the same text
 const tadabburCache = new Map<string, string>();
-const wisdomCache: { text: string; timestamp: number } | null = null;
-let lastWisdom = wisdomCache;
+let lastWisdom: { text: string; timestamp: number } | null = null;
 
 // Rate limiter: at most 1 request every 2 seconds
 let lastRequestTime = 0;

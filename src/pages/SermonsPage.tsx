@@ -1,13 +1,25 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mic, Calendar, User, ChevronRight, X, Globe, Volume2 } from 'lucide-react';
+import { Mic, Calendar, User, ChevronRight, X, Globe, Volume2, Share2, Check } from 'lucide-react';
 import { sermonService, Sermon } from '../services/sermonService';
 
 const SermonsPage: React.FC = () => {
     const [sermons, setSermons] = useState<Sermon[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedSermon, setSelectedSermon] = useState<Sermon | null>(null);
+    const [copied, setCopied] = useState(false);
+
+    const handleShare = async (sermon: Sermon) => {
+        const text = `${sermon.title}\n${new Date(sermon.date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\nSumber: ${sermon.source}`;
+        if (navigator.share) {
+            try { await navigator.share({ title: sermon.title, text }); } catch { /* cancelled */ }
+        } else {
+            await navigator.clipboard.writeText(text);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
 
     useEffect(() => {
         const fetchSermons = async () => {
@@ -177,8 +189,13 @@ const SermonsPage: React.FC = () => {
                                 >
                                     Tutup
                                 </button>
-                                <button className="px-5 py-2.5 rounded-xl bg-teal-600 text-white font-medium hover:bg-teal-700 transition shadow-lg shadow-teal-500/20">
-                                    Download PDF
+                                <button
+                                    onClick={() => handleShare(selectedSermon)}
+                                    aria-label={copied ? 'Disalin!' : 'Bagikan khutbah'}
+                                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-teal-600 text-white font-medium hover:bg-teal-700 transition shadow-lg shadow-teal-500/20"
+                                >
+                                    {copied ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
+                                    {copied ? 'Disalin!' : 'Bagikan'}
                                 </button>
                             </div>
                         </motion.div>

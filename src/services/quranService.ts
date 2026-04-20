@@ -59,8 +59,8 @@ export const quranService = {
                 const mergedAyahs: Ayah[] = arabic.ayahs.map((ayah: any, index: number) => ({
                     number: ayah.number,
                     text: ayah.text,
-                    translation: translation ? translation.ayahs[index].text : '',
-                    audio: audio ? audio.ayahs[index].audio : '',
+                    translation: (translation?.ayahs?.[index]?.text) ?? '',
+                    audio: (audio?.ayahs?.[index]?.audio) ?? '',
                     numberInSurah: ayah.numberInSurah,
                     juz: ayah.juz
                 }));

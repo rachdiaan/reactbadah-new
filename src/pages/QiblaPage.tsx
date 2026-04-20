@@ -3,6 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Compass, Navigation, Loader2, RefreshCw, MapPin, Lock, AlertTriangle, CheckCircle2, Smartphone } from 'lucide-react';
 import { Coordinates, Qibla } from 'adhan';
 
+interface ExtendedOrientationEvent extends DeviceOrientationEvent {
+    webkitCompassHeading?: number;
+}
+
+interface IOSDeviceOrientationEvent extends EventTarget {
+    requestPermission: () => Promise<'granted' | 'denied'>;
+}
+
 const QiblaPage: React.FC = () => {
     const [heading, setHeading] = useState<number>(0);
     const [qiblaDirection, setQiblaDirection] = useState<number | null>(null);
@@ -70,21 +78,26 @@ const QiblaPage: React.FC = () => {
         else setCalibrationQuality('low');
     }, []);
 
+    const getIOSRequestPermission = () =>
+        (DeviceOrientationEvent as unknown as IOSDeviceOrientationEvent).requestPermission;
+
     // Check iOS permission requirement
     useEffect(() => {
         const isIOSDevice = ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod']
             .includes(navigator.platform)
             || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
 
-        if (!isIOSDevice && typeof (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission !== 'function') {
+        if (!isIOSDevice && typeof getIOSRequestPermission() !== 'function') {
             setPermissionGranted(true);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const requestAccess = async () => {
-        if (typeof (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission === 'function') {
+        const requestPermission = getIOSRequestPermission();
+        if (typeof requestPermission === 'function') {
             try {
-                const permissionState = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission();
+                const permissionState = await requestPermission();
                 if (permissionState === 'granted') {
                     setPermissionGranted(true);
                 } else {
@@ -140,8 +153,8 @@ const QiblaPage: React.FC = () => {
             if (now - lastUpdateTime.current < 33) return;
             lastUpdateTime.current = now;
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const absolute: number | null = (event as any).webkitCompassHeading ?? event.alpha;
+            const extended = event as ExtendedOrientationEvent;
+            const absolute: number | null = extended.webkitCompassHeading ?? event.alpha;
 
             if (absolute === null || absolute === undefined) return;
 
@@ -197,6 +210,13 @@ const QiblaPage: React.FC = () => {
     };
     const handlePointerUp = () => {
         isDragging.current = false;
+    };
+
+    // Keyboard navigation for compass in no-sensor mode
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (!noSensor) return;
+        if (e.key === 'ArrowLeft') setManualRotation((prev: number) => prev - 5);
+        else if (e.key === 'ArrowRight') setManualRotation((prev: number) => prev + 5);
     };
 
     // Calculate how far the phone is from pointing at Qibla
@@ -315,11 +335,15 @@ const QiblaPage: React.FC = () => {
 
                     <div className="relative flex justify-center items-center py-4 md:py-8 min-h-[340px] md:min-h-[420px]">
                         <div
-                            className={`relative w-72 h-72 md:w-[22rem] md:h-[22rem] ${noSensor ? 'cursor-grab active:cursor-grabbing select-none' : ''}`}
+                            className={`relative w-72 h-72 md:w-[22rem] md:h-[22rem] ${noSensor ? 'cursor-grab active:cursor-grabbing select-none outline-none' : ''}`}
                             onPointerDown={handlePointerDown}
                             onPointerMove={handlePointerMove}
                             onPointerUp={handlePointerUp}
                             onPointerLeave={handlePointerUp}
+                            onKeyDown={handleKeyDown}
+                            tabIndex={noSensor ? 0 : -1}
+                            aria-label={noSensor ? 'Kompas kiblat. Gunakan tombol panah kiri/kanan untuk memutar.' : 'Kompas kiblat'}
+                            role="img"
                         >
 
                             {/* Qibla alignment glow */}

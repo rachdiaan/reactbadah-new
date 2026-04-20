@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Play, Pause, Bookmark, Share2 } from 'lucide-react';
+import { ArrowLeft, Play, Pause, Bookmark, BookmarkCheck, Share2, Check } from 'lucide-react';
 import { useSettings } from '../hooks/useSettings';
 import { quranService, Ayah } from '../services/quranService';
 
@@ -10,14 +10,45 @@ interface SurahDetailProps {
     onBack: () => void;
 }
 
+interface BookmarkedAyah {
+    surahNumber: number;
+    surahName: string;
+    ayahNumber: number;
+    text: string;
+}
+
+const BISMILLAH = 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ';
+
+function stripBismillah(text: string): string {
+    // Strip the Basmala from first ayah — it's already shown in the header
+    if (text.startsWith('بِسْمِ')) {
+        const parts = text.split(' ');
+        // Basmala is 4 words: بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+        return parts.slice(4).join(' ').trim();
+    }
+    return text;
+}
+
+function loadBookmarks(): BookmarkedAyah[] {
+    try {
+        return JSON.parse(localStorage.getItem('quran_bookmarks') || '[]');
+    } catch {
+        return [];
+    }
+}
+
 const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBack }) => {
     const [ayahs, setAyahs] = useState<Ayah[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const { arabicFontSize, showTranslation, showVerseActions } = useSettings();
 
     // Audio State
-    const [playingAyah, setPlayingAyah] = useState<number | null>(null); // Ayah Number in Surah
+    const [playingAyah, setPlayingAyah] = useState<number | null>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    // Bookmark & Share State
+    const [bookmarks, setBookmarks] = useState<BookmarkedAyah[]>(loadBookmarks);
+    const [copiedAyah, setCopiedAyah] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchSurahDetails = async () => {
@@ -31,7 +62,6 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
 
         fetchSurahDetails();
 
-        // Cleanup audio on unmount or surah change
         return () => {
             if (audioRef.current) {
                 audioRef.current.pause();
@@ -42,27 +72,54 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
 
     const handlePlayAudio = (ayah: Ayah) => {
         if (playingAyah === ayah.numberInSurah) {
-            // Pause
             audioRef.current?.pause();
             setPlayingAyah(null);
         } else {
-            // Stop previous
             if (audioRef.current) {
                 audioRef.current.pause();
             }
-            // Play new
             const audio = new Audio(ayah.audio);
             audioRef.current = audio;
             audio.play();
             setPlayingAyah(ayah.numberInSurah);
-
-            // Auto-play next (Optional but nice)
-            audio.onended = () => {
-                setPlayingAyah(null);
-                // Logic for next ayah could go here if requested
-            };
+            audio.onended = () => setPlayingAyah(null);
         }
     };
+
+    const handleBookmark = useCallback((ayah: Ayah) => {
+        setBookmarks(prev => {
+            const exists = prev.some(b => b.surahNumber === surahNumber && b.ayahNumber === ayah.numberInSurah);
+            const next = exists
+                ? prev.filter(b => !(b.surahNumber === surahNumber && b.ayahNumber === ayah.numberInSurah))
+                : [...prev, { surahNumber, surahName, ayahNumber: ayah.numberInSurah, text: ayah.text }];
+            localStorage.setItem('quran_bookmarks', JSON.stringify(next));
+            return next;
+        });
+    }, [surahNumber, surahName]);
+
+    const handleShare = useCallback(async (ayah: Ayah) => {
+        const displayText = ayah.numberInSurah === 1 && surahNumber !== 1 && surahNumber !== 9
+            ? stripBismillah(ayah.text)
+            : ayah.text;
+        const shareText = `${displayText}\n\n${ayah.translation}\n\n— ${surahName} : ${ayah.numberInSurah}`;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({ text: shareText });
+            } catch {
+                // user cancelled share, do nothing
+            }
+        } else {
+            await navigator.clipboard.writeText(shareText);
+            setCopiedAyah(ayah.numberInSurah);
+            setTimeout(() => setCopiedAyah(null), 2000);
+        }
+    }, [surahNumber, surahName]);
+
+    const isBookmarked = (ayah: Ayah) =>
+        bookmarks.some(b => b.surahNumber === surahNumber && b.ayahNumber === ayah.numberInSurah);
+
+    const showsBismillah = surahNumber !== 1 && surahNumber !== 9;
 
     return (
         <motion.div
@@ -76,6 +133,7 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                 <div className="flex items-center gap-4">
                     <button
                         onClick={onBack}
+                        aria-label="Kembali ke daftar surah"
                         className="p-2 hover:bg-primary/10 rounded-full transition-colors text-primary"
                     >
                         <ArrowLeft className="w-6 h-6" />
@@ -87,20 +145,20 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                 </div>
 
                 {/* Bismillah Desktop */}
-                {surahNumber !== 1 && surahNumber !== 9 && (
+                {showsBismillah && (
                     <div className="hidden md:block">
                         <p className="arabic-text text-xl lg:text-2xl text-primary font-bold" style={{ fontFamily: '"Amiri", serif' }}>
-                            بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+                            {BISMILLAH}
                         </p>
                     </div>
                 )}
             </div>
 
             {/* Bismillah Mobile */}
-            {surahNumber !== 1 && surahNumber !== 9 && (
+            {showsBismillah && (
                 <div className="md:hidden text-center py-4">
                     <p className="arabic-text text-2xl text-gray-800 dark:text-gray-200" style={{ fontFamily: '"Amiri", serif' }}>
-                        بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+                        {BISMILLAH}
                     </p>
                 </div>
             )}
@@ -112,78 +170,78 @@ const SurahDetail: React.FC<SurahDetailProps> = ({ surahNumber, surahName, onBac
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {ayahs.map((ayah, index) => (
-                        <div
-                            key={ayah.number}
-                            className={`p-4 md:p-6 rounded-2xl hover:bg-white/40 dark:hover:bg-white/5 transition-colors border border-gray-100/50 dark:border-white/5 ${index % 2 === 0 ? 'bg-white/30 dark:bg-white/5' : 'bg-white/10 dark:bg-transparent'} ${playingAyah === ayah.numberInSurah ? 'ring-2 ring-primary/50 bg-primary/5 dark:bg-primary/10' : ''}`}
-                        >
-                            {/* Top Bar: Number & Actions */}
-                            <div className="flex justify-between items-start mb-4">
-                                <span className={`w-8 h-8 flex items-center justify-center rounded-full font-mono text-xs font-bold transition-colors ${playingAyah === ayah.numberInSurah ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'bg-primary/10 text-primary'}`}>
-                                    {ayah.numberInSurah}
-                                </span>
+                    {ayahs.map((ayah, index) => {
+                        const bookmarked = isBookmarked(ayah);
+                        const copied = copiedAyah === ayah.numberInSurah;
+                        const arabicText = ayah.numberInSurah === 1 && showsBismillah
+                            ? stripBismillah(ayah.text)
+                            : ayah.text;
 
-                                <div className="flex gap-2">
-                                    {showVerseActions && (
-                                        <>
-                                            <button
-                                                onClick={() => handlePlayAudio(ayah)}
-                                                className={`p-2 rounded-xl transition-all duration-300 ${playingAyah === ayah.numberInSurah ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'text-gray-400 hover:text-primary hover:bg-primary/10'}`}
-                                                title={playingAyah === ayah.numberInSurah ? "Pause" : "Play Audio"}
-                                            >
-                                                {playingAyah === ayah.numberInSurah ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
-                                            </button>
-                                            <button className="p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition" title="Bookmark">
-                                                <Bookmark className="w-4 h-4" />
-                                            </button>
-                                            <button className="p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition" title="Share">
-                                                <Share2 className="w-4 h-4" />
-                                            </button>
-                                        </>
-                                    )}
+                        return (
+                            <div
+                                key={ayah.number}
+                                className={`p-4 md:p-6 rounded-2xl hover:bg-white/40 dark:hover:bg-white/5 transition-colors border border-gray-100/50 dark:border-white/5 ${index % 2 === 0 ? 'bg-white/30 dark:bg-white/5' : 'bg-white/10 dark:bg-transparent'} ${playingAyah === ayah.numberInSurah ? 'ring-2 ring-primary/50 bg-primary/5 dark:bg-primary/10' : ''}`}
+                            >
+                                {/* Top Bar: Number & Actions */}
+                                <div className="flex justify-between items-start mb-4">
+                                    <span className={`w-8 h-8 flex items-center justify-center rounded-full font-mono text-xs font-bold transition-colors ${playingAyah === ayah.numberInSurah ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'bg-primary/10 text-primary'}`}>
+                                        {ayah.numberInSurah}
+                                    </span>
+
+                                    <div className="flex gap-2">
+                                        {showVerseActions && (
+                                            <>
+                                                <button
+                                                    onClick={() => handlePlayAudio(ayah)}
+                                                    aria-label={playingAyah === ayah.numberInSurah ? `Pause ayah ${ayah.numberInSurah}` : `Play ayah ${ayah.numberInSurah}`}
+                                                    className={`p-2 rounded-xl transition-all duration-300 ${playingAyah === ayah.numberInSurah ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'text-gray-400 hover:text-primary hover:bg-primary/10'}`}
+                                                >
+                                                    {playingAyah === ayah.numberInSurah ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
+                                                </button>
+                                                <button
+                                                    onClick={() => handleBookmark(ayah)}
+                                                    aria-label={bookmarked ? `Hapus bookmark ayah ${ayah.numberInSurah}` : `Bookmark ayah ${ayah.numberInSurah}`}
+                                                    className={`p-2 rounded-xl transition ${bookmarked ? 'text-primary bg-primary/10' : 'text-gray-400 hover:text-primary hover:bg-primary/5'}`}
+                                                >
+                                                    {bookmarked ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                                                </button>
+                                                <button
+                                                    onClick={() => handleShare(ayah)}
+                                                    aria-label={copied ? 'Disalin!' : `Bagikan ayah ${ayah.numberInSurah}`}
+                                                    className={`p-2 rounded-xl transition ${copied ? 'text-green-500 bg-green-50 dark:bg-green-900/20' : 'text-gray-400 hover:text-primary hover:bg-primary/5'}`}
+                                                >
+                                                    {copied ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
 
-                            {/* Arabic Text */}
-                            <div className="text-right mb-6 w-full px-2">
-                                <p
-                                    className="leading-[2.5] text-gray-800 dark:text-gray-100"
-                                    dir="rtl"
-                                    style={{
-                                        fontFamily: '"Amiri", serif',
-                                        fontSize: `${arabicFontSize}px`
-                                    }}
-                                >
-                                    {/* Strip Bismillah from ayah 1 since it's shown separately above */}
-                                    {(() => {
-                                        if (ayah.numberInSurah === 1 && surahNumber !== 1 && surahNumber !== 9) {
-                                            const t = ayah.text;
-                                            // Check if starts with بِسْ (ba + kasra + sin)
-                                            if (t.charCodeAt(0) === 1576 && t.charCodeAt(1) === 1616 && t.charCodeAt(2) === 1587) {
-                                                let spaceCount = 0;
-                                                for (let i = 0; i < t.length; i++) {
-                                                    if (t[i] === ' ') {
-                                                        spaceCount++;
-                                                        if (spaceCount === 4) return t.substring(i + 1);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        return ayah.text;
-                                    })()}
-                                </p>
-                            </div>
-
-                            {/* Translation */}
-                            {showTranslation && (
-                                <div className="text-left px-2 border-t border-gray-100 dark:border-white/5 pt-4">
-                                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm md:text-base font-medium">
-                                        {ayah.translation}
+                                {/* Arabic Text */}
+                                <div className="text-right mb-6 w-full px-2">
+                                    <p
+                                        className="leading-[2.5] text-gray-800 dark:text-gray-100"
+                                        dir="rtl"
+                                        style={{
+                                            fontFamily: '"Amiri", serif',
+                                            fontSize: `${arabicFontSize}px`
+                                        }}
+                                    >
+                                        {arabicText}
                                     </p>
                                 </div>
-                            )}
-                        </div>
-                    ))}
+
+                                {/* Translation */}
+                                {showTranslation && (
+                                    <div className="text-left px-2 border-t border-gray-100 dark:border-white/5 pt-4">
+                                        <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm md:text-base font-medium">
+                                            {ayah.translation}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
             )}
         </motion.div>

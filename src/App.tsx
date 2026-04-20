@@ -1,20 +1,27 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import MainLayout from './components/Layout/MainLayout';
-import HomePage from './pages/HomePage';
-import DzikirPage from './pages/DzikirPage';
-import AboutPage from './pages/AboutPage';
-import DocumentationPage from './pages/DocumentationPage';
-import QuranPage from './pages/QuranPage';
-import QiblaPage from './pages/QiblaPage';
 import PrayerAlert from './components/PrayerAlert';
 import ControlPanel from './components/ControlPanel';
 import { usePrayerTimes } from './hooks/usePrayerTimes';
+import { Loader2 } from 'lucide-react';
 
-import BoycottPage from './pages/BoycottPage';
-import SermonsPage from './pages/SermonsPage';
+const HomePage = lazy(() => import('./pages/HomePage'));
+const DzikirPage = lazy(() => import('./pages/DzikirPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const DocumentationPage = lazy(() => import('./pages/DocumentationPage'));
+const QuranPage = lazy(() => import('./pages/QuranPage'));
+const QiblaPage = lazy(() => import('./pages/QiblaPage'));
+const BoycottPage = lazy(() => import('./pages/BoycottPage'));
+const SermonsPage = lazy(() => import('./pages/SermonsPage'));
 
 type Page = 'home' | 'dzikir' | 'quran' | 'qibla' | 'about' | 'documentation' | 'boycott' | 'khutbah';
+
+const PageLoader = () => (
+  <div className="flex items-center justify-center py-20">
+    <Loader2 className="w-8 h-8 animate-spin text-primary" />
+  </div>
+);
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -80,7 +87,9 @@ function App() {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          {renderPage()}
+          <Suspense fallback={<PageLoader />}>
+            {renderPage()}
+          </Suspense>
         </motion.div>
       </AnimatePresence>
 

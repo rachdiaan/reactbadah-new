@@ -13,30 +13,20 @@ interface SettingsContextType {
 
 export const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
+function safeGet<T>(key: string, fallback: T): T {
+    try {
+        const val = localStorage.getItem(key);
+        return val !== null ? (JSON.parse(val) as T) : fallback;
+    } catch {
+        return fallback;
+    }
+}
+
 export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    // Dark Mode
-    const [isDarkMode, setIsDarkMode] = useState(() => {
-        const saved = localStorage.getItem('isDarkMode');
-        return saved ? JSON.parse(saved) : false;
-    });
-
-    // Show Translation
-    const [showTranslation, setShowTranslation] = useState(() => {
-        const saved = localStorage.getItem('showTranslation');
-        return saved ? JSON.parse(saved) : true;
-    });
-
-    // Show Verse Actions (Play, Bookmark, etc.)
-    const [showVerseActions, setShowVerseActions] = useState(() => {
-        const saved = localStorage.getItem('showVerseActions');
-        return saved ? JSON.parse(saved) : true;
-    });
-
-    // Arabic Font Size (Default 28px)
-    const [arabicFontSize, setArabicFontSize] = useState(() => {
-        const saved = localStorage.getItem('arabicFontSize');
-        return saved ? JSON.parse(saved) : 28;
-    });
+    const [isDarkMode, setIsDarkMode] = useState(() => safeGet('isDarkMode', false));
+    const [showTranslation, setShowTranslation] = useState(() => safeGet('showTranslation', true));
+    const [showVerseActions, setShowVerseActions] = useState(() => safeGet('showVerseActions', true));
+    const [arabicFontSize, setArabicFontSize] = useState(() => safeGet('arabicFontSize', 28));
 
     useEffect(() => {
         localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));

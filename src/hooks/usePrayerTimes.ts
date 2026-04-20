@@ -159,19 +159,27 @@ export const usePrayerTimes = () => {
 
   const checkPrayerTime = useCallback((prayers: PrayerTimes) => {
     const now = new Date();
+    const todayKey = now.toDateString();
+
     Object.values(prayers).forEach(prayer => {
-      const diff = Math.abs(now.getTime() - prayer.time.getTime());
+      const prayerTs = prayer.time.getTime();
+      const diff = now.getTime() - prayerTs;
 
-      // If we are within 5 seconds of the time and haven't alerted yet
-      if (diff < 5000 && lastAlertTime !== prayer.time.getTime()) {
-        setAlertPrayer(prayer);
-        setShowPrayerAlert(true);
-        setLastAlertTime(prayer.time.getTime());
+      // Trigger if we passed prayer time within last 60 seconds
+      if (diff >= 0 && diff < 60_000) {
+        // Use localStorage key so we only alert once per prayer per day
+        const alertKey = `alerted_${todayKey}_${prayer.key}`;
+        if (!localStorage.getItem(alertKey) && lastAlertTime !== prayerTs) {
+          localStorage.setItem(alertKey, '1');
+          setAlertPrayer(prayer);
+          setShowPrayerAlert(true);
+          setLastAlertTime(prayerTs);
 
-        setTimeout(() => {
-          setShowPrayerAlert(false);
-          setAlertPrayer(null);
-        }, 5000); // Auto dismiss
+          setTimeout(() => {
+            setShowPrayerAlert(false);
+            setAlertPrayer(null);
+          }, 8000);
+        }
       }
     });
   }, [lastAlertTime]);
